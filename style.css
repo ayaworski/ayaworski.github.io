@@ -325,6 +325,15 @@ footer {
   margin-bottom: 16px;
   font-size: 20px;
 }
+
+/* Mobile */
+@media (max-width: 640px) {
+.hero {
+  margin: 48px auto;
+}
+}
+
+
 /* ===============================
    Case Studies Grid
 ================================= */
