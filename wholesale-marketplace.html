@@ -113,7 +113,7 @@
           <h3 class="key-outcomes__title">Key outcomes</h3>
 
           <div class="key-outcomes__grid">
-            <div class="outcome-card">
+           <div class="outcome-card" data-animate>
               <div class="outcome-card__emoji">🎯</div>
               <h4>Strategic Clarity</h4>
               <p>
@@ -121,7 +121,7 @@
               </p>
             </div>
 
-            <div class="outcome-card">
+             <div class="outcome-card" data-animate>
               <div class="outcome-card__emoji">🤝️</div>
               <h4>Executive Alignment</h4>
               <p>
@@ -129,7 +129,7 @@
               </p>
             </div>
 
-            <div class="outcome-card">
+             <div class="outcome-card" data-animate>
               <div class="outcome-card__emoji">🧩</div>
               <h4>Scalable Systems</h4>
               <p>
@@ -137,7 +137,7 @@
               </p>
             </div>
 
-            <div class="outcome-card">
+            <div class="outcome-card" data-animate>
               <div class="outcome-card__emoji">🚀</div>
               <h4>$95 Million</h4>
               <p>
@@ -505,7 +505,7 @@
 
 
   <script>
-    const revealElements = document.querySelectorAll('.reveal');
+  const revealElements = document.querySelectorAll('.reveal, .outcome-card[data-animate]');
 
     const observer = new IntersectionObserver(
       (entries, observer) => {

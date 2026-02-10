@@ -100,37 +100,37 @@
       </p>
 
       <div class="case-results">
-      <div class="outcome-card">
+      <div class="outcome-card" data-animate>
            <div class="outcome-card__emoji">🛒</div>
            <h4 class="callout bold">+29%</h4>
           <p>Orders via app.</p>
         </div>
 
-        <div class="outcome-card">
+        <div class="outcome-card" data-animate>
             <div class="outcome-card__emoji">💸</div>
            <h4 class="callout bold">+39%</h4>
           <p>Sales conversion.</p>
         </div>
 
-     <div class="outcome-card">
+      <div class="outcome-card" data-animate>
            <div class="outcome-card__emoji">📈</div>
            <h4 class="callout bold">+12%</h4>
           <p>Repeat visitors.</p>
         </div>
 
-    <div class="outcome-card">
+      <div class="outcome-card" data-animate>
           <div class="outcome-card__emoji">🙋‍♂️</div>
            <h4 class="callout bold">+8%</h4>
           <p>Daily active users.</p>
         </div>
 
-        <div class="outcome-card">
+      <div class="outcome-card" data-animate>
            <div class="outcome-card__emoji">📱</div>
            <h4 class="callout bold">-59%</h4>
           <p>App uninstalls.</p>
         </div>
 
-        <div class="outcome-card">
+      <div class="outcome-card" data-animate>
             <div class="outcome-card__emoji">⚡</div>
            <h4 class="callout bold">-16%</h4>
           <p>Crash rates reduced.</p>
@@ -153,22 +153,22 @@
       <div class="key-outcomes">
         <h3 class="key-outcomes__title">Design Awards</h3>
         <div class="key-outcomes__grid">
-          <div class="outcome-card">
+          <div class="outcome-card"  data-animate>
             <div class="outcome-card__emoji"><img src="images/CMA.png" alt="CMA Award" /></div>
             <h4>Canadian Marketing Association Awards</h4>
             <p>Mertech - Retail, Gold 2020</p>
           </div>
-          <div class="outcome-card">
+          <div class="outcome-card"  data-animate>
              <div class="outcome-card__emoji"><img src="images/Muse.png" alt="Musa Award" /></div>
             <h4>MUSE Creative Awards</h4>
             <p>Mobile App - eCommerce, Platinum 2020</p>
           </div>
-          <div class="outcome-card">
+           <div class="outcome-card"  data-animate>
              <div class="outcome-card__emoji"><img src="images/Modern-retail.png" alt="Modern Retail Award" /></div>
             <h4>Modern Retail Awards</h4>
             <p>Best Digital Transformation 2020</p>
           </div>
-          <div class="outcome-card">
+           <div class="outcome-card"  data-animate>
              <div class="outcome-card__emoji"><img src="images/NYX.png" alt="NYX Award" /></div>
             <h4>NYX Marcom Awards</h4>
             <p>Mobile App - eCommerce, Gold 2020</p>
@@ -261,7 +261,7 @@
         <div class="case-split__content">
           <h4>Explore Feed</h4>
           <p>Delivered a dynamic, personalized feed combining social content, editorial stories, new products, and UGC, which drove sustained daily engagement.</p>
-        <div class="outcome-card">
+         <div class="outcome-card" data-animate>
            <div class="outcome-card__emoji">👀</div>
            <h4 class="callout bold">62.7%</h4>
           <p>Time on app.</p>
@@ -283,7 +283,7 @@
         <div class="case-split__content">
           <h4>Shoppable content</h4>
           <p>Turned content blocks into purchase points, increasing organic discovery and shortening the path from inspiration to transaction.</p>        
-          <div class="outcome-card">
+          <div class="outcome-card" data-animate>
            <div class="outcome-card__emoji">📈</div>
            <h4 class="callout bold">+29</h4>
           <p>In-app conversion.</p>
@@ -306,7 +306,7 @@
         <div class="case-split__content">
           <h4>My Community</h4>
           <p>Launched a location-aware module that connected users to local stores, events, promotions, and community programming, strengthening real-world engagement.</p>        
-          <div class="outcome-card">
+           <div class="outcome-card" data-animate>
           <div class="outcome-card__emoji">🤝</div>
            <h4 class="callout bold">4.7%</h4>
           <p>Time on app.</p>
@@ -412,7 +412,7 @@
 
     
   <script>
-    const revealElements = document.querySelectorAll('.reveal');
+  const revealElements = document.querySelectorAll('.reveal, .outcome-card[data-animate]');
 
     const observer = new IntersectionObserver(
       (entries, observer) => {
