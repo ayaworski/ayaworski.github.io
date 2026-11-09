@@ -523,12 +523,12 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   display: flex; flex-wrap: wrap; align-items: center;
   gap: 40px clamp(8px, 1.5vw, 24px);
 }
-.case-intro__text { flex: 0 1 560px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-width: 0; }
+.case-intro__text { flex: 1 1 100%; max-width: 1100px; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; min-width: 0; }
 .case-intro h1 {
   margin: 0; font-family: var(--font-display); font-weight: 800;
-  font-size: clamp(40px, 5vw, 64px); line-height: 1; letter-spacing: -0.04em; text-wrap: balance;
+  font-size: clamp(48px, 7.2vw, 96px); line-height: 1; letter-spacing: -0.045em; text-wrap: balance;
 }
-.case-intro .lead { margin: 0; max-width: 720px; font-size: 18px; line-height: 1.5; color: var(--fg-secondary); text-wrap: pretty; }
+.case-intro .lead { margin: 0; max-width: 900px; font-size: clamp(20px, 2.4vw, 30px); line-height: 1.45; color: var(--fg-secondary); text-wrap: pretty; }
 .case-intro__art { flex: 1 1 480px; display: flex; align-items: center; justify-content: center; min-width: 0; }
 .case-intro__art img { width: 100%; height: auto; }
 
