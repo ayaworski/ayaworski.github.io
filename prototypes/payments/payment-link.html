@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pay invoice — Thirty Three Threads</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=20261031l" />
+  </head>
+
+  <body class="co pl">
+    <header class="co-header pl-header">
+      <div class="co-brand">
+        <img class="co-brand__logo" src="images/checkout/logo-bitmap2.png" alt="" />
+        <span>Thirty Three Threads</span>
+      </div>
+    </header>
+
+    <div class="pl-layout">
+      <!-- ================================ Invoice summary ================================ -->
+      <section class="pl-invoice" aria-label="Invoice summary">
+        <div class="pl-invoice__inner">
+          <div class="pl-title">
+            <div class="pl-title__meta">
+              <span>Due April 1, 2024</span>
+              <span class="cf-badge cf-badge--danger">Overdue</span>
+            </div>
+            <p class="pl-amount"><strong>$1025.00</strong> <span>USD</span></p>
+          </div>
+
+          <dl class="pl-details">
+            <div class="pl-details__row">
+              <dt>Invoice</dt>
+              <dd><a class="pl-link" href="images/payment-link/INV-00007.pdf" target="_blank" rel="noopener">INV-00007<img src="images/payment-link/external-link.svg" alt="" width="16" height="16" /></a></dd>
+            </div>
+            <div class="pl-details__row">
+              <dt>Bill to</dt>
+              <dd>Element Pilates Studio<br />Jane Buyer - jane.buyer@element.com<br />123 Fake Street, Vancouver BC, V6J 1J2, Canada</dd>
+            </div>
+            <div class="pl-details__row">
+              <dt>Issued by</dt>
+              <dd>Thirty Three Threads<br />1330 Park Center Drive, Vista, CA 92081, USA</dd>
+            </div>
+            <div class="pl-details__row">
+              <dt>Memo</dt>
+              <dd>This includes the discount as discussed. Thanks for your business.</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="pl-invoice__inner">
+          <div class="co-footer">
+            <div class="co-footer__brand">
+              <span>Powered by</span>
+              <img src="images/checkout/ls-logo.svg" alt="Lightspeed" />
+            </div>
+            <div class="co-vsep" aria-hidden="true"><img src="images/checkout/vline.svg" alt="" /></div>
+            <div class="co-footer__links"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Help</a></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================ Payment ================================ -->
+      <main class="co-main pl-pay">
+        <div class="pl-pay__inner">
+          <section class="co-payment" aria-labelledby="pl-pay-title">
+            <h2 id="pl-pay-title">Payment</h2>
+
+            <div class="co-methods" id="methods" role="radiogroup" aria-label="Payment method">
+              <div class="co-method" data-open="false" data-method="ach">
+                <label class="co-method__head">
+                  <input type="radio" class="co-radio" name="method" value="ach" />
+                  <span class="co-method__name">ACH payment</span>
+                </label>
+                <div class="co-method__panel" hidden>
+                  <div class="co-bank">
+                    <span class="co-bank__icon">ACH</span>
+                    <span>Business chequing ending ···· 1204</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="co-method" data-open="true" data-method="card">
+                <label class="co-method__head">
+                  <input type="radio" class="co-radio" name="method" value="card" checked />
+                  <span class="co-method__name">Credit card</span>
+                  <span class="co-brands" aria-hidden="true">
+                    <span class="co-brand-chip"><img src="images/checkout/visa-sm.svg" alt="" /></span>
+                    <span class="co-brand-chip">
+                      <span class="co-brand-chip__base"></span>
+                      <span class="co-brand-chip__glyph co-brand-chip__glyph--mc"><img src="images/checkout/mastercard-sm-glyph.svg" alt="" /></span>
+                    </span>
+                    <span class="co-brand-chip"><img src="images/checkout/amex-sm.svg" alt="" /></span>
+                    <span class="co-brand-chip">
+                      <span class="co-brand-chip__base"></span>
+                      <span class="co-brand-chip__glyph co-brand-chip__glyph--disc"><img src="images/checkout/discover-glyph.svg" alt="" /></span>
+                    </span>
+                  </span>
+                </label>
+
+                <div class="co-method__panel" id="card-panel">
+                  <form class="co-newcard pl-card" id="new-card" novalidate>
+                    <div class="co-field co-field--wide">
+                      <label for="nc-num">Card number</label>
+                      <div class="co-field__wrap">
+                        <input id="nc-num" inputmode="numeric" autocomplete="cc-number" />
+                        <span class="co-field__brand" id="nc-brand" aria-live="polite"></span>
+                      </div>
+                      <span class="co-field__err" data-err="nc-num"></span>
+                    </div>
+                    <div class="co-field">
+                      <label for="nc-exp">Expiration</label>
+                      <input id="nc-exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" />
+                      <span class="co-field__err" data-err="nc-exp"></span>
+                    </div>
+                    <div class="co-field">
+                      <label for="nc-cvc">Security code</label>
+                      <div class="co-field__wrap">
+                        <input id="nc-cvc" inputmode="numeric" pattern="[0-9]*" autocomplete="cc-csc" maxlength="4" />
+                        <span class="co-field__brand" aria-hidden="true"><img src="images/payment-link/cvc.svg" alt="" width="23" height="16" /></span>
+                      </div>
+                      <span class="co-field__err" data-err="nc-cvc"></span>
+                    </div>
+                    <div class="co-field">
+                      <label for="nc-country">Country</label>
+                      <select id="nc-country" class="co-select" autocomplete="country">
+                        <option value="US">United States</option>
+                        <option value="CA">Canada</option>
+                      </select>
+                    </div>
+                    <div class="co-field">
+                      <label for="nc-zip" id="nc-zip-label">Zip code</label>
+                      <input id="nc-zip" autocomplete="postal-code" />
+                      <span class="co-field__err" data-err="nc-zip"></span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="co-submit">
+            <button type="button" class="co-btn co-btn--primary" id="submit">Pay $1,025.00</button>
+            <p class="co-tc">By submitting this order, you agree to the <a href="#">terms and conditions</a>.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Processing / confirmation -->
+    <div class="co-done" id="done" hidden>
+      <div class="co-done__card" id="done-card" role="dialog" aria-modal="true" aria-labelledby="done-title">
+        <svg class="co-done__icon" id="done-icon" width="108" height="108" viewBox="0 0 108 108" fill="none" aria-hidden="true">
+          <circle class="co-done__ring" cx="54" cy="54" r="50" />
+          <path class="co-done__check" d="M36 56 L49 69 L74 42" />
+        </svg>
+        <p class="co-done__status" id="done-title" role="status" aria-live="polite">Processing payment</p>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var $ = function (s, r) { return (r || document).querySelector(s); };
+        var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+        var el = function (tag, cls) { var n = document.createElement(tag); if (cls) n.className = cls; return n; };
+
+        /* ---------- Payment methods ---------- */
+        $$('input[name=method]').forEach(function (r) {
+          r.addEventListener('change', function () {
+            $$('.co-method').forEach(function (m) {
+              var open = $('input[name=method]', m).checked;
+              m.dataset.open = open;
+              var panel = $('.co-method__panel', m);
+              if (panel) panel.hidden = !open;
+            });
+          });
+        });
+
+        /* ---------- Card brand ---------- */
+        var BRANDS = {
+          visa: { len: 16, cvc: 3 },
+          mastercard: { len: 16, cvc: 3 },
+          amex: { len: 15, cvc: 4 },
+          discover: { len: 16, cvc: 3 }
+        };
+        function detectBrand(d) {
+          if (/^4/.test(d)) return 'visa';
+          if (/^(5[1-5]|2(2[2-9][1-9]|2[3-9]|[3-6]|7[01]|720))/.test(d)) return 'mastercard';
+          if (/^3[47]/.test(d)) return 'amex';
+          if (/^(6011|65|64[4-9]|622)/.test(d)) return 'discover';
+          return null;
+        }
+        function brandMark(brand) {
+          var mark = el('span', 'co-card__mark');
+          function img(src, alt) { var i = el('img'); i.src = src; i.alt = alt; return i; }
+          function chip(cls, src, alt) {
+            mark.appendChild(el('span', 'co-brand-chip__base'));
+            var g = el('span', 'co-brand-chip__glyph ' + cls);
+            g.appendChild(img(src, alt));
+            mark.appendChild(g);
+          }
+          if (brand === 'visa') mark.appendChild(img('images/checkout/visa-card.svg', 'Visa'));
+          else if (brand === 'amex') mark.appendChild(img('images/checkout/amex-sm.svg', 'American Express'));
+          else if (brand === 'mastercard') chip('co-brand-chip__glyph--mc', 'images/checkout/mastercard-glyph.svg', 'Mastercard');
+          else if (brand === 'discover') chip('co-brand-chip__glyph--disc', 'images/checkout/discover-glyph.svg', 'Discover');
+          return mark;
+        }
+        var ncNum = $('#nc-num'), ncCvc = $('#nc-cvc'), zipInput = $('#nc-zip'), countrySel = $('#nc-country');
+        function renderBrand() {
+          var brand = detectBrand(ncNum.value.replace(/\D/g, ''));
+          var slot = $('#nc-brand');
+          slot.textContent = '';
+          if (brand) slot.appendChild(brandMark(brand));
+          ncCvc.maxLength = brand === 'amex' ? 4 : 3;
+        }
+        ncNum.addEventListener('input', function () {
+          var brand = detectBrand(ncNum.value.replace(/\D/g, ''));
+          var d = ncNum.value.replace(/\D/g, '').slice(0, brand === 'amex' ? 15 : 16);
+          ncNum.value = brand === 'amex'
+            ? [d.slice(0, 4), d.slice(4, 10), d.slice(10)].filter(Boolean).join(' ')
+            : d.replace(/(.{4})/g, '$1 ').trim();
+          renderBrand();
+        });
+        ncCvc.addEventListener('input', function () {
+          var clean = ncCvc.value.replace(/\D/g, '');
+          if (clean !== ncCvc.value) ncCvc.value = clean;
+        });
+        $('#nc-exp').addEventListener('input', function (e) {
+          var d = e.target.value.replace(/\D/g, '').slice(0, 4);
+          e.target.value = d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d;
+        });
+
+        /* ---------- Country / postal code ---------- */
+        var POSTAL_LOCALES = {
+          CA: { label: 'Postal code', inputmode: 'text',
+                test: /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] \d[ABCEGHJ-NPRSTV-Z]\d$/,
+                format: function (v) { var c = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); return c.length > 3 ? c.slice(0, 3) + ' ' + c.slice(3) : c; } },
+          US: { label: 'Zip code', inputmode: 'numeric',
+                test: /^\d{5}(-\d{4})?$/,
+                format: function (v) { var d = v.replace(/\D/g, '').slice(0, 9); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; } }
+        };
+        var LOCALE;
+        function applyCountry(code) {
+          LOCALE = POSTAL_LOCALES[code] || POSTAL_LOCALES.US;
+          $('#nc-zip-label').textContent = LOCALE.label;
+          zipInput.setAttribute('inputmode', LOCALE.inputmode);
+          zipInput.value = LOCALE.format(zipInput.value);
+        }
+        applyCountry(countrySel.value);
+        countrySel.addEventListener('change', function () { setErr('nc-zip', ''); zipInput.value = ''; applyCountry(countrySel.value); });
+        zipInput.addEventListener('input', function () { zipInput.value = LOCALE.format(zipInput.value); });
+
+        /* ---------- Inline validation (on blur, then live while typing) ---------- */
+        function setErr(id, msg) {
+          var inp = $('#' + id);
+          $('[data-err=' + id + ']').textContent = msg;
+          if (msg) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid');
+          return !msg;
+        }
+        var CHECKS = {
+          'nc-num': function () {
+            var d = ncNum.value.replace(/\D/g, ''), b = detectBrand(d);
+            return d.length < (b ? BRANDS[b].len : 16) ? 'Your card number is incomplete.' : '';
+          },
+          'nc-exp': function () {
+            var d = $('#nc-exp').value.replace(/\D/g, '');
+            if (d.length < 4) return 'Your card’s expiration date is incomplete.';
+            var mm = parseInt(d.slice(0, 2), 10), yy = 2000 + parseInt(d.slice(2), 10);
+            var now = new Date(), cy = now.getFullYear(), cm = now.getMonth() + 1;
+            if (mm < 1 || mm > 12) return 'Your card’s expiration month is invalid.';
+            if (yy < cy) return 'Your card’s expiration year is in the past.';
+            if (yy > cy + 50) return 'Your card’s expiration year is invalid.';
+            if (yy === cy && mm < cm) return 'Your card’s expiration date is in the past.';
+            return '';
+          },
+          'nc-cvc': function () {
+            var b = detectBrand(ncNum.value.replace(/\D/g, ''));
+            return ncCvc.value.length < (b ? BRANDS[b].cvc : 3) ? 'Your security code is incomplete.' : '';
+          },
+          'nc-zip': function () {
+            var v = zipInput.value.trim(), name = LOCALE.label.toLowerCase();
+            if (!v) return 'Your ' + name + ' is incomplete.';
+            return LOCALE.test.test(v) ? '' : 'Your ' + name + ' is invalid.';
+          }
+        };
+        var touched = {};
+        function checkField(id) { return setErr(id, CHECKS[id]()); }
+        Object.keys(CHECKS).forEach(function (id) {
+          var input = $('#' + id), errEl = $('[data-err=' + id + ']');
+          errEl.id = 'err-' + id;
+          input.setAttribute('aria-describedby', errEl.id);
+          input.addEventListener('blur', function () { touched[id] = true; checkField(id); });
+          input.addEventListener('input', function () { if (touched[id]) checkField(id); });
+        });
+        ncNum.addEventListener('input', function () { if (touched['nc-cvc']) checkField('nc-cvc'); });
+        $('#new-card').addEventListener('submit', function (e) { e.preventDefault(); });
+
+        /* ---------- Submit ---------- */
+        var doneEl = $('#done'), doneCard = $('#done-card'), doneIcon = $('#done-icon'), doneText = $('#done-title');
+        var ready = false, finished = false;
+        function finish() {
+          if (finished) return;
+          finished = true;
+          doneCard.classList.remove('is-processing');
+          doneCard.classList.add('is-complete');
+          doneText.textContent = 'Payment complete';
+        }
+        doneIcon.addEventListener('animationiteration', function () { if (ready) finish(); });
+        $('#submit').addEventListener('click', function () {
+          if ($('input[name=method]:checked').value === 'card') {
+            var firstBad = null;
+            Object.keys(CHECKS).forEach(function (id) {
+              touched[id] = true;
+              if (!checkField(id) && !firstBad) firstBad = id;
+            });
+            if (firstBad) { $('#' + firstBad).focus(); return; }
+          }
+          ready = false; finished = false;
+          doneCard.className = 'co-done__card is-processing';
+          doneText.textContent = 'Processing payment';
+          doneEl.hidden = false;
+          setTimeout(function () { ready = true; }, 2200);
+          setTimeout(finish, 3600); // fallback when animations are off (reduced motion)
+        });
+      })();
+    </script>
+  </body>
+</html>

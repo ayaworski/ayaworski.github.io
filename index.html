@@ -14,139 +14,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Andrew Yaworski — Product Designer</title>
+  <meta name="description" content="Andrew Yaworski is a product designer in Vancouver designing complex commerce products where merchants, money, and operations meet.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="style.css?v=20261108c">
 </head>
 <body>
-  
-<div class="homepage-background"></div>
 
+<header class="hero" id="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <nav class="wrap" aria-label="Main Navigation">
+    <a href="index.html" class="logo">andrew.design</a>
+    <button class="pill menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M3 6 H21 M3 12 H21 M3 18 H21"></path></svg>
+      Menu
+    </button>
+    <div class="menu-backdrop" id="menu-backdrop"></div>
+    <div class="nav-links" id="nav-links">
+      <button class="pill menu-close" id="menu-close" type="button" aria-label="Close menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M5 5 L19 19 M19 5 L5 19"></path></svg>
+        Close
+      </button>
+      <a class="pill" href="#case-studies">Case studies</a>
+      <a class="pill" href="#about">About</a>
+      <a class="pill" href="#contact">Contact</a>
+      <button class="pill" id="sound-toggle" type="button" aria-label="Turn grid sound on" title="Turn grid sound on">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 9 H8 L13 5 V19 L8 15 H4 Z" fill="#1A1A1A"></path>
+          <path id="sound-wave" d="M17 9 L22 15 M22 9 L17 15"></path>
+        </svg>
+        <span id="sound-label">Sound off</span>
+      </button>
+    </div>
+  </nav>
+  <div class="hero-body wrap">
+    <div class="hero-title-block">
+      <h1>Andrew Yaworski</h1>
+      <div class="chips mono">
+        <span class="chip">B2B / B2C</span>
+        <span class="chip">Commerce</span>
+        <span class="chip">Fintech</span>
+        <span class="chip">Design Systems</span>
+        <span class="chip">AI Native</span>
+      </div>
+    </div>
+    <div class="hero-bottom">
+      <p class="hero-lede">I design <strong>complex commerce products</strong> where <strong>merchants, money, and operations</strong> meet, building <strong>foundations that scale</strong> while delivering <strong>immediate business impact.</strong></p>
+      <div class="hero-cta">
+        <a class="btn btn--lime" href="#case-studies">View case studies</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</header>
 
-  <!-- Header / Navigation -->
-  <header class="site-header">
-      <nav aria-label="Main Navigation">
-        <a href="index.html" class="site-name">andrew.design</a>
-        <ul>
-          <li>
-            <a href="index.html#case-studies">Case studies</a>
-          </li>
-          <li>
-            <a href="index.html#contact">Contact</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
-
-  <!-- Main Content -->
-  <main>
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <span class="badge badge--highlight">Open to new opportunities</span>
-      <h1>👋 I'm Andrew, a Product Designer in Vancouver</h1>
-      <p>
-I have 10+ years of experience translating ambiguous business objectives into platform-first products for payments, marketplace, and commerce systems at scale. My work multiplies team velocity, establishes lasting foundations, and drives measurable business impact.
-
-      </p>
-    </section>
-
-    <!-- Work / Case Studies -->
-    <section id="case-studies" class="case-studies">
-
-
-      <a href="/wholesale-marketplace.html" class="case-card-link">
-      <article class="case-card">
-        <img src="images/wholesale-marketplace.png" alt="Wholesale Marketplace">
-        <div class="case-card-content">
-      <span class="eyebrow">Case Study</span>
-        <h3>Wholesale Marketplace: From Closed to Connected</h3>
-        <p>
-          How I defined and executed a strategic vision to transform B2B buying
-          into a connected, discovery-driven marketplace for brands and merchants.
-        </p>
-      <span class="card-button">
-        Explore Marketplace <span class="arrow">→</span>
-      </span>
+<main>
+  <section id="case-studies" class="wrap">
+    <div class="cs-head reveal">
+      <h2 class="section-title">Selected work</h2>
+      <div class="cs-tools">
+        <span class="mono cs-count">2 Case studies</span>
+        <div class="layout-toggle" role="group" aria-label="Layout">
+          <button class="pill is-on" id="layout-stack" type="button" aria-pressed="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1A1A1A" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="12" height="5"></rect><rect x="2" y="9" width="12" height="5"></rect></svg>Stacked
+          </button>
+          <span class="divider"></span>
+          <button class="pill" id="layout-car" type="button" aria-pressed="false">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1A1A1A" stroke-width="2" aria-hidden="true"><rect x="4" y="3" width="8" height="10"></rect><path d="M1 5 V11 M15 5 V11"></path></svg>Carousel
+          </button>
         </div>
-        </article>
+      </div>
+    </div>
+
+    <div class="track" id="track">
+      <a class="case reveal reveal-x" href="wholesale-marketplace.html" style="--d:0.0s">
+        <div class="case-media"><div class="case-glow"></div><img src="images/b2b-marketplace.webp" alt="Wholesale Marketplace" loading="lazy"></div>
+        <div class="case-body">
+          <div class="case-meta mono"><span>01</span><i></i><span>Marketplace</span></div>
+          <h3><span class="case-title">Designing how brands and retailers grow their networks</span></h3>
+          <p>How I turned a closed wholesale network into a discovery-driven marketplace MVP in five months, projected at $95M over five years.</p>
+          <div class="chips mono"><span class="chip">B2B</span><span class="chip">Commerce</span><span class="chip">Wholesale</span><span class="chip">Marketplace</span></div>
+          <span class="btn btn--lime">Explore Marketplace <span>→</span></span>
+        </div>
       </a>
-
-      <a href="/b2b-payments.html" class="case-card-link">
-      <article class="case-card">
-        <img src="images/b2b-payments.png" alt="B2B Payments">
-        <div class="case-card-content">
-       <span class="eyebrow">Case Study</span>
-        <h3>B2B Payments: From Ambiguity to Alignment</h3>
-        <p>
-          How I transformed an undefined payments initiative into a scalable,
-          user-centered roadmap that established the foundation for long-term
-          platform growth.
-        </p>
-        <span class="card-button">
-        Explore B2B Payments <span class="arrow">→</span>
-      </span>
+      <a class="case reveal reveal-x" href="b2b-payments.html" style="--d:0.15s">
+        <div class="case-media"><div class="case-glow"></div><img src="images/b2b-payments.webp" alt="B2B Payments" loading="lazy"></div>
+        <div class="case-body">
+          <div class="case-meta mono"><span>02</span><i></i><span>Payments</span></div>
+          <h3><span class="case-title">Redesigning how suppliers get paid</span></h3>
+          <p>How I turned an undefined payments initiative into an end-to-end experience that grew payment volume 5× to $17.5M.</p>
+          <div class="chips mono"><span class="chip">B2B</span><span class="chip">Payments</span><span class="chip">Fintech</span><span class="chip">Wholesale</span></div>
+          <span class="btn btn--lime">Explore B2B Payments <span>→</span></span>
         </div>
-      </article>
-    </a>
-      
-<a href="/arcteryx-app.html" class="case-card-link">
-      <article class="case-card">
-        <img src="images/arcteryx-app.png" alt="Arc'teryx App">
-        <div class="case-card-content">
-      <span class="eyebrow">Case Study</span>
-        <h3>Arc'teryx App Design: From Static to Sticky</h3>
-        <p>
-          How I transformed an underperforming mobile app into a personalized,
-          content-driven experience that increased loyalty, engagement, and revenue.
-        </p>
-        <span class="card-button">
-        Explore Arc'teryx App <span class="arrow">→</span>
-      </span>
+      </a>
+    </div>
+
+    <div class="carousel-bar" id="carousel-bar">
+      <div class="progress">
+        <span class="mono" id="car-pos">01 / 02</span>
+        <div class="progress-line"><div class="progress-fill" id="car-fill" style="width:50%"></div></div>
+      </div>
+      <div class="arrows">
+        <button class="btn arrow" id="car-prev" type="button" aria-label="Previous case study">←</button>
+        <button class="btn btn--lime arrow" id="car-next" type="button" aria-label="Next case study">→</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="wrap">
+    <h2 class="section-title reveal">About</h2>
+    <div class="about-grid">
+      <div class="about-copy reveal">
+        <p class="lead">I like the messy middle of commerce, where the hard part isn't the screen but everything behind it.</p>
+        <p>For more than ten years I've designed products for payments, wholesale marketplaces, and retail. The interesting problems live in the systems underneath: payment terms, supplier relationships, inventory, and the teams who keep it all running.</p>
+        <p>Most of my work starts as an undefined opportunity. I help teams frame the business problem, make the vision tangible with prototypes, and turn it into a roadmap engineering can ship.</p>
+        <p>I sketch on paper first and increasingly build in code with AI tools, so ideas get tested in a real browser before they get debated in a deck.</p>
+      </div>
+      <div class="principles reveal">
+        <span class="mono">How I work</span>
+        <div class="principle">
+          <span class="mono">01</span>
+          <div class="principle-text"><span class="principle-title">Frame the business problem first</span><span class="principle-desc">Clarify the opportunity, constraints, and success measures before pushing pixels.</span></div>
         </div>
-      </article>
-    </a>
+        <div class="principle">
+          <span class="mono">02</span>
+          <div class="principle-text"><span class="principle-title">Prototype to align</span><span class="principle-desc">Make the vision tangible early, so leadership and teams react to the same thing.</span></div>
+        </div>
+        <div class="principle">
+          <span class="mono">03</span>
+          <div class="principle-text"><span class="principle-title">Build the system, not just the screen</span><span class="principle-desc">Partner with design systems and engineering so every decision scales past the first release.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
-    </section>
-
-  </main>
-
-  <!-- Footer -->
 <footer id="contact">
-  <div class="footer__inner">
-    <h3 class="footer__email">
-      andrewy_99@hotmail.com
-    </h3>
-
-    <nav class="footer__social" aria-label="Social links">
-      
-       <a
-        href="https://www.behance.net/ayaworski"
-        aria-label="Behance"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="images/behance.svg" alt="" />
-      </a>
-      
-      <a
-        href="https://www.linkedin.com/in/andrewyaworski/"
-        aria-label="LinkedIn"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <img src="images/linkedin.svg" alt="" />
-      </a>
-
-     
-    </nav>
+  <div class="footer-inner wrap">
+    <div class="footer-cta reveal">
+      <h2>Let's talk about what you're building.</h2>
+      <div class="footer-actions">
+        <a class="btn btn--lime" href="mailto:andrewy_99@hotmail.com">andrewy_99@hotmail.com</a>
+        <button class="btn btn--ghost" id="copy-email" type="button" data-email="andrewy_99@hotmail.com">Copy email</button>
+      </div>
+    </div>
+    <div class="footer-bar reveal">
+      <span class="mono">© 2026 andrew.design · Vancouver, BC</span>
+      <div class="social">
+        <a class="pill" href="https://www.linkedin.com/in/andrewyaworski/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="pill" href="https://www.behance.net/ayaworski" target="_blank" rel="noopener noreferrer">Behance</a>
+      </div>
+    </div>
   </div>
 </footer>
 
-
+<script src="script.js?v=20261108b"></script>
 </body>
 </html>

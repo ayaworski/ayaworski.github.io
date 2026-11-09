@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marketplace — Fashion &amp; apparel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="marketplace.css?v=suggest2" />
+    <link rel="stylesheet" href="marketplace-category.css?v=fmore2" />
+  </head>
+
+  <body class="mp">
+    <!-- ============================ Left rail ============================ -->
+    <nav class="mp-nav" aria-label="Main">
+      <span class="mp-nav__active" aria-hidden="true"></span>
+      <a class="mp-nav__i" aria-label="Home" style="left:20px;top:21px;width:20px;height:18px"><img src="images/confirmation/nav-home.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Orders" aria-current="page" style="left:20px;top:79px;width:24px;height:24px"><img src="images/confirmation/nav-basket.svg" alt="" /></a>
+      <a class="mp-nav__i mp-nav__i--inset" aria-label="Marketplace" style="left:19px;top:131px;width:24px;height:24px"><img src="images/confirmation/nav-marketplace.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Stores" style="left:20px;top:183px;width:24px;height:24px"><img src="images/confirmation/nav-storefront.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Promotions" style="left:20px;top:235px;width:20px;height:20px"><img src="images/confirmation/nav-tag.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Linesheets" style="left:20px;top:283px;width:24px;height:24px"><img src="images/confirmation/nav-linesheets.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Lists" style="left:19px;top:335px;width:20px;height:24px"><img src="images/confirmation/nav-list.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Whiteboard" style="left:18px;top:387px;width:24px;height:24px"><img src="images/confirmation/nav-whiteboard.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Order history" style="left:18px;top:439px;width:22px;height:18px"><img src="images/confirmation/nav-orders.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Customers" style="left:18px;top:485px;width:24px;height:17px"><img src="images/confirmation/nav-people.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Tasks" style="left:18px;top:530px;width:20px;height:24px"><img src="images/confirmation/nav-checklist.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Payments" style="left:18px;top:582px;width:24px;height:24px"><img src="images/confirmation/nav-payments.svg" alt="" /></a>
+      <a class="mp-nav__i" aria-label="Settings" style="left:18px;top:634px;width:24px;height:24px"><img src="images/confirmation/nav-settings.svg" alt="" /></a>
+      <div class="mp-nav__avatar" aria-hidden="true">
+        <img class="mp-nav__oval" src="images/confirmation/nav-oval.svg" alt="" />
+        <img class="mp-nav__mark" src="images/confirmation/nav-avatar-logo.svg" alt="" />
+        <span>AY</span>
+      </div>
+    </nav>
+
+    <div class="mp-page">
+      <!-- ============================ Header ============================ -->
+      <header class="mp-header">
+        <a class="mp-brand" href="#">
+          <img class="mp-brand__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <span>NuORDER</span>
+        </a>
+        <div class="mp-center">
+        <button class="mp-dept" type="button">
+          Fashion &amp; apparel
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <form class="mp-search" role="search" id="search">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5"/></svg>
+          <label class="sr-only" for="q">Search</label>
+          <input id="q" type="search" placeholder="Search product, categories and brands" autocomplete="off" />
+        </form>
+        </div>
+        <div class="mp-actions">
+          <button class="mp-icon-btn" type="button" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M6 17V11a6 6 0 1112 0v6l1.5 2h-15zM10 21h4"/></svg></button>
+          <button class="mp-icon-btn" type="button" aria-label="Account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.5-5.5 7-5.5s6.2 1.9 7 5.5"/></svg></button>
+          <button class="mp-icon-btn" type="button" aria-label="Favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0112 7.4 4.3 4.3 0 0119.5 10c0 5.4-7.5 10-7.5 10z"/></svg></button>
+          <button class="mp-icon-btn" type="button" aria-label="Cart">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 3.5h2.4l2.1 11h11.3l1.6-8.3H6.2"/><circle cx="8.4" cy="19" r="1.4"/><circle cx="17.8" cy="19" r="1.4"/></svg>
+            <span class="mp-badge" id="cart-count" hidden>0</span>
+          </button>
+        </div>
+      </header>
+
+      <nav class="mp-subnav" aria-label="Categories">
+        <a>Women's</a>
+        <a>Men's</a>
+        <a>Kids</a>
+        <a>Accessories</a>
+        <a>Footwear</a>
+        <a>Brands</a>
+      </nav>
+
+      <main id="view-home">
+        <!-- ============================ Hero ============================ -->
+        <section class="mp-hero" aria-labelledby="mp-title">
+          <div class="mp-hero__inner">
+            <h1 id="mp-title">Fashion &amp; apparel</h1>
+            <p class="mp-hero__sub">Grow your business by discovering something new.</p>
+            <div class="mp-cats" id="cats"></div>
+          </div>
+        </section>
+
+        <!-- ============================ You might like ============================ -->
+        <section class="mp-section" aria-labelledby="h-like">
+          <div class="mp-section__head">
+            <h2 id="h-like">You might like</h2>
+            <a class="mp-viewall" href="#">View all (215)</a>
+          </div>
+          <button class="mp-arrow mp-arrow--prev" type="button" aria-label="Previous" id="like-prev"><svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5"/></svg></button>
+          <div class="mp-track" id="like"></div>
+          <button class="mp-arrow mp-arrow--next" type="button" aria-label="Next" id="like-next"><svg viewBox="0 0 14 14"><path d="M5 2l5 5-5 5"/></svg></button>
+        </section>
+
+        <!-- ============================ New arrivals ============================ -->
+        <section class="mp-section" aria-labelledby="h-new">
+          <div class="mp-section__head">
+            <h2 id="h-new">New arrivals</h2>
+            <a class="mp-viewall" href="#">View all (137)</a>
+          </div>
+          <button class="mp-arrow mp-arrow--prev" type="button" aria-label="Previous" id="new-prev"><svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5"/></svg></button>
+          <div class="mp-track" id="arrivals"></div>
+          <button class="mp-arrow mp-arrow--next" type="button" aria-label="Next" id="new-next"><svg viewBox="0 0 14 14"><path d="M5 2l5 5-5 5"/></svg></button>
+        </section>
+
+        <!-- ============================ Popular searches ============================ -->
+        <section class="mp-section mp-section--quiet" aria-labelledby="h-searches">
+          <div class="mp-section__head">
+            <h2 id="h-searches">Popular searches</h2>
+            
+          </div>
+          <div class="mp-chips" id="chips"></div>
+        </section>
+
+        <!-- ============================ Brands ============================ -->
+        <section class="mp-section" aria-labelledby="h-brands">
+          <div class="mp-section__head">
+            <h2 id="h-brands">Brands you'll love</h2>
+            <a class="mp-viewall" href="#">View all (176)</a>
+          </div>
+          <button class="mp-arrow mp-arrow--prev" type="button" aria-label="Previous" id="br-prev" style="top:110px"><svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5"/></svg></button>
+          <div class="mp-brands" id="brands"></div>
+          <button class="mp-arrow mp-arrow--next" type="button" aria-label="Next" id="br-next" style="top:110px"><svg viewBox="0 0 14 14"><path d="M5 2l5 5-5 5"/></svg></button>
+        </section>
+
+        <!-- ============================ Shop by category ============================ -->
+        <section class="mp-section" aria-labelledby="h-shop">
+          <div class="mp-section__head">
+            <h2 id="h-shop">Recent categories</h2>
+          </div>
+          <div class="mp-linkgrid" id="linkgrid"></div>
+        </section>
+
+        <!-- ============================ Recently viewed ============================ -->
+        <section class="mp-section" aria-labelledby="h-market">
+          <div class="mp-section__head">
+            <h2 id="h-market">Recently viewed</h2>
+            <a class="mp-viewall" href="#">View all (284)</a>
+          </div>
+          <button class="mp-arrow mp-arrow--prev" type="button" aria-label="Previous" id="mkt-prev"><svg viewBox="0 0 14 14"><path d="M9 2L4 7l5 5"/></svg></button>
+          <div class="mp-track" id="market"></div>
+          <button class="mp-arrow mp-arrow--next" type="button" aria-label="Next" id="mkt-next"><svg viewBox="0 0 14 14"><path d="M5 2l5 5-5 5"/></svg></button>
+        </section>
+      </main>
+
+      <!-- ============================ Category list view (#/c/<slug>) ============================ -->
+      <main id="view-category" hidden>
+        <div class="mp-list" style="padding-bottom:0">
+          <nav class="mp-crumbs" aria-label="Breadcrumb">
+            <a href="#">Fashion &amp; apparel</a><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M3 1l4 4-4 4"/></svg><span aria-current="page" id="cat-crumb"></span>
+          </nav>
+          <div class="mp-list__head">
+            <h1 class="mp-list__title" id="cat-title"></h1>
+            <span class="mp-list__count" id="cat-count"></span>
+          </div>
+        </div>
+        <section class="mp-section" aria-label="Products">
+          <div class="mp-toolbar" id="brand-toolbar" hidden>
+            <button class="mp-filterbtn" type="button" id="b-open-filters">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h7M13 4h1M2 12h1M7 12h7"/><circle cx="11" cy="4" r="2"/><circle cx="5" cy="12" r="2"/></svg>
+              <span id="b-filters-label">All filters</span>
+            </button>
+            <button class="mp-filterbtn mp-toggle" type="button" id="b-top" aria-pressed="false"><span>Top rated</span></button>
+            <div class="mp-applied" id="b-applied"></div>
+            <label class="mp-sort"><span>Sort by:</span>
+              <select id="b-sort">
+                <option value="rel">Most relevant</option>
+                <option value="rating">Rating: high to low</option>
+                <option value="reviews">Most reviews</option>
+                <option value="low">Minimum order: low to high</option>
+                <option value="high">Minimum order: high to low</option>
+                <option value="az">Name: A–Z</option>
+              </select>
+            </label>
+          </div>
+          <div class="mp-grid mp-grid--list" id="catgrid"></div>
+          <div class="mp-brandgrid" id="brandgrid" hidden></div>
+        </section>
+      </main>
+
+    </div>
+
+    <aside class="mp-note" id="cart-note" role="status" aria-live="polite" aria-hidden="true">
+      <div class="mp-note__head">
+        <h2 class="mp-note__title">Added to cart</h2>
+        <button class="mp-note__close" type="button" id="note-close" aria-label="Close" tabindex="-1">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+      </div>
+      <div class="mp-note__body">
+        <img class="mp-note__img" id="note-img" src="" alt="" />
+        <div class="mp-note__info">
+          <div class="mp-note__row"><span class="mp-note__name" id="note-name"></span><span class="mp-note__price" id="note-price"></span></div>
+          <div class="mp-note__meta"><span>Color:</span> <span class="mp-note__color" id="note-color"></span></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="mp-modal" id="pdp" role="dialog" aria-modal="true" aria-labelledby="pdp-title" hidden>
+      <div class="mp-modal__scrim" data-close></div>
+      <div class="mp-modal__panel">
+        <button class="mp-modal__close" type="button" id="pdp-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+        </button>
+        <div class="mp-pdp">
+          <div class="mp-pdp__media">
+            <div class="mp-pdp__img">
+              <img id="pdp-img" src="" alt="" />
+              <button class="mp-pdp__nav mp-pdp__nav--prev" id="pdp-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M9 2L4 7l5 5"/></svg></button>
+              <button class="mp-pdp__nav mp-pdp__nav--next" id="pdp-next" type="button" aria-label="Next image"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M5 2l5 5-5 5"/></svg></button>
+              <button class="mp-pdp__fav" id="pdp-fav" type="button" aria-pressed="false" aria-label="Add to favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7.500-4.600-7.500-10A4.300 4.300 0 0112 7.400 4.300 4.300 0 0119.500 10c0 5.400-7.500 10-7.500 10z"/></svg></button>
+            </div>
+            <div class="mp-pdp__dots" id="pdp-dots"></div>
+          </div>
+          <div class="mp-pdp__info">
+            <div class="mp-pdp__meta mp-pdp__brandline" id="pdp-brand"></div>
+            <h2 class="mp-pdp__title" id="pdp-title"></h2>
+            <p class="mp-pdp__meta" id="pdp-meta"></p>
+            <p class="mp-pdp__desc is-clamped" id="pdp-descwrap"><span id="pdp-desc"></span></p>
+            <div class="mp-pdp__price">
+              <span class="mp-pdp__now" id="pdp-price"></span>
+              <span class="mp-pdp__msrp" id="pdp-msrp"></span>
+            </div>
+            <div class="mp-pdp__label"><b>Color:</b> <span id="pdp-color"></span></div>
+            <div class="mp-pdp__swatches" id="pdp-swatches"></div>
+            <div class="mp-pdp__label mp-pdp__label--b" id="pdp-qtylabel"></div>
+            <div class="mp-pdp__qty" id="pdp-qty"></div>
+            <div class="mp-pdp__total">
+              <span><b>Selected item:</b> <span id="pdp-units">0 units</span></span>
+              <span id="pdp-total">USD <b>$0.00</b></span>
+            </div>
+            <button class="mp-pdp__add" id="pdp-add" type="button">Add to cart</button>
+            <p class="mp-pdp__hint" id="pdp-hint" role="alert" hidden>Enter a quantity to add this item to your cart.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mp-drawer" id="b-drawer" aria-hidden="true">
+      <div class="mp-drawer__scrim" data-bclose></div>
+      <aside class="mp-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="b-drawer-title">
+        <div class="mp-drawer__head"><h2 id="b-drawer-title">All filters</h2>
+          <button type="button" data-bclose aria-label="Close filters"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div>
+        <div class="mp-drawer__body" id="b-drawer-body"></div>
+        <div class="mp-drawer__foot"><button type="button" id="b-clear">Clear all</button><button type="button" class="is-primary" id="b-apply">Show results</button></div>
+      </aside>
+    </div>
+
+    <div class="mp-toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="marketplace-products.js?v=gapwomen"></script>
+    <script src="marketplace-categories.js?v=swatchfix2"></script>
+    <script src="marketplace-brands.js?v=3"></script>
+    <script src="marketplace-search.js?v=9"></script>
+    <script src="marketplace-mega.js?v=7"></script>
+    <script src="marketplace-select.js?v=1"></script>
+    <script>
+      /* ---------- Products (data from marketplace-products.js) ---------- */
+      const { market, arrivals, liked } = window.MP_PRODUCTS;
+      const jewelry = window.MP_PRODUCTS.jewelry || [];
+      const catData = window.MP_PRODUCTS.catData || {};     // Gap catalogue by category slug (men's, kids', shoes, bags, accessories)   // supplementary jewelry catalogue (Banana Republic Canada) // "You might like" has its own 15 styles, none repeated above
+      let marketAll = MP_CAT.productsFor('Recently viewed').slice(0, 15);   // carousel: 15 of the 20 recently viewed products
+      const lists = { market: marketAll, arrivals, like: liked };
+      const MAX_SWATCHES = 5;
+
+      // Remixed brand names so the grid doesn't read as one retailer (assigned per style, so repeats stay consistent).
+      const brandNames = ['Marlow & Finch', 'Northfield', 'Wren & Willow', 'Juniper Row', 'Harbour Lane', 'Atelier Verne', 'Sable Studio', 'Ashby & Hide', 'Everlane'];
+      const brandOf = {};
+      market.concat(arrivals, liked, jewelry, ...Object.values(catData)).forEach((p, i) => { brandOf[p.name] = brandNames[i % brandNames.length]; });
+      // Card titles drop the fabric suffix ("… in Luxe Merino") so they stay on one line; the full name is the tooltip.
+      const shortOverrides = { 'Fine Cashmere Long-Sleeve U-Neck Sweater': 'Fine Cashmere U-Neck Sweater', 'Bouclé Oversized Deep V-Neck Sweater': 'Bouclé Deep V-Neck Sweater' };
+      const shortName = (n) => shortOverrides[n] || n.split(' in ')[0];
+      const wholesale = (msrp) => msrp / 2; // keystone: wholesale is half of MSRP
+
+      function card(p, idx, tag) {
+        tag = tag || (window.MP_CAT && (MP_CAT.isNew(p) ? 'New' : MP_CAT.isTop(p) ? 'Top seller' : ''));   // New arrivals pass 'New' for all; elsewhere a stable random ~20%
+        const shown = p.colors.slice(0, MAX_SWATCHES), extra = p.colors.length - shown.length;
+        const sw = shown.map((c, i) =>
+          `<button class="mp-swatch ${i === 0 ? 'is-active' : ''}" type="button" data-i="${i}" style="--c:${c.hex}" aria-label="${c.name}" title="${c.name}"></button>`).join('');
+        return `<article class="mp-card" data-idx="${idx}">
+          <div class="mp-card__media">
+            ${tag ? '<span class=\"mp-card__tag\">' + tag + '</span>' : ''}
+            <img src="${p.colors[0].img}" alt="${p.name} in ${p.colors[0].name}" decoding="async" />
+            <button class="mp-card__fav" type="button" aria-pressed="false" aria-label="Add to favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7.500-4.600-7.500-10A4.300 4.300 0 0112 7.400 4.300 4.300 0 0119.500 10c0 5.400-7.500 10-7.500 10z"/></svg></button>
+            <button class="mp-card__cart" type="button" aria-pressed="false" aria-label="Add to cart">
+              <svg class="mp-cart-empty" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 3.5h2.4l2.1 11h11.3l1.6-8.3H6.2"/><circle cx="8.4" cy="19" r="1.4"/><circle cx="17.8" cy="19" r="1.4"/></svg>
+              <svg class="mp-cart-full" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.500 3H5.300l.5 2.500H21.500l-2 10.500H8L5 4.500" fill="currentColor" stroke="currentColor" stroke-width="1.500" stroke-linejoin="round" stroke-linecap="round"/><path d="M10.500 10.500l2.300 2.300 4-4.200" fill="none" stroke="#fff" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="19.500" r="1.600" fill="currentColor"/><circle cx="17" cy="19.500" r="1.600" fill="currentColor"/></svg>
+            </button>
+          </div>
+          <div class="mp-card__body">
+            <span class="mp-card__brand">${brandOf[p.name].replace("&", "&amp;")}</span>
+            <h3 class="mp-card__name"><a href="#" title="${p.name}">${shortName(p.name)}</a></h3>
+            <div class="mp-swatches">${sw}${extra > 0 ? `<span class="mp-swatches__more">+${extra}</span>` : ''}</div>
+            <span class="mp-card__price">USD $${wholesale(p.price).toFixed(2)}</span>
+            <span class="mp-card__msrp">MSRP $${p.price.toFixed(2)}</span>
+          </div>
+        </article>`;
+      }
+
+      document.getElementById('market').innerHTML   = marketAll.map((p, i) => card(p, i)).join('');
+      document.getElementById('arrivals').innerHTML = arrivals.map((p, i) => card(p, i, 'New')).join('');
+      document.getElementById('like').innerHTML     = liked.map((p, i) => card(p, i)).join('');
+
+      // Swatch: swap the photo to that colourway. Fav: toggle.
+      document.addEventListener('click', (e) => {
+        const sw = e.target.closest('.mp-swatch');
+        if (sw) {
+          const el = sw.closest('.mp-card');
+          const c = lists[el.parentElement.id][el.dataset.idx].colors[sw.dataset.i];
+          el.querySelectorAll('.mp-swatch').forEach(s => s.classList.remove('is-active'));
+          sw.classList.add('is-active');
+          const img = el.querySelector('.mp-card__media img');
+          img.src = c.img; img.alt = el.querySelector('.mp-card__name').textContent + ' in ' + c.name;
+          return;
+        }
+        const cartBtn = e.target.closest('.mp-card__cart');
+        if (cartBtn) {
+          const on = cartBtn.classList.toggle('is-in');
+          cartBtn.setAttribute('aria-pressed', on);
+          cartBtn.setAttribute('aria-label', on ? 'Remove from cart' : 'Add to cart');
+          const badge = document.getElementById('cart-count');
+          const count = Math.max(0, (+badge.textContent || 0) + (on ? 1 : -1));
+          badge.textContent = count;
+          if (count === 0) {
+            badge.hidden = true;                      // empty cart: no badge
+          } else {
+            const firstItem = badge.hidden;           // first item pops the badge in; later ones bump it
+            badge.hidden = false;
+            badge.classList.remove('is-pop', 'is-bump'); void badge.offsetWidth;
+            badge.classList.add(firstItem ? 'is-pop' : 'is-bump');
+          }
+          if (on) {
+            const cardEl = cartBtn.closest('.mp-card');
+            const p = lists[cardEl.parentElement.id][cardEl.dataset.idx];
+            const sw = cardEl.querySelector('.mp-swatch.is-active');
+            if (!suppressNote) showCartNote(p, p.colors[sw ? +sw.dataset.i : 0]);
+          } else {
+            toast('Removed from cart');
+          }
+          return;
+        }
+        const fav = e.target.closest('.mp-card__fav');
+        if (fav) {
+          const on = fav.classList.toggle('is-on');
+          fav.setAttribute('aria-pressed', on);
+          fav.setAttribute('aria-label', on ? 'Remove from favourites' : 'Add to favourites');
+          toast(on ? 'Added to favourites' : 'Removed from favourites');
+        }
+      });
+
+      /* ---------- Category tiles ---------- */
+      // [name, image, count line] — six hero categories
+      const cats = [
+        ['Women\'s tops',        'images/hero/tops.webp', null],
+        ['Women\'s bottoms',     'images/hero/bottoms.webp', null],
+        ['Women\'s footwear',    'images/stock/footwear.jpg', null],
+        ['Women\'s accessories', 'images/stock/accessories.jpg', null],
+        ['Women\'s jewelry',     'images/stock/jewelry-color.jpg', null],
+        ['Women\'s outerwear',   'images/hero/outerwear.webp', null]
+      ];
+      const catMeta = (t) => { const l = MP_CAT.productsFor(t); return `${l.length} products, ${new Set(l.map((p) => brandOf[p.name])).size} brands`; };
+      document.getElementById('cats').innerHTML = cats.map(([name, src]) => {
+        const count = catMeta(name);
+        return `<a class="mp-cat" href="marketplace-category.html?category=${encodeURIComponent(name)}"><div class="mp-cat__img"><img src="${src}" alt="" loading="lazy" /></div>
+           <span class="mp-cat__name">${name}</span><span class="mp-cat__meta">${count}</span></a>`;
+      }).join('');
+
+      /* ---------- Chips ---------- */
+      // Landing pages (curated collections), each with its own page and hero imagery to come
+      const chips = ['Cozy knitwear', 'Denim shop', 'Holiday party edit', 'Outerwear & coats', 'Everyday essentials', 'Workwear edit', 'Bags & totes', 'Footwear', 'Hats & scarves', 'Jewelry & gifts', "Kids' favourites", 'Top sellers'];
+      document.getElementById('chips').innerHTML = chips.map(c =>
+        `<a class="mp-chip" href="marketplace-category.html?category=${encodeURIComponent(c)}"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M11 11l3.500 3.500"/></svg>${c.replace('&', '&amp;')}</a>`).join('');
+      document.getElementById('search').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const v = document.getElementById('q').value.trim();
+        if (v) location.href = 'marketplace-category.html?q=' + encodeURIComponent(v);
+      });
+
+      /* ---------- Brand tiles ---------- */
+      const brandTiles = MP_BRANDS.tiles, moreBrands = MP_BRANDS.more;
+      const allBrands = MP_BRANDS.all;
+      const BRAND_TOTAL = 32;   // "View all (32)": the list page shows this many brand cards
+      const logoHtml = (name) => {
+        const [a, b] = name.split(' & ');
+        return b ? `${a}<br><i>&amp; ${b}</i>` : name;
+      };
+      const brandImgs = MP_BRANDS.imgs;
+      const brandCard = ([name, cat, min, rating, n, note], i) =>
+        `<a class="mp-brandtile" href="marketplace-brand.html?brand=marlow-finch"><div class="mp-brandtile__img">
+          <div class="mp-brandtile__clip" style="border-radius:8px;height:100%"><img src="images/brands/${brandImgs[i % brandImgs.length][0]}" alt="" style="object-position:${brandImgs[i % brandImgs.length][1]}" /></div>
+          <button class="mp-card__fav" type="button" aria-pressed="false" aria-label="Add ${name.replace('&', '&amp;')} to favourites"><svg viewBox="0 0 24 24"><path d="M12 20s-7.500-4.600-7.500-10A4.300 4.300 0 0112 7.400 4.300 4.300 0 0119.500 10c0 5.400-7.500 10-7.500 10z"/></svg></button>
+          <span class="mp-brandtile__logo"><img src="images/logos/${name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}.svg?v=2" alt="${name.replace('&', '&amp;')} logo" /></span></div>
+          <div class="mp-brandtile__meta">
+            <span class="mp-brandtile__cat">${cat}</span>
+            <span class="mp-brandtile__name">${name.replace('&', '&amp;')}</span>
+            <span class="mp-brandtile__row"><span>$${min.toLocaleString('en-US')} min${note ? ' · <b>' + note + '</b>' : ''}</span><span class="mp-rating"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l2.1 4.5 4.900.6-3.600 3.400.9 4.900L8 12l-4.300 2.400.9-4.900L1 6.100l4.900-.6z"/></svg>${rating} (${n})</span></span>
+          </div></a>`;
+      document.getElementById('brands').innerHTML = brandTiles.map(brandCard).join('');
+
+      /* ---------- Category link grid ---------- */
+      const links = [
+        ['Women\'s Apparel','#f2b7c4','#e9e0d4'], ['Men\'s Apparel','#27364f','#8a2a3a'], ['Kids\' Apparel','#e8c24a','#4a9bd0'],
+        ['Women\'s Shoes','#9aa0a6','#f4f4f2'], ['Men\'s Shoes','#b8793a','#6a4526'], ['Kids\' Shoes & Accessories','#6f94c4','#e8913a'],
+        ['Women\'s Handbags','#d7cdbf','#a8743e'], ['Men\'s Bags','#2f3135','#6b6f75'], ['Women\'s Accessories','#e6d8d4','#d98a95'],
+        ['Men\'s Accessories','#cfc7bd','#3a2f28'], ['Women\'s Jewelry','#e2d3b5','#c9a24a']
+      ];
+      const slugOf = (n) => n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      // product count per category card
+      const linkCounts = links.map(([n]) => String(MP_CAT.productsFor(n).length));
+      document.getElementById('linkgrid').innerHTML = links.map(([n], i) =>
+        `<a class="mp-linkcard" href="marketplace-category.html?category=${encodeURIComponent(n)}"><span class="mp-linkcard__img"><img src="images/link-${i + 1}.jpg" alt="" loading="lazy" /></span>
+           <span class="mp-linkcard__text"><span class="mp-linkcard__name">${n}</span><span class="mp-linkcard__meta">${linkCounts[i]} products</span></span></a>`).join('');
+
+      /* ---------- Carousels ----------
+         Pages move one full view at a time (5 products / 4 brands) and never loop: on the last page
+         "next" disappears and only "previous" is left, and vice versa on the first. */
+      function carousel(trackId, prevId, nextId) {
+        const t = document.getElementById(trackId), p = document.getElementById(prevId), n = document.getElementById(nextId);
+        const gap = () => parseFloat(getComputedStyle(t).columnGap) || 0;
+        const pageW = () => t.clientWidth + gap();
+        const pages = () => Math.round((t.scrollWidth + gap()) / pageW());
+        const cur = () => Math.round(t.scrollLeft / pageW());
+        const go = (i) => t.scrollTo({ left: Math.max(0, Math.min(pages() - 1, i)) * pageW(), behavior: 'smooth' });
+        const sync = () => { const c = cur(); p.disabled = c <= 0; n.disabled = c >= pages() - 1; };
+        p.addEventListener('click', () => go(cur() - 1));
+        n.addEventListener('click', () => go(cur() + 1));
+        t.addEventListener('scroll', sync, { passive: true });
+        window.addEventListener('resize', () => { t.scrollTo({ left: cur() * pageW() }); sync(); });
+        sync();
+        // Vertically centre the arrows on the photos (not on the whole card, which includes the text below)
+        const align = () => {
+          const m = t.querySelector('.mp-card__media, .mp-brandtile__img'); if (!m) return;
+          const host = p.offsetParent || t.parentElement;
+          const top = m.getBoundingClientRect().top - host.getBoundingClientRect().top + m.offsetHeight / 2 - p.offsetHeight / 2;
+          p.style.top = n.style.top = Math.round(top) + 'px';
+        };
+        align();
+        window.addEventListener('resize', align);
+        window.addEventListener('load', align);
+      }
+      carousel('market', 'mkt-prev', 'mkt-next');
+      carousel('arrivals', 'new-prev', 'new-next');
+      carousel('brands', 'br-prev', 'br-next');
+      carousel('like', 'like-prev', 'like-next');
+
+      /* ---------- Added-to-cart note: slides in from the right, holds, slides back out ---------- */
+      const note = document.getElementById('cart-note');
+      let noteTimer, suppressNote = false;   // suppressNote: the product dialog confirms on its own button, so no slide-in
+      const NOTE_HOLD = 3500;
+      function hideCartNote() {
+        clearTimeout(noteTimer);
+        note.classList.remove('is-open');
+        note.setAttribute('aria-hidden', 'true');
+        document.getElementById('note-close').tabIndex = -1;
+      }
+      function armNoteTimer() { clearTimeout(noteTimer); noteTimer = setTimeout(hideCartNote, NOTE_HOLD); }
+      function showCartNote(p, color) {
+        document.getElementById('note-img').src = color.img;
+        document.getElementById('note-img').alt = p.name + ' in ' + color.name;
+        document.getElementById('note-name').textContent = shortName(p.name);
+        document.getElementById('note-price').textContent = '$' + wholesale(p.price).toFixed(2);
+        document.getElementById('note-color').textContent = color.name;
+        note.classList.add('is-open');
+        note.setAttribute('aria-hidden', 'false');
+        document.getElementById('note-close').tabIndex = 0;
+        armNoteTimer();
+      }
+      document.getElementById('note-close').addEventListener('click', hideCartNote);
+      // Stay put while the pointer is over it or focus is inside it
+      note.addEventListener('mouseenter', () => clearTimeout(noteTimer));
+      note.addEventListener('mouseleave', () => { if (note.classList.contains('is-open')) armNoteTimer(); });
+      note.addEventListener('focusin', () => clearTimeout(noteTimer));
+      note.addEventListener('focusout', () => { if (note.classList.contains('is-open')) armNoteTimer(); });
+
+      /* ---------- Product detail modal (opens from any product card) ---------- */
+      const pdp = document.getElementById('pdp');
+      const $ = (id) => document.getElementById(id);
+      let pdpState = null;
+      const money = (n) => '$' + n.toFixed(2);
+      const brandInfo = (name) => {
+        const t = brandTiles.find((b) => b[0] === name);
+        return t ? { min: t[2], rating: t[3], n: t[4] } : { min: 1500, rating: 4.6, n: 40 };
+      };
+      const sizesFor = (p) => p.sizes
+        ? { label: p.sizeLabel || 'Size quantities', sizes: p.sizes }
+        : p.type === 'Jewelry'
+        ? { label: 'Quantities', sizes: ['One size'] }
+        : p.type === 'Bottoms'
+        ? { label: 'Waist quantities', sizes: [28, 29, 30, 31, 32, 33, 34, 36, 38] }
+        : { label: 'Size quantities', sizes: ['XXS', 'XS', 'S', 'M', 'L', 'XL'] };
+
+      // Gallery: every photo of the selected colourway, reached with the arrows, dots or ← → keys (no looping)
+      function pdpShowImage(g) {
+        const { p, ci } = pdpState; const c = p.colors[ci];
+        const list = c.images && c.images.length ? c.images : [c.img];
+        const gi = Math.max(0, Math.min(list.length - 1, g));
+        pdpState.gi = gi;
+        $('pdp-img').src = list[gi];
+        $('pdp-img').alt = p.name + ' in ' + c.name + ' (photo ' + (gi + 1) + ' of ' + list.length + ')';
+        $('pdp-dots').querySelectorAll('.mp-pdp__dot').forEach((d, k) => { d.classList.toggle('is-active', k === gi); d.setAttribute('aria-current', k === gi); });
+        $('pdp-prev').disabled = gi <= 0; $('pdp-next').disabled = gi >= list.length - 1;
+        $('pdp-prev').hidden = $('pdp-next').hidden = list.length < 2;
+        if (list[gi + 1]) { const pre = new Image(); pre.src = list[gi + 1]; }
+      }
+      // Quantities are kept per colour: switching shows the new colour's numbers (empty if none yet) and switching back restores them
+      function pdpSaveQty() {
+        const q = {};
+        $('pdp-qty').querySelectorAll('input').forEach((el, k) => { if (el.value) q[k] = el.value; });
+        pdpState.qty[pdpState.ci] = q;
+      }
+      function pdpLoadQty() {
+        const q = pdpState.qty[pdpState.ci] || {};
+        $('pdp-qty').querySelectorAll('input').forEach((el, k) => { el.value = q[k] || ''; syncStepper(el); });
+      }
+      function pdpSelectColor(i) {
+        const { p } = pdpState; const c = p.colors[i];
+        pdpSaveQty();
+        pdpState.ci = i;
+        pdpLoadQty();
+        pdpTotals();
+        $('pdp-color').textContent = c.name;
+        $('pdp-swatches').querySelectorAll('.mp-pdp__sw').forEach((b, k) => { b.classList.toggle('is-active', k === i); b.setAttribute('aria-pressed', k === i); });
+        const list = c.images && c.images.length ? c.images : [c.img];
+        $('pdp-dots').innerHTML = list.length > 1 ? list.map((_, k) => '<button class="mp-pdp__dot" type="button" data-i="' + k + '" aria-label="Show photo ' + (k + 1) + ' of ' + list.length + '"></button>').join('') : '';
+        pdpShowImage(0);
+      }
+      // One-line product name: start at 24px and step down until it fits (never wraps)
+      function pdpFitTitle() {
+        const t = $('pdp-title'); let size = 24; t.style.fontSize = size + 'px';
+        while (t.scrollWidth > t.clientWidth && size > 18) { size -= 1; t.style.fontSize = size + 'px'; }
+      }
+      window.addEventListener('resize', () => { if (!pdp.hidden) pdpFitTitle(); });
+      // Keep the description to 3 lines: take whole sentences while they fit in ~150 characters
+      function fitDesc(t) {
+        // drop a leading fragment such as "relaxed. This sweater..." (starts lowercase)
+        while (t && /^[a-z]/.test(t)) { const m = t.match(/[.!?]\s+/); if (!m) break; t = t.slice(m.index + m[0].length); }
+        const parts = t.match(/[^.!?]+[.!?]+(\s|$)/g) || [t];
+        let out = '';
+        for (const sent of parts) { if (out && (out + sent).trim().length > 150) break; out += sent; }
+        return out.trim();
+      }
+      // Short, stable style number per product: "J" + 7 digits (e.g. J4820137)
+      function shortStyle(name) {
+        let h = 5381; for (let i = 0; i < name.length; i++) h = ((h << 5) + h + name.charCodeAt(i)) >>> 0;
+        return 'J' + String(1000000 + (h % 9000000));
+      }
+      // Sold-out sizes: varies by product. Some have none, some one, some several; never always the first size.
+      function soldOutSet(name, n) {
+        const hash = (k) => { let h = 5381; for (let i = 0; i < k.length; i++) h = ((h << 5) + h + k.charCodeAt(i)) >>> 0; return h; };
+        const counts = [0, 1, 2, 0, 1, 3];                       // share of products: 2/6 none, 2/6 one, 1/6 two, 1/6 three
+        const want = Math.min(counts[hash(name) % counts.length], n - 1);   // always leave at least one size in stock
+        const out = new Set();
+        for (let j = 0; out.size < want && j < 50; j++) out.add(hash(name + '#' + j) % n);
+        return out;
+      }
+      // Stock per size: a stable pseudo-random number in the 100s (100-999) for each product + size
+      function stockFor(name, size) {
+        let h = 5381; const k = name + '|' + size;
+        for (let i = 0; i < k.length; i++) h = ((h << 5) + h + k.charCodeAt(i)) >>> 0;
+        return 100 + (h % 900);
+      }
+      // Up arrow is disabled once the stock total is reached; down arrow at 0
+      function syncStepper(el) {
+        const f = el.closest('.mp-pdp__field'); if (!f) return;
+        const v = +el.value || 0, stock = +el.dataset.stock;
+        const up = f.querySelector('.up'), down = f.querySelector('.down');
+        if (!up || !down) return;                 // sold-out sizes have no stepper
+        up.disabled = v >= stock;
+        down.disabled = v <= 0;
+      }
+      function setQty(el, v) {
+        const stock = +el.dataset.stock;
+        v = Math.max(0, Math.min(stock, Math.floor(+v) || 0));   // never above stock
+        el.value = v > 0 ? String(v) : '';
+        syncStepper(el); pdpTotals();
+      }
+      function pdpTotals() {
+        const { p } = pdpState;
+        pdpSaveQty();
+        const units = Object.values(pdpState.qty).reduce((n, q) => n + Object.values(q).reduce((m, v) => m + (+v || 0), 0), 0);
+        $('pdp-units').textContent = units + (units === 1 ? ' unit' : ' units');
+        $('pdp-total').innerHTML = 'USD <b>' + money(units * wholesale(p.price)) + '</b>';
+        if (units > 0) $('pdp-hint').hidden = true;
+        $('pdp-add').disabled = units === 0;   // Add to cart stays disabled until a quantity is entered
+        return units;
+      }
+      // Rebuild the Recently viewed carousel (newest first), keeping each card's cart / favourite / colour state
+      function renderRecent() {
+        const t = $('market'); const keep = {};
+        t.querySelectorAll('.mp-card').forEach((c) => {
+          const p = lists.market[c.dataset.idx]; if (!p) return;
+          const sw = c.querySelector('.mp-swatch.is-active');
+          keep[p.name] = { cart: c.querySelector('.mp-card__cart').classList.contains('is-in'), fav: c.querySelector('.mp-card__fav').classList.contains('is-on'), ci: sw ? +sw.dataset.i : 0 };
+        });
+        marketAll = MP_CAT.productsFor('Recently viewed').slice(0, 15);
+        lists.market = marketAll;
+        t.innerHTML = marketAll.map((p, i) => card(p, i)).join('');
+        t.querySelectorAll('.mp-card').forEach((c) => {
+          const st = keep[lists.market[c.dataset.idx].name]; if (!st) return;
+          if (st.cart) { const b = c.querySelector('.mp-card__cart'); b.classList.add('is-in'); b.setAttribute('aria-pressed', 'true'); b.setAttribute('aria-label', 'Remove from cart'); }
+          if (st.fav) { const f = c.querySelector('.mp-card__fav'); f.classList.add('is-on'); f.setAttribute('aria-pressed', 'true'); }
+          if (st.ci > 0) { const s = c.querySelector('.mp-swatch[data-i="' + st.ci + '"]'); if (s) s.click(); }
+        });
+        t.scrollTo({ left: 0, behavior: 'auto' });
+        t.dispatchEvent(new Event('scroll'));
+      }
+      function openPdp(cardEl) {
+        const p = lists[cardEl.parentElement.id][cardEl.dataset.idx];
+        const act = cardEl.querySelector('.mp-swatch.is-active');
+        pdpState = { p, cardEl, ci: act ? +act.dataset.i : 0, opener: document.activeElement, qty: {} };
+        MP_CAT.pushRecent(p);   // viewed: goes to the front of Recently viewed
+        const brand = brandOf[p.name];
+        $('pdp-brand').textContent = brand;
+        $('pdp-title').textContent = shortName(p.name); $('pdp-title').title = p.name;
+        $('pdp-meta').textContent = 'Fall 2026 · Style # ' + shortStyle(p.name);
+        $('pdp-desc').textContent = fitDesc(p.description || ('A new-season essential from ' + brand + '. Soft hand, a considered fit and a clean finish.'));
+        $('pdp-price').textContent = 'USD ' + money(wholesale(p.price));
+        $('pdp-msrp').textContent = 'MSRP ' + money(p.price);
+        $('pdp-swatches').innerHTML = p.colors.map((c, i) =>
+          '<button class="mp-pdp__sw" type="button" data-i="' + i + '" style="--c:' + c.hex + '" aria-label="' + c.name + '" title="' + c.name + '" aria-pressed="false"></button>').join('');
+        const sz = sizesFor(p);
+        $('pdp-qtylabel').textContent = sz.label;
+        const soldOut = soldOutSet(p.name, sz.sizes.length);
+        $('pdp-qty').innerHTML = sz.sizes.map((s, i) => {
+          const out = soldOut.has(i);
+          const stock = out ? 0 : stockFor(p.name, s);
+          const step = out ? '' : '<span class="mp-pdp__step">' +
+            '<button type="button" class="up" tabindex="-1" aria-label="Increase ' + s + '"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.500L5 3.500l3 3"/></svg></button>' +
+            '<button type="button" class="down" tabindex="-1" aria-label="Decrease ' + s + '"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.500L5 6.500l3-3"/></svg></button></span>';
+          return '<label class="mp-pdp__q"><span>' + s + '</span><span class="mp-pdp__field"><input type="text" inputmode="numeric" placeholder="0" autocomplete="off" aria-label="' + s + ' quantity (' + stock + ' in stock)" data-stock="' + stock + '"' + (out ? ' disabled' : '') + ' />' + step + '</span><small' + (out ? ' class="is-out"' : '') + '>' + (out ? 'sold out' : stock) + '</small></label>';
+        }).join('');
+        $('pdp-qty').querySelectorAll('input:not(:disabled)').forEach(syncStepper);
+        const fav = cardEl.querySelector('.mp-card__fav').classList.contains('is-on');
+        $('pdp-fav').classList.toggle('is-on', fav); $('pdp-fav').setAttribute('aria-pressed', fav);
+        $('pdp-hint').hidden = true;
+        pdpSelectColor(pdpState.ci); pdpTotals();
+        pdp.hidden = false; document.body.classList.add('mp-lock'); pdpFitTitle();
+        requestAnimationFrame(() => pdp.classList.add('is-open'));
+        $('pdp-close').focus();
+      }
+      function closePdp() {
+        if (pdp.hidden) return;
+        pdp.classList.remove('is-open'); document.body.classList.remove('mp-lock');
+        setTimeout(() => { pdp.hidden = true; renderRecent(); }, 200);
+        if (pdpState && pdpState.opener && pdpState.opener.focus) pdpState.opener.focus();
+      }
+
+      // Open from a product card (anything except its own buttons / swatches)
+      document.addEventListener('click', (e) => {
+        const card = e.target.closest('.mp-card');
+        if (!card || e.target.closest('.mp-card__fav, .mp-card__cart, .mp-swatch, .mp-swatches__more')) return;
+        e.preventDefault();
+        openPdp(card);
+      });
+      // Close
+      pdp.addEventListener('click', (e) => { if (e.target.closest('[data-close], #pdp-close')) closePdp(); });
+      document.addEventListener('keydown', (e) => {
+        if (pdp.hidden) return;
+        if (e.key === 'Escape') { closePdp(); return; }
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !(e.target.tagName === 'INPUT')) { pdpShowImage(pdpState.gi + (e.key === 'ArrowRight' ? 1 : -1)); return; }
+        if (e.key === 'Tab') {   // keep focus inside the dialog
+          const f = [...pdp.querySelectorAll('button:not([hidden]), input:not(:disabled)')].filter((el) => el.offsetParent !== null);
+          if (!f.length) return;
+          const first = f[0], last = f[f.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      });
+      // Colour + gallery dots
+      $('pdp-swatches').addEventListener('click', (e) => { const b = e.target.closest('.mp-pdp__sw'); if (b) pdpSelectColor(+b.dataset.i); });
+      $('pdp-dots').addEventListener('click', (e) => { const b = e.target.closest('.mp-pdp__dot'); if (b) pdpShowImage(+b.dataset.i); });
+      $('pdp-prev').addEventListener('click', () => pdpShowImage(pdpState.gi - 1));
+      $('pdp-next').addEventListener('click', () => pdpShowImage(pdpState.gi + 1));
+      // Quantities: type a number (digits only) or use the steppers; anything above stock drops back to the stock total
+      $('pdp-qty').addEventListener('input', (e) => {
+        const el = e.target; if (el.tagName !== 'INPUT') return;
+        el.value = el.value.replace(/\D/g, '').slice(0, 3);
+        if (+el.value > +el.dataset.stock) el.value = el.dataset.stock;
+        syncStepper(el); pdpTotals();
+      });
+      $('pdp-qty').addEventListener('click', (e) => {
+        const b = e.target.closest('.mp-pdp__step button'); if (!b || b.disabled) return;
+        const input = b.closest('.mp-pdp__field').querySelector('input');
+        setQty(input, (+input.value || 0) + (b.classList.contains('up') ? 1 : -1));
+      });
+      $('pdp-qty').addEventListener('keydown', (e) => {
+        const el = e.target; if (el.tagName !== 'INPUT' || (e.key !== 'ArrowUp' && e.key !== 'ArrowDown')) return;
+        e.preventDefault(); setQty(el, (+el.value || 0) + (e.key === 'ArrowUp' ? 1 : -1));
+      });
+      // Favourite mirrors the card's heart
+      $('pdp-fav').addEventListener('click', () => {
+        const heart = pdpState.cardEl.querySelector('.mp-card__fav'); heart.click();
+        const on = heart.classList.contains('is-on');
+        $('pdp-fav').classList.toggle('is-on', on); $('pdp-fav').setAttribute('aria-pressed', on);
+      });
+      // Add button confirms itself: a cart icon slides up from the bottom of the button next to "Added to cart", then it returns (the dialog stays open)
+      let addAnimTimer;
+      function pdpAddedAnim() {
+        const b = $('pdp-add');
+        clearTimeout(addAnimTimer);
+        b.classList.remove('is-added'); void b.offsetWidth;   // restart the animation on repeat clicks
+        b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 3.5h2.4l2.1 11h11.3l1.6-8.3H6.2"/><circle cx="8.4" cy="19" r="1.4"/><circle cx="17.8" cy="19" r="1.4"/></svg><span>Added to cart</span>';
+        b.classList.add('is-added');
+        addAnimTimer = setTimeout(() => { b.classList.remove('is-added'); b.textContent = 'Add to cart'; }, 1800);
+      }
+      // Add to cart: needs at least one unit; reuses the card's own add-to-cart flow (badge pop + confirmation)
+      $('pdp-add').addEventListener('click', () => {
+        const units = pdpTotals();
+        if (units === 0) { $('pdp-hint').hidden = false; const first = $('pdp-qty').querySelector('input:not(:disabled)'); if (first) first.focus(); return; }
+        const { p, cardEl, ci } = pdpState;
+        const cardSw = cardEl.querySelector('.mp-swatch[data-i="' + ci + '"]'); if (cardSw) cardSw.click();
+        const btn = cardEl.querySelector('.mp-card__cart');
+        if (!btn.classList.contains('is-in')) { suppressNote = true; btn.click(); suppressNote = false; }
+        $('pdp-hint').hidden = true;
+        pdpAddedAnim();
+        pdpState.qty = {};   // quantities clear once added (every colour), ready for the next entry
+        $('pdp-qty').querySelectorAll('input').forEach((el) => { el.value = ''; syncStepper(el); });
+        pdpTotals();
+      });
+
+      /* ---------- Brands list: sort + filters ---------- */
+      const escB = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+      const BF = { top: false, cat: new Set(), value: new Set(), rating: new Set(), min: '', max: '' };
+      const NO_OFFER = 'No offer';
+      const brandItems = Array.from({ length: BRAND_TOTAL }, (_, k) => ({ t: allBrands[k % allBrands.length], i: k % allBrands.length, k }));   // all 13 brands, cycled to 32
+      const offerOf = (t) => t[5] || NO_OFFER;
+      const RATINGS = [['4.5', '4.5 & up'], ['4.0', '4.0 & up']];
+      function bMatches({ t }) {
+        if (BF.top && t[3] < 4.7) return false;
+        if (BF.cat.size && !BF.cat.has(t[1])) return false;
+        if (BF.value.size && !MP_BRANDS.values(t[0]).some((v) => BF.value.has(v))) return false;
+        if (BF.rating.size && t[3] < Math.min(...[...BF.rating].map(Number))) return false;
+        if (BF.min !== '' && t[2] < +BF.min) return false;
+        if (BF.max !== '' && t[2] > +BF.max) return false;
+        return true;
+      }
+      const bSorters = {
+        rel: null,
+        rating: (a, b) => b.t[3] - a.t[3], reviews: (a, b) => b.t[4] - a.t[4],
+        low: (a, b) => a.t[2] - b.t[2], high: (a, b) => b.t[2] - a.t[2], az: (a, b) => a.t[0].localeCompare(b.t[0]),
+      };
+      const bActive = () => BF.cat.size + BF.value.size + BF.rating.size + (BF.min !== '' || BF.max !== '' ? 1 : 0);
+      function renderBrandList() {
+        let list = brandItems.filter(bMatches);
+        const sorter = bSorters[$('b-sort').value];
+        if (sorter) list = list.slice().sort((a, b) => sorter(a, b) || a.k - b.k);
+        $('brandgrid').innerHTML = list.length
+          ? list.map(({ t, i }) => brandCard(t, i)).join('')
+          : '<div class="mp-empty"><h2>No brands match these filters</h2><p>Try removing a filter to see more.</p><button type="button" id="b-empty-clear">Clear filters</button></div>';
+        $('cat-count').textContent = '(' + list.length + ' brands)';
+        $('b-apply').textContent = 'Show results (' + list.length + ')';
+        const n = bActive();
+        $('b-top').setAttribute('aria-pressed', BF.top);
+        $('b-filters-label').textContent = n ? 'All filters (' + n + ')' : 'All filters';
+        const chips = [];
+        BF.cat.forEach((v) => chips.push(['cat', v, v]));
+        BF.value.forEach((v) => chips.push(['value', v, v]));
+        BF.rating.forEach((v) => chips.push(['rating', v, v + ' & up']));
+        if (BF.min !== '' || BF.max !== '') chips.push(['price', '', 'Min order $' + (BF.min || '0') + (BF.max !== '' ? '–$' + BF.max : '+')]);
+        $('b-applied').innerHTML = chips.map(([k, v, label]) => '<span class="mp-applied__chip">' + escB(label) + '<button type="button" data-bk="' + k + '" data-bv="' + escB(v) + '" aria-label="Remove ' + escB(label) + '"><svg viewBox="0 0 10 10"><path d="M2 2l6 6M8 2L2 8"/></svg></button></span>').join('');
+      }
+      $('b-top').addEventListener('click', () => { BF.top = !BF.top; renderBrandList(); });
+      const bCount = (fn) => brandItems.filter(({ t }) => fn(t)).length;
+      const bExpanded = new Set(), B_LIMIT = 6;
+      function bGroup(title, key, vals) {
+        const long = vals.length > B_LIMIT, open = bExpanded.has(key);
+        return '<section class="mp-fgroup"><h3>' + title + '</h3>' + (long && !open ? vals.slice(0, B_LIMIT) : vals).map(([v, label, count]) =>
+          '<label class="mp-fopt"><input type="checkbox" data-bk="' + key + '" value="' + escB(v) + '"' + (BF[key].has(v) ? ' checked' : '') + '>' + escB(label) + '<small>' + count + '</small></label>').join('') +
+          (long ? '<button type="button" class="mp-fmore" data-bmore="' + key + '" aria-expanded="' + open + '">' + (open ? 'Show less' : 'Show more') + '</button>' : '') + '</section>';
+      }
+      function buildBrandDrawer() {
+        const cats = [...new Set(allBrands.map((t) => t[1]))].sort();
+        $('b-drawer-body').innerHTML =
+          bGroup('Category', 'cat', cats.map((c) => [c, c, bCount((t) => t[1] === c)])) +
+          bGroup('Brand values', 'value', MP_BRANDS.VALUES.map((o) => [o, o, bCount((t) => MP_BRANDS.values(t[0]).includes(o))])) +
+          bGroup('Rating', 'rating', RATINGS.map(([v, l]) => [v, l, bCount((t) => t[3] >= +v)])) +
+          '<section class="mp-fgroup"><h3>Minimum order (USD)</h3><div class="mp-price">' +
+          '<label>Min<input id="b-min" type="number" min="0" inputmode="numeric" placeholder="0" value="' + BF.min + '"></label>' +
+          '<label>Max<input id="b-max" type="number" min="0" inputmode="numeric" placeholder="Any" value="' + BF.max + '"></label></div></section>';
+      }
+      const bDrawer = $('b-drawer');
+      const openBDrawer = () => { buildBrandDrawer(); bDrawer.classList.add('is-open'); bDrawer.setAttribute('aria-hidden', 'false'); $('b-apply').focus(); };
+      const closeBDrawer = () => { bDrawer.classList.remove('is-open'); bDrawer.setAttribute('aria-hidden', 'true'); $('b-open-filters').focus(); };
+      const clearBrandFilters = () => { BF.top = false; BF.cat.clear(); BF.value.clear(); BF.rating.clear(); BF.min = BF.max = ''; renderBrandList(); };
+      $('b-open-filters').addEventListener('click', openBDrawer);
+      bDrawer.addEventListener('click', (e) => {
+        if (e.target.closest('[data-bclose]')) return closeBDrawer();
+        const m = e.target.closest('[data-bmore]');
+        if (m) { const k = m.dataset.bmore, top = $('b-drawer-body').scrollTop; bExpanded.has(k) ? bExpanded.delete(k) : bExpanded.add(k); buildBrandDrawer(); $('b-drawer-body').scrollTop = top; const nb = bDrawer.querySelector('[data-bmore="' + k + '"]'); if (nb) nb.focus(); }
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && bDrawer.classList.contains('is-open')) closeBDrawer(); });
+      bDrawer.addEventListener('change', (e) => {
+        const k = e.target.dataset.bk; if (!k) return;
+        e.target.checked ? BF[k].add(e.target.value) : BF[k].delete(e.target.value);
+        renderBrandList();
+      });
+      bDrawer.addEventListener('input', (e) => {
+        if (e.target.id === 'b-min' || e.target.id === 'b-max') { BF.min = $('b-min').value; BF.max = $('b-max').value; renderBrandList(); }
+      });
+      $('b-apply').addEventListener('click', () => { BF.min = $('b-min').value; BF.max = $('b-max').value; closeBDrawer(); renderBrandList(); });
+      $('b-clear').addEventListener('click', () => { clearBrandFilters(); buildBrandDrawer(); });
+      $('b-sort').addEventListener('change', renderBrandList);
+      $('b-applied').addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-bk]'); if (!b) return;
+        if (b.dataset.bk === 'price') { BF.min = BF.max = ''; } else { BF[b.dataset.bk].delete(b.dataset.bv); }
+        renderBrandList();
+      });
+      $('brandgrid').addEventListener('click', (e) => { if (e.target.closest('#b-empty-clear')) clearBrandFilters(); });
+
+      /* ---------- List pages: #/c/<slug> (recent categories + "View all" sections) ---------- */
+      const viewHome = $('view-home'), viewCat = $('view-category');
+      let homeScroll = 0;
+      const hashOf = (k) => { let h = 5381; for (let i = 0; i < k.length; i++) h = ((h << 5) + h + k.charCodeAt(i)) >>> 0; return h; };
+      // "View all (N)" links: title = the section heading, count = the number on the link
+      const viewAllPages = {
+        'h-market': { slug: 'recently-viewed', first: () => marketAll },
+        'h-new':    { slug: 'new-arrivals',         first: () => arrivals },
+        'h-like':   { slug: 'you-might-like',       first: () => liked },
+        'h-brands': { slug: 'brands-you-ll-love',   brands: true, title: 'All brands' }   // list page title (the homepage section keeps "Brands you'll love")
+      };
+      document.querySelectorAll('.mp-viewall').forEach((a) => {
+        const sec = a.closest('section'); if (!sec) return;
+        const t = sec.querySelector('h2').textContent;
+        a.textContent = 'View all (' + (sec.getAttribute('aria-labelledby') === 'h-brands' ? BRAND_TOTAL : MP_CAT.productsFor(t).length) + ')';
+      });
+      const pages = links.map(([n], i) => ({ slug: slugOf(n), title: n, count: linkCounts[i] + ' products' }));
+      document.querySelectorAll('.mp-viewall').forEach((a) => {
+        const sec = a.closest('section'), cfg = viewAllPages[sec && sec.getAttribute('aria-labelledby')];
+        if (!cfg) return;
+        const n = (a.textContent.match(/\d+/) || ['0'])[0];
+        pages.push(Object.assign({ title: sec.querySelector('h2').textContent, count: n + (cfg.brands ? ' brands' : ' products') }, cfg));
+        a.href = cfg.brands ? '#/c/' + cfg.slug : 'marketplace-category.html?category=' + encodeURIComponent(sec.querySelector('h2').textContent);
+      });
+      // Women's Jewelry shows only jewelry; Women's Accessories leads with it
+      pages.forEach((pg) => {
+        if (pg.slug === 'women-s-jewelry') { pg.first = () => jewelry; pg.only = true; }
+        if (pg.slug === 'women-s-accessories') pg.first = () => jewelry;
+        if (catData[pg.slug]) {                                  // categories with their own catalogue
+          pg.first = () => (pg.slug === 'women-s-accessories' ? jewelry.concat(catData[pg.slug]) : catData[pg.slug]);
+          pg.only = true;
+        }
+      });
+      function showPage(pg) {
+        if (!viewHome.hidden) homeScroll = window.scrollY;
+        const isBrands = !!pg.brands;
+        $('catgrid').hidden = isBrands; $('brandgrid').hidden = !isBrands; $('brand-toolbar').hidden = !isBrands;
+        if (isBrands) {
+          renderBrandList();
+        } else {
+          // the section's own products first, then the rest of the catalogue in a page-specific order
+          const all = market.concat(arrivals, liked), own = pg.first ? pg.first() : [];
+          const rest = all.filter((p) => !own.includes(p)).sort((x, y) => hashOf(pg.slug + '|' + x.name) - hashOf(pg.slug + '|' + y.name));
+          const list = (pg.only ? own : pg.first ? own.concat(rest) : rest).slice(0, 30);
+          lists.catgrid = list;
+          $('catgrid').innerHTML = list.map((p, k) => card(p, k)).join('');
+        }
+        $('cat-crumb').textContent = pg.title; $('cat-title').textContent = pg.title; if (!isBrands) $('cat-count').textContent = '(' + pg.count + ')';
+        document.title = pg.title + ' — Marketplace';
+        viewHome.hidden = true; viewCat.hidden = false;
+        window.scrollTo(0, 0);
+      }
+      function route() {
+        const m = location.hash.match(/^#\/c\/([a-z0-9-]+)$/);
+        const pg = m && pages.find((x) => x.slug === m[1]);
+        if (pg) { showPage(pg); return; }
+        const wasList = !viewCat.hidden;
+        viewCat.hidden = true; viewHome.hidden = false; document.title = 'Marketplace — Fashion & apparel';
+        if (wasList) window.scrollTo(0, homeScroll);
+      }
+      window.addEventListener('hashchange', route);
+      // placeholder links (href="#") shouldn't jump anywhere
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href="#"]');
+        if (a && !a.closest('.mp-crumbs') && !a.matches('.mp-brand')) e.preventDefault();
+      });
+      route();
+
+      /* ---------- Toast ---------- */
+      let toastTimer;
+      function toast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg; t.classList.add('is-show');
+        clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('is-show'), 1600);
+      }
+    </script>
+  </body>
+</html>

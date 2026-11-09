@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Saffron &amp; Sage logo"><title>Saffron &amp; Sage</title>
+  <g transform="translate(50 30)">
+    <circle r="7" fill="#d9731f"/>
+    <g stroke="#d9731f" stroke-width="2.4" stroke-linecap="round">
+      <path d="M0 -12 V-17 M0 12 V17 M-12 0 H-17 M12 0 H17 M-8.5 -8.5 L-12 -12 M8.5 -8.5 L12 -12 M-8.5 8.5 L-12 12 M8.5 8.5 L12 12"/>
+    </g>
+  </g>
+  <text x="50" y="68" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="12.5" letter-spacing="0.4" fill="#d9731f">saffron</text>
+  <text x="50" y="84" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="600" font-size="12.5" letter-spacing="0.4" fill="#6f8f6b">&amp; sage</text></svg>

@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invoices — NuORDER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=20261031e" />
+    <style>
+      /* Customer view: supplier column, stacked user block, supplier mark in rows */
+      .iv-row { grid-template-columns: 52px 96px 118px 128px 112px minmax(230px, 1fr) 156px 128px 100px 112px; }
+      @media (max-width: 1180px) { .iv-row { min-width: 1230px; } }
+      .cv-user__text { display: flex; flex-direction: column; line-height: 20px; }
+      .cv-user__text small { font-weight: 400; font-size: 12px; line-height: 16px; color: var(--co-soft); }
+      #cp-single { display: grid; gap: 8px; margin-bottom: 20px; }
+      #cp-single[hidden] { display: none; }
+      #cp-single .iv-cp__lbl { font-weight: 700; }
+      #cp-single .iv-cp__amtrow { display: flex; align-items: center; gap: 16px; }
+      #cp-single .iv-amount { width: 180px; flex: none; }
+      #cp-single .iv-amount__err { text-align: left; }
+      .iv-mail__logo[hidden] { display: none; }
+      .cv-mail__sup { margin: 0 0 12px; text-align: center; }
+    </style>
+  </head>
+
+  <body class="co cf">
+    <!-- Brand nav -->
+    <nav class="cf-nav" aria-label="Main">
+      <span class="cf-nav__active" aria-hidden="true"></span>
+      <a class="cf-nav__i" aria-label="Home" style="left:20px;top:21px;width:20px;height:18px"><img src="images/invoices/nav-home.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Promotions" style="left:20px;top:84px;width:20px;height:20px"><img src="images/invoices/nav-tag.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Linesheets" style="left:20px;top:128px;width:20px;height:24px"><img src="images/invoices/nav-linesheets.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Lists" style="left:20px;top:176px;width:20px;height:24px"><img src="images/invoices/nav-list.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Whiteboard" style="left:19px;top:224px;width:22px;height:22px"><img src="images/invoices/nav-linesheets-fill.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Tasks" style="left:20px;top:270px;width:20px;height:24px"><img src="images/invoices/nav-checklist.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Suppliers" style="left:18px;top:318px;width:24px;height:17px"><img src="images/invoices/nav-people.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Orders" style="left:19px;top:359px;width:22px;height:18px"><img src="images/invoices/nav-orders.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Invoices" aria-current="page" style="left:18px;top:396px;width:24px;height:24px"><img src="images/invoices/nav-payments.svg" alt="" /></a>
+      <span class="iv-pointer" aria-hidden="true"><img src="images/invoices/nav-pointer.svg" alt="" /></span>
+      <a class="cf-nav__i" aria-label="Reporting" style="left:18px;top:443px;width:23px;height:21px"><img src="images/invoices/nav-reporting.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Partners" style="left:18px;top:488px;width:24px;height:15px"><img src="images/invoices/nav-handshake.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Settings" style="left:18px;top:527px;width:24px;height:24px"><img src="images/invoices/nav-settings.svg" alt="" /></a>
+      <div class="cf-nav__avatar" aria-hidden="true">
+        <img class="cf-nav__oval" src="images/confirmation/nav-oval.svg" alt="" />
+        <img class="cf-nav__mark" src="images/confirmation/nav-avatar-logo.svg" alt="" />
+        <span>JB</span>
+      </div>
+    </nav>
+
+    <div class="cf-page">
+      <header class="cf-header iv-header">
+        <div class="co-brand">
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <span>NuORDER</span>
+        </div>
+        <div class="iv-user">
+          <span class="iv-user__avatar" aria-hidden="true">JB</span>
+          <span class="cv-user__text">Jane Buyer<small>Element Pilates Studio</small></span>
+        </div>
+      </header>
+
+      <main class="iv-page">
+        <div class="iv-page__head">
+          <h1>Invoices</h1>
+          <p>Learn more about <span class="iv-kb">Invoices</span> in the NuORDER by Lightspeed Knowledge Base</p>
+        </div>
+
+        <section class="iv-card" aria-label="Invoices">
+          <div class="iv-tabs" role="tablist">
+            <button type="button" class="iv-tab" role="tab" aria-selected="true" data-tab="all">All</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false" data-tab="outstanding">Outstanding</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false" data-tab="overdue">Overdue</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false" data-tab="paid">Paid</button>
+          </div>
+
+          <div class="iv-toolbar" id="iv-toolbar">
+            <label class="iv-search">
+              <img src="images/invoices/search.svg" alt="" />
+              <span class="sr-only">Search invoices</span>
+              <input id="iv-q" type="search" placeholder="Search invoice, order # or supplier" autocomplete="off" />
+            </label>
+            <div class="iv-filters">
+              <button type="button" class="iv-filter" id="iv-cust-btn" aria-haspopup="listbox" aria-expanded="false"><span id="iv-cust-label">Supplier</span> <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-filter" id="iv-status-btn" aria-haspopup="listbox" aria-expanded="false"><span id="iv-status-label">Status</span> <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-filter" id="iv-due-btn" aria-haspopup="dialog" aria-expanded="false"><span id="iv-due-label">Due date</span> <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-clearall" id="iv-clearall" hidden>Clear all</button>
+            </div>
+            <button type="button" class="iv-iconbtn" aria-label="Table settings">
+              <img src="images/invoices/settings-gear.svg" width="20" height="20" alt="" />
+            </button>
+          </div>
+
+          <div class="iv-actions" id="iv-actions" role="toolbar" aria-label="Selected invoices" hidden>
+            <span class="iv-actions__count"><span class="iv-actions__n" id="iv-n">0</span> <span id="iv-n-label">Items selected</span></span>
+            <button type="button" class="iv-act" id="iv-collect">Pay invoice</button>
+            <button type="button" class="iv-act" id="iv-send" disabled title="Select invoices from one supplier to send">Send invoice</button>
+            <button type="button" class="iv-act" id="iv-download">Download PDF</button>
+            <button type="button" class="iv-actions__close" id="iv-clear" aria-label="Clear selection"><img src="images/checkout/x-mark.svg" alt="" /></button>
+          </div>
+
+          <div class="iv-table" role="table" aria-label="Invoices">
+            <div class="iv-row iv-row--head" role="row">
+              <span><input type="checkbox" class="co-check" id="iv-all" aria-label="Select all invoices" /></span>
+              <span class="iv-num">Total</span>
+              <span class="iv-th" role="columnheader" aria-sort="none" data-sort="inv"><button type="button" class="iv-sortbtn">Invoice # <img src="images/invoices/sort-down.svg" alt="" /></button></span>
+              <span class="iv-th" role="columnheader" aria-sort="descending" data-sort="date"><button type="button" class="iv-sortbtn">Invoice created <img src="images/invoices/sort-down.svg" alt="" /></button></span>
+              <span class="iv-th" role="columnheader" aria-sort="none" data-sort="order"><button type="button" class="iv-sortbtn">Order # <img src="images/invoices/sort-down.svg" alt="" /></button></span>
+              <span>Supplier</span>
+              <span>Terms</span>
+              <span class="iv-th" role="columnheader" aria-sort="none" data-sort="due"><button type="button" class="iv-sortbtn">Due Date <img src="images/invoices/sort-down.svg" alt="" /></button></span>
+              <span>Status</span>
+              <span class="iv-num">Amount due</span>
+            </div>
+            <div id="iv-body"></div>
+            <p class="iv-empty" id="iv-empty" hidden>No invoices match your filters.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="iv-cal" id="iv-cal" role="dialog" aria-label="Choose date" hidden>
+      <div class="iv-cal__head">
+        <button type="button" class="iv-cal__label" id="iv-cal-label" aria-expanded="false">Month <img src="images/checkout/chevron-down.svg" alt="" /></button>
+        <span class="iv-cal__nav" id="iv-cal-nav">
+          <button type="button" data-step="-1" aria-label="Previous month"><img src="images/checkout/chevron-down.svg" alt="" style="transform: rotate(90deg)" /></button>
+          <button type="button" data-step="1" aria-label="Next month"><img src="images/checkout/chevron-down.svg" alt="" style="transform: rotate(-90deg)" /></button>
+        </span>
+      </div>
+      <div id="iv-cal-days">
+        <div class="iv-cal__week" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+        <div class="iv-cal__grid" id="iv-cal-grid"></div>
+      </div>
+      <div class="iv-cal__years" id="iv-cal-years" hidden></div>
+    </div>
+
+    <div class="iv-menu iv-dmenu" id="iv-dmenu" role="dialog" aria-label="Filter by due date" hidden>
+      <div class="iv-sf"><label for="df-from">From</label><input id="df-from" class="iv-field iv-date" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" autocomplete="off" data-iso="" aria-haspopup="dialog" /></div>
+      <div class="iv-sf"><label for="df-to">To</label><input id="df-to" class="iv-field iv-date" type="text" inputmode="numeric" placeholder="MM/DD/YYYY" autocomplete="off" data-iso="" aria-haspopup="dialog" /></div>
+      <span class="iv-err" id="df-err" role="alert"></span>
+      <button type="button" class="iv-dmenu__clear" id="df-clear" disabled>Clear</button>
+    </div>
+
+    <div class="iv-menu iv-fmenu iv-cmenu" id="iv-cmenu" role="listbox" aria-label="Filter by supplier" hidden></div>
+
+    <div class="iv-menu iv-fmenu" id="iv-fmenu" role="listbox" aria-multiselectable="true" aria-label="Filter by status" hidden></div>
+
+    <div class="iv-toast" id="iv-toast" role="status" aria-live="polite" hidden>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 13.6 4.4 10l-1.1 1.1L8 15.8l9-9-1.1-1.1z" /></svg>
+      <span id="iv-toast-msg"></span>
+      <button type="button" id="iv-toast-close" aria-label="Dismiss"><img src="images/checkout/x-mark.svg" alt="" /></button>
+    </div>
+
+    <dialog class="iv-modal iv-modal--send" id="iv-send-dlg" aria-labelledby="iv-send-title">
+      <form method="dialog" class="iv-send" id="iv-send-form" novalidate>
+        <div class="iv-send__head">
+          <h2 id="iv-send-title">Send invoice by email</h2>
+          <button type="button" class="iv-actions__close" data-close-send aria-label="Close"><img src="images/checkout/x-mark.svg" alt="" /></button>
+        </div>
+        <div class="iv-send__body">
+          <div class="iv-send__card iv-send__fields">
+            <div class="iv-sf"><label for="sf-from">From</label><input id="sf-from" class="iv-field iv-field--ro" value="jane.buyer@element.com" readonly /></div>
+            <div class="iv-sf"><label for="sf-to">To <span class="iv-req" aria-hidden="true">*</span></label><input id="sf-to" class="iv-field" type="text" inputmode="email" autocomplete="off" required aria-describedby="sf-to-err" aria-invalid="false" /><span class="iv-err" id="sf-to-err" role="alert"></span></div>
+            <div class="iv-sf"><label for="sf-cc">Cc</label><input id="sf-cc" class="iv-field" type="text" autocomplete="off" /></div>
+            <div class="iv-sf"><label for="sf-subject">Subject <span class="iv-req" aria-hidden="true">*</span></label><input id="sf-subject" class="iv-field" type="text" autocomplete="off" required /></div>
+            <div class="iv-sf"><label for="sf-msg">Personal message <span class="iv-req" aria-hidden="true">*</span></label><textarea id="sf-msg" class="iv-field iv-field--area" rows="4" required></textarea></div>
+          </div>
+          <div class="iv-send__card iv-mail" aria-label="Email preview">
+            <div class="iv-mail__meta">
+              <p><strong>From:</strong> Jane Buyer &lt;jane.buyer@element.com&gt;</p>
+              <p><strong>To:</strong> <span id="mp-to"></span></p>
+              <p><strong>Subject:</strong> <span id="mp-subject"></span></p>
+            </div>
+            <div class="iv-mail__body">
+              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/33-threads-logo.png" alt="Thirty Three Threads" />
+              <p class="cv-mail__sup" id="mp-supline">Invoices from <strong id="mp-sup"></strong></p>
+              <p class="iv-mail__msg" id="mp-msg"></p>
+              <div class="iv-mail__list" id="mp-list"></div>
+              <div class="iv-mail__total"><strong>Total amount</strong><span><span class="iv-mail__cur">USD</span> <strong id="mp-total"></strong></span></div>
+              <div class="iv-mail__foot">
+                <p>Powered by <img src="images/checkout/ls-logo.svg" alt="Lightspeed" /></p>
+                <p class="iv-mail__copy">Copyright NuOrder by Lightspeed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="iv-send__foot">
+          <button type="button" class="co-btn co-btn--ghost iv-modal__btn" data-close-send>Cancel</button>
+          <button type="submit" class="co-btn co-btn--primary iv-modal__btn" id="iv-send-go" disabled>Send</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="iv-modal iv-modal--collect" id="iv-collect-dlg" aria-labelledby="cp-title">
+      <div class="iv-modal__form" id="iv-cp">
+        <div class="iv-modal__head">
+          <h2 id="cp-title">Pay invoice</h2>
+          <button type="button" class="iv-actions__close" data-close-cp aria-label="Close"><img src="images/checkout/x-mark.svg" alt="" /></button>
+        </div>
+
+        <!-- Step 1: amounts per invoice -->
+        <div id="cp-step1"><div id="cp-groups"></div></div>
+
+        <!-- Step 2: the same payment module as checkout (saved methods, or a new card inline) -->
+        <div id="cp-step2" hidden>
+          <div id="cp-single" hidden>
+            <div class="iv-cp__amtrow">
+              <label class="iv-cp__lbl" for="cp-amt">Payment amount:</label>
+              <label class="iv-amount"><span>USD</span><input id="cp-amt" class="iv-amount__input" type="text" inputmode="decimal" autocomplete="off" /></label>
+            </div>
+            <span class="iv-amount__err" id="cp-amt-err" role="alert"></span>
+          </div>
+          <p class="iv-cp__summary" id="cp-summary">Payment amount: <strong id="cp-total"></strong> USD</p>
+          <div class="co-methods" id="methods" role="radiogroup" aria-label="Payment method">
+            <div class="co-method" data-open="false" data-method="ach">
+              <label class="co-method__head">
+                <input type="radio" class="co-radio" name="method" value="ach" />
+                <span class="co-method__name">ACH payment</span>
+              </label>
+              <div class="co-method__panel" hidden>
+                <div class="co-bank">
+                  <span class="co-bank__icon">ACH</span>
+                  <span>Business chequing ending ···· 1204</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="co-method" data-open="true" data-method="card">
+              <label class="co-method__head">
+                <input type="radio" class="co-radio" name="method" value="card" checked />
+                <span class="co-method__name">Credit card</span>
+                <span class="co-brands" aria-hidden="true">
+                  <span class="co-brand-chip"><img src="images/checkout/visa-sm.svg" alt="" /></span>
+                  <span class="co-brand-chip">
+                    <span class="co-brand-chip__base"></span>
+                    <span class="co-brand-chip__glyph co-brand-chip__glyph--mc"><img src="images/checkout/mastercard-sm-glyph.svg" alt="" /></span>
+                  </span>
+                  <span class="co-brand-chip"><img src="images/checkout/amex-sm.svg" alt="" /></span>
+                  <span class="co-brand-chip">
+                    <span class="co-brand-chip__base"></span>
+                    <span class="co-brand-chip__glyph co-brand-chip__glyph--disc"><img src="images/checkout/discover-glyph.svg" alt="" /></span>
+                  </span>
+                </span>
+              </label>
+
+              <div class="co-method__panel" id="card-panel" role="radiogroup" aria-label="Saved cards">
+                <button type="button" class="co-card" role="radio" aria-checked="true" data-last4="3435" data-brand="visa">
+                  <span class="co-card__mark"><img src="images/checkout/visa-card.svg" alt="Visa" /></span>
+                  <span class="co-card__info">ending ···· 3435 <span class="co-card__nick">Marketing</span></span>
+                </button>
+                <button type="button" class="co-card" role="radio" aria-checked="false" data-last4="4391" data-brand="mastercard">
+                  <span class="co-card__mark">
+                    <span class="co-brand-chip__base"></span>
+                    <span class="co-brand-chip__glyph co-brand-chip__glyph--mc"><img src="images/checkout/mastercard-glyph.svg" alt="Mastercard" /></span>
+                  </span>
+                  <span class="co-card__info">ending ···· 4391 <span class="co-card__nick">Operations</span></span>
+                </button>
+                <button type="button" class="co-card" role="radio" aria-checked="false" data-last4="7718" data-brand="mastercard">
+                  <span class="co-card__mark">
+                    <span class="co-brand-chip__base"></span>
+                    <span class="co-brand-chip__glyph co-brand-chip__glyph--mc"><img src="images/checkout/mastercard-glyph.svg" alt="Mastercard" /></span>
+                  </span>
+                  <span class="co-card__info">ending ···· 7718 <span class="co-card__nick">Backup</span></span>
+                </button>
+                <button type="button" class="co-card co-card--add" id="add-card" aria-expanded="false" aria-controls="new-card">
+                  <span class="co-plus" aria-hidden="true">+</span>
+                  <span class="co-card__info">Enter a different credit card</span>
+                </button>
+
+                <form class="co-newcard" id="new-card" hidden novalidate>
+                  <div class="co-field co-field--wide">
+                    <label for="nc-num">Card number</label>
+                    <div class="co-field__wrap">
+                      <input id="nc-num" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" />
+                      <span class="co-field__brand" id="nc-brand" aria-live="polite"></span>
+                    </div>
+                    <span class="co-field__err" data-err="nc-num"></span>
+                  </div>
+                  <div class="co-field">
+                    <label for="nc-exp">Expiration date</label>
+                    <input id="nc-exp" inputmode="numeric" autocomplete="off" placeholder="MM / YY" />
+                    <span class="co-field__err" data-err="nc-exp"></span>
+                  </div>
+                  <div class="co-field">
+                    <label for="nc-cvc">Security code</label>
+                    <div class="co-field__wrap">
+                      <input id="nc-cvc" inputmode="numeric" pattern="[0-9]*" autocomplete="off" maxlength="4" placeholder="CVC" />
+                      <span class="co-field__brand" aria-hidden="true">
+                        <svg width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="0.5" y="2.5" width="18" height="15" rx="2" fill="#fff" stroke="#A2A3A3"/>
+                          <rect x="0.5" y="5" width="18" height="3" fill="#A2A3A3"/>
+                          <text x="17" y="15.2" text-anchor="end" font-family="Lato, sans-serif" font-size="5.5" font-weight="700" fill="#5D5E5E">123</text>
+                        </svg>
+                      </span>
+                    </div>
+                    <span class="co-field__err" data-err="nc-cvc"></span>
+                  </div>
+                  <div class="co-field">
+                    <label for="nc-country">Country</label>
+                    <select id="nc-country" class="co-select" autocomplete="country">
+                      <option value="CA">Canada</option>
+                      <option value="US">United States</option>
+                    </select>
+                  </div>
+                  <div class="co-field">
+                    <label for="nc-zip" id="nc-zip-label">Postal code</label>
+                    <input id="nc-zip" autocomplete="off" />
+                    <span class="co-field__err" data-err="nc-zip"></span>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="iv-cp__foot">
+          <span class="iv-cp__meta" id="cp-meta">Step 1 of 2</span>
+          <span class="iv-cp__btns">
+            <button type="button" class="co-btn co-btn--ghost iv-modal__btn" id="cp-cancel" data-close-cp>Cancel</button>
+            <button type="button" class="co-btn co-btn--ghost iv-modal__btn" id="cp-back" hidden>Back</button>
+            <button type="button" class="co-btn co-btn--primary iv-modal__btn" id="cp-next" disabled>Next</button>
+            <button type="button" class="co-btn co-btn--primary iv-modal__btn" id="cp-pay" hidden>Pay</button>
+          </span>
+        </div>
+
+        <!-- Same processing graphic as checkout: a spinner that closes into a ring, then draws the check.
+             It lives in this dialog so the dialog can shrink into the confirmation card. -->
+        <div class="co-done__card iv-cp__done" id="done-card" role="status" aria-live="polite">
+          <svg class="co-done__icon" id="done-icon" width="108" height="108" viewBox="0 0 108 108" fill="none" aria-hidden="true">
+            <circle class="co-done__ring" cx="54" cy="54" r="50" />
+            <path class="co-done__check" d="M36 56 L49 69 L74 42" />
+          </svg>
+          <p class="co-done__status" id="done-title">Processing payment</p>
+        </div>
+      </div>
+    </dialog>
+
+    <script>
+      (function () {
+        /* The customer's side of the ledger: Element Pilates Studio's invoices from the suppliers it buys from.
+           The order placed in checkout shows up as paid Thirty Three Threads invoices (one per delivery, due on receipt). */
+        var order;
+        try { order = JSON.parse(sessionStorage.getItem('co-order')); } catch (e) { order = null; }
+        var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+        var fmt = function (d) { return MON[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); };
+        var addDays = function (d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; };
+        var today = new Date(); today.setHours(12, 0, 0, 0);
+        var placed = order && order.placedISO ? new Date(order.placedISO + 'T12:00:00') : today;
+        var money = function (c) { return '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+        var orderNo = order ? order.number : '3493984';
+        var deliveries = order ? order.deliveries : [{ total: 102500 }, { total: 202500 }];
+        var TERMS = function (n) { return n ? 'Net ' + n : 'Due upon receipt'; };
+
+        /* Each supplier has one net-terms length; "Due upon receipt" is separate. */
+        var NET_DAYS = { 'Thirty Three Threads': 30, 'Gaea Yoga Co.': 30, 'Halo Active': 15, 'Jade Harmony': 60, 'Lifeform Props': 30 };
+        var EMAILS = { 'Thirty Three Threads': 'sales@33threads.com', 'Gaea Yoga Co.': 'priya.nair@gaeayoga.com', 'Halo Active': 'lena.fischer@haloactive.com', 'Jade Harmony': 'marcus.bell@jadeharmony.com', 'Lifeform Props': 'sofia.reyes@lifeformprops.com' };
+
+        /* One row. Due date = invoice date + net days; the note reads from today. */
+        function inv(o) {
+          if (o.net && NET_DAYS[o.supplier]) o.net = NET_DAYS[o.supplier];
+          var due = addDays(o.date, o.net), diff = Math.round((due - today) / 864e5);
+          var r = { dateV: o.date, dueV: due, total: money(o.total), date: fmt(o.date), order: o.order, supplier: o.supplier, email: EMAILS[o.supplier],
+            terms: TERMS(o.net), due: fmt(due), status: o.status, amount: money(o.status === 'Paid' ? 0 : (o.due == null ? o.total : o.due)) };
+          if (o.status === 'Unpaid' || o.status === 'Overdue') {
+            r.dueNote = diff >= 0 ? 'In ' + diff + ' day' + (diff === 1 ? '' : 's') : -diff + ' day' + (diff === -1 ? '' : 's') + ' ago';
+            r.late = diff < 0;
+          }
+          return r;
+        }
+        var rows = [];
+        var TTT = 'Thirty Three Threads';
+        // [supplier, total in cents, days since invoiced, net days, order #, status, amount still due (partial only)]
+        var LIST = [
+          ['Halo Active', 184250, 0, 15, '3496021', 'Unpaid'],
+          ['Lifeform Props', 58900, -3, 30, '3495760', 'Unpaid'],
+          ['Jade Harmony', 64300, -6, 60, '3495288', 'Unpaid'],
+          ['Gaea Yoga Co.', 72850, -18, 30, '3494902', 'Unpaid'],
+          ['Lifeform Props', 112400, -48, 30, '3493655', 'Overdue'],
+          [TTT, 143075, -41, 15, '3494710-2', 'Overdue'],
+          [TTT, 96500, -52, 30, '3494710-1', 'Overdue'],
+          ['Gaea Yoga Co.', 130555, -75, 30, '3492336', 'Partial', 100000],
+          ['Lifeform Props', 157628, -100, 0, '3431654', 'Paid'],
+          ['Halo Active', 125054, -130, 15, '3489541', 'Paid'],
+          ['Jade Harmony', 177958, -160, 60, '3485232', 'Paid'],
+          ['Gaea Yoga Co.', 88200, -190, 30, '3479918', 'Paid'],
+          ['Lifeform Props', 214075, -220, 0, '3474406', 'Paid'],
+          ['Halo Active', 99950, -250, 15, '3468127', 'Paid']
+        ];
+        LIST.forEach(function (f) {
+          rows.push(inv({ supplier: f[0], total: f[1], date: addDays(today, f[2]), net: f[3], order: f[4], status: f[5], due: f[6] }));
+        });
+        deliveries.forEach(function (d, i) {
+          rows.push(inv({ supplier: TTT, total: d.total, date: placed, net: 0, order: orderNo + '-' + (i + 1), status: 'Paid' }));
+        });
+        // Newest first; invoice numbers count down the list.
+        rows.sort(function (a, b) { return b.dateV - a.dateV; });
+        var INVOICES = rows.map(function (r, i) { r.inv = 'INV-' + ('000000' + (rows.length - i)).slice(-6); return r; });
+        // Payments made from an invoice's page carry over to the list.
+        try {
+          var over = JSON.parse(sessionStorage.getItem('civ-over')) || {};
+          INVOICES.forEach(function (r) {
+            var o = over[r.inv];
+            if (o) { r.status = o.status; r.amount = o.amount; delete r.dueNote; delete r.late; }
+          });
+        } catch (e) {}
+        var BADGE = { Paid: 'success', Partial: 'caution', Overdue: 'danger', Unpaid: 'neutral' };
+        var TABS = {
+          all: function () { return true; },
+          outstanding: function (r) { return r.status !== 'Paid'; },
+          overdue: function (r) { return r.status === 'Overdue'; },
+          paid: function (r) { return r.status === 'Paid'; }
+        };
+        var $ = function (s) { return document.querySelector(s); };
+        var esc = function (v) { return String(v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+
+        var body = $('#iv-body'), all = $('#iv-all'), q = $('#iv-q'), empty = $('#iv-empty');
+        var tab = 'all', statusSel = [], custSel = [], dueFrom = '', dueTo = '';
+
+        body.innerHTML = INVOICES.map(function (r, i) {
+          return '<div class="iv-row" role="row" data-i="' + i + '">' +
+            '<span><input type="checkbox" class="co-check" aria-label="Select ' + esc(r.inv) + '" /></span>' +
+            '<span class="iv-num">' + esc(r.total) + '</span>' +
+            '<span><a class="iv-link iv-link--go" href="customer-invoice-detail.html?inv=' + encodeURIComponent(r.inv) + '">' + esc(r.inv) + '</a></span>' +
+            '<span>' + esc(r.date) + '</span>' +
+            '<span><span class="iv-link">' + esc(r.order) + '</span></span>' +
+            '<span>' + esc(r.supplier) + '</span>' +
+            '<span>' + esc(r.terms) + '</span>' +
+            '<span>' + esc(r.due) + (r.dueNote ? '<span class="iv-sub' + (r.late ? ' iv-sub--late' : '') + '">' + esc(r.dueNote) + '</span>' : '') + '</span>' +
+            '<span><span class="cf-badge cf-badge--' + BADGE[r.status] + '">' + esc(r.status) + '</span></span>' +
+            '<span class="iv-num">' + esc(r.amount) + '</span>' +
+          '</div>';
+        }).join('');
+        var rows = Array.prototype.slice.call(body.children);
+        /* Opening an invoice hands the detail page the list as it stands now (statuses included). */
+        body.addEventListener('click', function (e) {
+          if (!e.target.closest('.iv-link--go')) return;
+          try {
+            sessionStorage.setItem('civ-list', JSON.stringify(INVOICES.map(function (r) {
+              // Checkout's own order is placed the day it is invoiced; the other orders were placed a couple of days earlier.
+              var od = r.order.indexOf(orderNo + '-') === 0 ? r.dateV : addDays(r.dateV, -2);
+              return { inv: r.inv, supplier: r.supplier, date: r.date, orderDate: fmt(od), order: r.order,
+                terms: r.terms, due: r.due, dueNote: r.dueNote || '', late: !!r.late, status: r.status, total: r.total, amount: r.amount };
+            })));
+          } catch (err) {}
+        });
+        var boxes = function () { return rows.map(function (r) { return r.querySelector('.co-check'); }); };
+
+        /* Due date range: either end can be left open. A reversed range is ignored until it is fixed. */
+        function dueRange() {
+          if (dueFrom && dueTo && dueFrom > dueTo) return null;
+          return { from: dueFrom ? new Date(dueFrom + 'T00:00:00').getTime() : -Infinity, to: dueTo ? new Date(dueTo + 'T23:59:59').getTime() : Infinity };
+        }
+        function dueHit(r) {
+          var g = dueRange();
+          return !g || (r.dueV.getTime() >= g.from && r.dueV.getTime() <= g.to);
+        }
+        function apply() {
+          var term = q.value.trim().toLowerCase(), shown = 0;
+          rows.forEach(function (el, i) {
+            var r = INVOICES[i];
+            var hit = TABS[tab](r) && (!statusSel.length || statusSel.indexOf(r.status) > -1) && (!custSel.length || custSel.indexOf(r.supplier) > -1) && dueHit(r) && (!term || (r.inv + ' ' + r.order + ' ' + r.supplier).toLowerCase().indexOf(term) > -1);
+            el.hidden = !hit;
+            if (hit) shown++;
+          });
+          empty.hidden = shown > 0;
+          syncAll();
+        }
+        function syncAll() {
+          var vis = boxes().filter(function (b) { return !b.closest('.iv-row').hidden; });
+          var on = vis.filter(function (b) { return b.checked; }).length;
+          all.checked = vis.length > 0 && on === vis.length;
+          all.indeterminate = on > 0 && on < vis.length;
+          boxes().forEach(function (b) { b.closest('.iv-row').classList.toggle('is-selected', b.checked); });
+          /* With a selection, the action bar takes the place of the search toolbar. */
+          var n = boxes().filter(function (b) { return b.checked; }).length;
+          $('#iv-actions').hidden = n === 0;
+          $('#iv-toolbar').hidden = n > 0;
+          /* Pay invoice: outstanding (unpaid) invoices from a single supplier. Send: any invoices from a single supplier.
+             Download PDF: anything. */
+          var paidPicked = selectedRows().some(function (r) { return r.status === 'Paid'; });
+          var one = sendable();
+          var payOff = paidPicked || !one;
+          collectBtn.disabled = payOff;
+          collectBtn.title = payOff ? (paidPicked ? 'Only outstanding invoices can be paid' : 'Select invoices from one supplier to pay') : '';
+          sendBtn.disabled = !one;
+          sendBtn.title = one ? '' : 'Select invoices from one supplier to send';
+          $('#iv-download').disabled = n === 0;
+          $('#iv-n').textContent = n;
+          $('#iv-n-label').textContent = n === 1 ? 'Item selected' : 'Items selected';
+        }
+
+        Array.prototype.forEach.call(document.querySelectorAll('.iv-tab'), function (b) {
+          b.addEventListener('click', function () {
+            tab = b.getAttribute('data-tab');
+            Array.prototype.forEach.call(document.querySelectorAll('.iv-tab'), function (t) { t.setAttribute('aria-selected', String(t === b)); });
+            apply();
+          });
+        });
+        q.addEventListener('input', apply);
+        all.addEventListener('change', function () {
+          boxes().forEach(function (b) { if (!b.closest('.iv-row').hidden) b.checked = all.checked; });
+          syncAll();
+        });
+        body.addEventListener('change', syncAll);
+
+        var isoToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+        var cents2 = function (str) { return parseFloat(String(str).replace(/[$,]/g, '')) || 0; };
+        var usd = function (n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+        /* Focus a field with the caret at the end of its text and nothing selected. */
+        function focusPlain(input) {
+          input.focus();
+          try { var n = input.value.length; input.setSelectionRange(n, n); } catch (e) {}
+        }
+        /* A payment against one invoice: paid in full flips it to Paid with $0.00 due and drops the overdue/due-soon note;
+           anything less leaves it Partial with the remainder due. Shared by Record payment and Collect payment. */
+        function applyPayment(i, paid, due) {
+          var r = INVOICES[i], row = rows[i];
+          var left = Math.round((due - paid) * 100) / 100;
+          if (left <= 0) {
+            r.status = 'Paid'; r.amount = '$0.00'; delete r.dueNote; delete r.late;
+            var note = row.children[7].querySelector('.iv-sub');
+            if (note) note.remove();
+          } else {
+            r.status = 'Partial'; r.amount = usd(left);
+          }
+          row.children[8].innerHTML = '<span class="cf-badge cf-badge--' + BADGE[r.status] + '">' + r.status + '</span>';
+          row.children[9].textContent = r.amount;
+          row.querySelector('.co-check').checked = false;
+        }
+        function outstandingSelected() {
+          return Array.prototype.slice.call(body.children).filter(function (el) {
+            return el.querySelector('.co-check').checked && INVOICES[+el.getAttribute('data-i')].status !== 'Paid';
+          }).map(function (el) { return +el.getAttribute('data-i'); });
+        }
+        /* Amount: any value above $0.00 up to the amount due. Submit waits for a method, a date and a valid amount on every row. */
+        /* Amount rules: above `min` (default $0.00) and no more than the amount due. Collect payment passes a $2.00 minimum;
+           an invoice whose whole balance is under that minimum can still be paid in full. */
+        function amountError(row, min) {
+          var due = parseFloat(row.getAttribute('data-due')), v = row.querySelector('.iv-amount__input').value;
+          var n = parseFloat(v.replace(/[$,\s]/g, '')), floor = min && due > min ? min : 0;
+          if (!/^[$\s]*\d[\d,]*(\.\d{0,2})?\s*$/.test(v) || isNaN(n) || n <= floor) return 'Enter an amount above ' + usd(floor) + '.';
+          if (n > due + 0.001) return 'Amount can\u2019t exceed ' + usd(due) + '.';
+          return '';
+        }
+        /* ---- Popups (Material 3 inspired): a docked date picker for the due-date filter.
+           It is positioned from its field, flipping above when short on room. ---- */
+        var cal = $('#iv-cal');
+        var MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        var pad2 = function (n) { return ('0' + n).slice(-2); };
+        function fmtUS(iso) { var p = iso.split('-'); return p[1] + '/' + p[2] + '/' + p[0]; }
+        function parseUS(v) {
+          var m = /^\s*(\d{1,2})\/(\d{1,2})\/(\d{4})\s*$/.exec(v);
+          if (!m) return null;
+          var d = new Date(+m[3], +m[1] - 1, +m[2]);
+          return d.getFullYear() === +m[3] && d.getMonth() === +m[1] - 1 && d.getDate() === +m[2] ? m[3] + '-' + pad2(+m[1]) + '-' + pad2(+m[2]) : null;
+        }
+        function place(el, anchor, minW) {
+          var r = anchor.getBoundingClientRect();
+          el.style.minWidth = minW ? r.width + 'px' : '';
+          el.style.visibility = 'hidden'; el.hidden = false;
+          var w = el.offsetWidth, h = el.offsetHeight;
+          var top = r.bottom + 4; if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 4);
+          el.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px';
+          el.style.top = top + 'px';
+          el.style.visibility = '';
+        }
+        var openFor = null;
+        function closePopups(restoreFocus) {
+          var was = openFor;
+          cal.hidden = true;
+          if (was) { was.setAttribute('aria-expanded', 'false'); if (restoreFocus) was.focus(); }
+          openFor = null;
+        }
+
+        /* Date picker */
+        var calState = { y: 0, m: 0, mode: 'days' };
+        function renderCal() {
+          var iso = openFor.getAttribute('data-iso'), sel = iso ? iso.split('-').map(Number) : null;
+          var first = new Date(calState.y, calState.m, 1).getDay(), count = new Date(calState.y, calState.m + 1, 0).getDate();
+          $('#iv-cal-label').firstChild.textContent = MONTHS_LONG[calState.m] + ' ' + calState.y;
+          $('#iv-cal-label').setAttribute('aria-expanded', String(calState.mode === 'years'));
+          $('#iv-cal-days').hidden = calState.mode === 'years';
+          $('#iv-cal-years').hidden = calState.mode === 'days';
+          $('#iv-cal-nav').hidden = calState.mode === 'years';
+          var html = '';
+          for (var i = 0; i < first; i++) html += '<span></span>';
+          for (var d = 1; d <= count; d++) {
+            var isSel = sel && sel[0] === calState.y && sel[1] === calState.m + 1 && sel[2] === d;
+            var isToday = today.getFullYear() === calState.y && today.getMonth() === calState.m && today.getDate() === d;
+            html += '<button type="button" class="iv-cal__day' + (isSel ? ' is-selected' : '') + (isToday ? ' is-today' : '') + '" data-d="' + d + '"' + (isSel ? ' aria-pressed="true"' : '') + ' aria-label="' + MONTHS_LONG[calState.m] + ' ' + d + ', ' + calState.y + '">' + d + '</button>';
+          }
+          $('#iv-cal-grid').innerHTML = html;
+          var ys = '';
+          for (var y = today.getFullYear() - 60; y <= today.getFullYear() + 20; y++) ys += '<button type="button" class="iv-cal__year' + (y === calState.y ? ' is-selected' : '') + '" data-y="' + y + '">' + y + '</button>';
+          $('#iv-cal-years').innerHTML = ys;
+        }
+        function openCal(input) {
+          closePopups();
+          // The picker sits inside whichever dialog the field is in, otherwise on the page.
+          var host = input.closest('dialog') || document.body;
+          if (cal.parentNode !== host) host.appendChild(cal);
+          var iso = input.getAttribute('data-iso') || isoToday, p = iso.split('-').map(Number);
+          calState = { y: p[0], m: p[1] - 1, mode: 'days' };
+          openFor = input; input.setAttribute('aria-expanded', 'true');
+          renderCal(); place(cal, input, false);
+          var t = cal.querySelector('.is-selected.iv-cal__day') || cal.querySelector('.iv-cal__day'); if (t) t.focus();
+        }
+        function setDate(input, iso) {
+          input.setAttribute('data-iso', iso || '');
+          input.value = iso ? fmtUS(iso) : '';
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        // Clicks inside a popup stay inside it: re-rendering detaches the clicked button, which would otherwise read as an outside click.
+        cal.addEventListener('click', function (e) { e.stopPropagation(); });
+        cal.addEventListener('click', function (e) {
+          var t = e.target.closest('button'); if (!t) return;
+          if (t.classList.contains('iv-cal__day')) {
+            var input = openFor; setDate(input, calState.y + '-' + pad2(calState.m + 1) + '-' + pad2(+t.getAttribute('data-d')));
+            closePopups(true);
+          } else if (t.classList.contains('iv-cal__year')) {
+            calState.y = +t.getAttribute('data-y'); calState.mode = 'days'; renderCal();
+          } else if (t.id === 'iv-cal-label') {
+            calState.mode = calState.mode === 'days' ? 'years' : 'days'; renderCal();
+            if (calState.mode === 'years') { var cur = cal.querySelector('.iv-cal__year.is-selected'); if (cur) cur.scrollIntoView({ block: 'center' }); }
+          } else if (t.hasAttribute('data-step')) {
+            calState.m += +t.getAttribute('data-step');
+            if (calState.m < 0) { calState.m = 11; calState.y--; } else if (calState.m > 11) { calState.m = 0; calState.y++; }
+            renderCal();
+          }
+        });
+        cal.addEventListener('keydown', function (e) {
+          var day = e.target.closest('.iv-cal__day'); if (!day) return;
+          var step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key]; if (!step) return;
+          e.preventDefault();
+          var n = +day.getAttribute('data-d') + step, count = new Date(calState.y, calState.m + 1, 0).getDate();
+          if (n < 1 || n > count) { calState.m += n < 1 ? -1 : 1; if (calState.m < 0) { calState.m = 11; calState.y--; } if (calState.m > 11) { calState.m = 0; calState.y++; } n = n < 1 ? new Date(calState.y, calState.m + 1, 0).getDate() : 1; renderCal(); }
+          var next = cal.querySelector('.iv-cal__day[data-d="' + n + '"]'); if (next) next.focus();
+        });
+
+        /* Send invoice: available when every selected invoice is from one supplier (any status). The preview on the right
+           fills in live as the sender types; Send waits for To, Subject and the personal message. */
+        var sendBtn = $('#iv-send'), sdlg = $('#iv-send-dlg'), collectBtn = $('#iv-collect');
+        var sTo = $('#sf-to'), sSub = $('#sf-subject'), sMsg = $('#sf-msg');
+        var EMAIL_RE = /^[^\s@,;]+@[^\s@,;]+\.[^\s@,;.]{2,}$/;
+        function selectedRows() {
+          return Array.prototype.slice.call(body.children).filter(function (el) { return el.querySelector('.co-check').checked; })
+            .map(function (el) { return INVOICES[+el.getAttribute('data-i')]; });
+        }
+        function sendable() {
+          var sel = selectedRows();
+          return sel.length > 0 && sel.every(function (r) { return r.supplier === sel[0].supplier; });
+        }
+        function syncSend() {
+          var to = sTo.value.trim(), sub = sSub.value.trim(), msg = sMsg.value.trim();
+          var toErr = !to ? 'Enter an email address.' : !EMAIL_RE.test(to) ? 'Enter a valid email address, like name@example.com.' : '';
+          // The message shows once the field has been left (or edited after being left); Send stays off while it is invalid.
+          var show = sTo.getAttribute('data-touched') === '1' && !!toErr;
+          $('#sf-to-err').textContent = show ? toErr : '';
+          sTo.setAttribute('aria-invalid', String(show));
+          sTo.classList.toggle('is-invalid', show);
+          $('#iv-send-go').disabled = !(!toErr && sub && msg);
+          // Placeholders stay grey; typed text uses the regular body colour.
+          [['#mp-to', to, 'name@email.com'], ['#mp-subject', sub, 'email subject'], ['#mp-msg', sMsg.value, 'Personal message appears here']].forEach(function (x) {
+            var el = $(x[0]); el.textContent = x[1] ? (x[0] === '#mp-msg' ? x[1] : x[1]) : x[2]; el.classList.toggle('is-placeholder', !x[1]);
+          });
+        }
+        sendBtn.addEventListener('click', function () {
+          if (!sendable()) return;
+          var sel = selectedRows(), total = 0;
+          sTo.setAttribute('data-touched', '0'); sTo.value = ''; sSub.value = 'Invoice' + (sel.length === 1 ? ' ' + sel[0].inv : 's') + ' from ' + sel[0].supplier; sMsg.value = ''; $('#sf-cc').value = '';
+          $('#mp-list').innerHTML = '<div class="iv-mail__row iv-mail__row--head"><span>Invoice #</span><span>Status</span><span class="iv-num">Amount due</span></div>' + sel.map(function (r) {
+            total += cents2(r.amount);
+            return '<div class="iv-mail__row"><span><span class="iv-mail__link">' + esc(r.inv) + '</span></span><span><span class="cf-badge cf-badge--' + BADGE[r.status] + '">' + esc(r.status) + '</span></span><span class="iv-num">' + esc(usd(cents2(r.amount))) + '</span></div>';
+          }).join('');
+          $('#mp-total').textContent = usd(total);
+          $('#mp-sup').textContent = sel[0].supplier;
+          // The supplier's logo heads the email; a supplier without one shows its name instead.
+          var hasLogo = sel[0].supplier === 'Thirty Three Threads';
+          $('#mp-logo').hidden = !hasLogo; $('#mp-supline').hidden = hasLogo;
+          syncSend();
+          sdlg.showModal();
+          focusPlain(sTo);
+        });
+        [sTo, sSub, sMsg].forEach(function (el) { el.addEventListener('input', syncSend); });
+        sTo.addEventListener('blur', function () { sTo.setAttribute('data-touched', '1'); syncSend(); });
+        Array.prototype.forEach.call(sdlg.querySelectorAll('[data-close-send]'), function (b) { b.addEventListener('click', function () { sdlg.close(); }); });
+        sdlg.addEventListener('click', function (e) { if (e.target === sdlg) sdlg.close(); });
+
+        /* ================= Pay invoice: two steps =================
+           Step 1 confirms an amount per invoice (any amount above $0.00 up to the amount due); step 2 is the checkout
+           payment module: a saved ACH account or card, or a new card entered inline. */
+        var cdlg = $('#iv-collect-dlg'), cpGroups = $('#cp-groups'), cpNext = $('#cp-next'), cpPay = $('#cp-pay');
+        var qs = function (sel, root) { return (root || document).querySelector(sel); };
+        var qa = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+        var mk = function (tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+        var cpPlan = [], cpSingle = false, COLLECT_MIN = 2;
+        /* Dialog resize: measure the old and new size, then animate between them (the dialog stays centred). */
+        var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches, morphTimer;
+        function morph(mutate) {
+          clearTimeout(morphTimer);
+          ['width', 'height', 'transition', 'overflow'].forEach(function (p) { cdlg.style[p] = ''; });
+          var r0 = cdlg.getBoundingClientRect();
+          mutate();
+          if (reduceMotion) return;
+          var r1 = cdlg.getBoundingClientRect();
+          if (Math.abs(r0.width - r1.width) < 1 && Math.abs(r0.height - r1.height) < 1) return;
+          cdlg.style.width = r0.width + 'px'; cdlg.style.height = r0.height + 'px'; cdlg.style.overflow = 'hidden';
+          void cdlg.offsetWidth;
+          cdlg.style.transition = 'width 0.3s ease, height 0.3s ease';
+          cdlg.style.width = r1.width + 'px'; cdlg.style.height = r1.height + 'px';
+          morphTimer = setTimeout(function () { ['width', 'height', 'transition', 'overflow'].forEach(function (p) { cdlg.style[p] = ''; }); }, 340);
+        }
+        function collectable() {
+          var sel = selectedRows();
+          return sendable() && sel.every(function (r) { return r.status !== 'Paid'; });
+        }
+        function cpStep(n) {
+          cdlg.classList.toggle('is-step2', n === 2);
+          $('#cp-step1').hidden = n !== 1; $('#cp-step2').hidden = n !== 2;
+          var solo = cpSingle && n === 2;
+          $('#cp-meta').textContent = solo ? '' : 'Step ' + n + ' of 2';
+          $('#cp-title').textContent = 'Pay invoice';
+          $('#cp-cancel').hidden = n !== 1 && !solo; cpNext.hidden = n !== 1;
+          $('#cp-back').hidden = n !== 2 || solo; cpPay.hidden = n !== 2;
+          $('#cp-single').hidden = !solo; $('#cp-summary').hidden = solo;
+        }
+        function cpValidate() {
+          var ok = true;
+          qa('.iv-pay__row[data-i]', cpGroups).forEach(function (row) {
+            var inp = row.querySelector('.iv-amount__input'), err = amountError(row, COLLECT_MIN);
+            if (err) ok = false;
+            var shown = inp.getAttribute('data-touched') === '1' && !!err;
+            row.querySelector('.iv-amount__err').textContent = shown ? err : '';
+            inp.parentNode.classList.toggle('is-invalid', shown);
+            inp.setAttribute('aria-invalid', String(shown));
+          });
+          cpNext.disabled = !ok;
+        }
+        collectBtn.addEventListener('click', function () {
+          if (!collectable()) return;
+          var picked = Array.prototype.slice.call(body.children).filter(function (el2) { return el2.querySelector('.co-check').checked; })
+            .map(function (el2) { return +el2.getAttribute('data-i'); });
+          cpGroups.innerHTML = '<section class="iv-pay"><h3 class="iv-pay__name">' + esc(INVOICES[picked[0]].supplier) + '</h3>' +
+            '<div class="iv-pay__row iv-pay__row--collect iv-pay__row--head"><span>Invoice #</span><span>Due date</span><span>Status</span><span class="iv-num">Amount due</span><span class="iv-num">Payment amount</span></div>' +
+            picked.map(function (i) {
+              var r = INVOICES[i], due = cents2(r.amount);
+              return '<div class="iv-pay__row iv-pay__row--collect" data-i="' + i + '" data-due="' + due + '">' +
+                '<span>' + esc(r.inv) + '</span>' +
+                '<span>' + esc(r.due) + (r.dueNote ? '<span class="iv-sub' + (r.late ? ' iv-sub--late' : '') + '">' + esc(r.dueNote) + '</span>' : '') + '</span>' +
+                '<span><span class="cf-badge cf-badge--' + BADGE[r.status] + '">' + esc(r.status) + '</span></span>' +
+                '<span class="iv-num">' + esc(usd(due)) + '</span>' +
+                '<span><label class="iv-amount"><span>USD</span><input type="text" inputmode="decimal" class="iv-amount__input" value="' + esc(usd(due)) + '" aria-label="Payment amount for ' + esc(r.inv) + '" /></label><span class="iv-amount__err" role="alert"></span></span>' +
+              '</div>';
+            }).join('') + '</section>';
+          cdlg.classList.remove('is-processing');
+          /* One invoice: skip the amounts step and open on the payment module, with the amount owing as the default amount. */
+          cpSingle = picked.length === 1;
+          if (cpSingle) {
+            var r1 = INVOICES[picked[0]], due1 = cents2(r1.amount), box = $('#cp-single');
+            box.setAttribute('data-i', picked[0]); box.setAttribute('data-due', due1);
+            var amt = $('#cp-amt'); amt.value = usd(due1); amt.removeAttribute('data-touched');
+            cpStep(2); cpSingleSync();
+            if (!savedCards().some(function (c) { return c.getAttribute('aria-checked') === 'true'; }) && newCard.hidden && qs('input[name=method]:checked').value === 'card') selectCard(savedCards()[0]);
+            updatePay();
+            cdlg.style.width = cdlg.style.height = '';
+            cdlg.showModal();
+            focusPlain($('#cp-amt'));
+            return;
+          }
+          cpStep(1); cpValidate();
+          cdlg.showModal();
+          var firstAmt = cpGroups.querySelector('.iv-amount__input'); if (firstAmt) focusPlain(firstAmt);
+        });
+        cpGroups.addEventListener('input', function (e) {
+          if (e.target.classList.contains('iv-amount__input')) { e.target.setAttribute('data-touched', '1'); cpValidate(); }
+        });
+        cpGroups.addEventListener('focusout', function (e) {
+          var t = e.target;
+          if (!t.classList.contains('iv-amount__input')) return;
+          t.setAttribute('data-touched', '1');
+          if (!amountError(t.closest('.iv-pay__row'), COLLECT_MIN)) t.value = usd(parseFloat(t.value.replace(/[$,\s]/g, '')));
+          cpValidate();
+        });
+        qa('[data-close-cp]', cdlg).forEach(function (b) { b.addEventListener('click', function () { cdlg.close(); }); });
+        cdlg.addEventListener('click', function (e) { if (e.target === cdlg && !cdlg.classList.contains('is-processing')) cdlg.close(); });
+        cdlg.addEventListener('cancel', function (e) { if (cdlg.classList.contains('is-processing')) e.preventDefault(); });
+
+        cpNext.addEventListener('click', function () {
+          cpPlan = qa('.iv-pay__row[data-i]', cpGroups).map(function (row) {
+            return { i: +row.getAttribute('data-i'), due: parseFloat(row.getAttribute('data-due')), paid: parseFloat(row.querySelector('.iv-amount__input').value.replace(/[$,\s]/g, '')) };
+          });
+          var total = cpPlan.reduce(function (n, p) { return n + p.paid; }, 0);
+          $('#cp-total').textContent = usd(total);
+          cpPay.textContent = 'Pay ' + usd(total);
+          morph(function () {
+            cpStep(2);
+            if (!savedCards().some(function (c) { return c.getAttribute('aria-checked') === 'true'; }) && newCard.hidden && qs('input[name=method]:checked').value === 'card') selectCard(savedCards()[0]);
+            updatePay();
+          });
+        });
+        $('#cp-back').addEventListener('click', function () { morph(function () { cpStep(1); cpValidate(); }); });
+
+        /* ---- Payment module (ported from checkout) ---- */
+        var methodRadios = qa('input[name=method]');
+        function syncMethods() {
+          qa('.co-method').forEach(function (m) {
+            var r = qs('input[name=method]', m), open = r && r.checked;
+            m.dataset.open = open;
+            var panel = qs('.co-method__panel', m);
+            if (panel) panel.hidden = !open;
+          });
+          updatePay();
+        }
+        methodRadios.forEach(function (r) { r.addEventListener('change', syncMethods); });
+
+        var cardPanel = $('#card-panel'), newCard = $('#new-card'), addBtn = $('#add-card');
+        var savedCards = function () { return qa('.co-card[role=radio]', cardPanel); };
+        function methodReady() {
+          if (qs('input[name=method]:checked').value !== 'card') return true;
+          // With the new-card form open, the button waits for every field to pass validation.
+          if (!newCard.hidden) return newCardValid();
+          return savedCards().some(function (c) { return c.getAttribute('aria-checked') === 'true'; });
+        }
+        function singleError() { return cpSingle ? amountError($('#cp-single'), COLLECT_MIN) : ''; }
+        function cpSingleSync() {
+          var inp = $('#cp-amt'), err = singleError(), shown = inp.getAttribute('data-touched') === '1' && !!err;
+          $('#cp-amt-err').textContent = shown ? err : '';
+          inp.parentNode.classList.toggle('is-invalid', shown);
+          inp.setAttribute('aria-invalid', String(shown));
+          if (cpSingle) cpPay.textContent = err ? 'Pay' : 'Pay ' + usd(parseFloat(inp.value.replace(/[$,\s]/g, '')));
+        }
+        function updatePay() { cpPay.disabled = !methodReady() || !!singleError(); }
+        $('#cp-amt').addEventListener('input', function (e) { e.target.setAttribute('data-touched', '1'); cpSingleSync(); updatePay(); });
+        $('#cp-amt').addEventListener('focusout', function (e) {
+          var t = e.target; t.setAttribute('data-touched', '1');
+          if (!singleError()) t.value = usd(parseFloat(t.value.replace(/[$,\s]/g, '')));
+          cpSingleSync(); updatePay();
+        });
+        function selectCard(btn) {
+          savedCards().forEach(function (c) { c.setAttribute('aria-checked', String(c === btn)); });
+          closeNewCard();
+        }
+        cardPanel.addEventListener('click', function (e) { var c = e.target.closest('.co-card[role=radio]'); if (c) selectCard(c); });
+        function openNewCard() {
+          savedCards().forEach(function (c) { c.setAttribute('aria-checked', 'false'); });
+          newCard.hidden = false; addBtn.setAttribute('aria-expanded', 'true');
+          $('#nc-num').focus(); updatePay();
+        }
+        function closeNewCard() { newCard.hidden = true; addBtn.setAttribute('aria-expanded', 'false'); updatePay(); }
+        addBtn.addEventListener('click', function () { newCard.hidden ? openNewCard() : closeNewCard(); });
+
+        var BRANDS = {
+          visa: { name: 'Visa', len: 16, cvc: 3 },
+          mastercard: { name: 'Mastercard', len: 16, cvc: 3 },
+          amex: { name: 'American Express', len: 15, cvc: 4 },
+          discover: { name: 'Discover', len: 16, cvc: 3 }
+        };
+        function detectBrand(d) {
+          if (/^4/.test(d)) return 'visa';
+          if (/^(5[1-5]|2(2[2-9][1-9]|2[3-9]|[3-6]|7[01]|720))/.test(d)) return 'mastercard';
+          if (/^3[47]/.test(d)) return 'amex';
+          if (/^(6011|65|64[4-9]|622)/.test(d)) return 'discover';
+          return null;
+        }
+        function brandMark(brand) {
+          var mark = mk('span', 'co-card__mark');
+          function base() { mark.appendChild(mk('span', 'co-brand-chip__base')); }
+          function glyph(cls, src, alt) { var g = mk('span', 'co-brand-chip__glyph ' + cls), i = mk('img'); i.src = src; i.alt = alt; g.appendChild(i); mark.appendChild(g); }
+          function full(src, alt) { var i = mk('img'); i.src = src; i.alt = alt; mark.appendChild(i); }
+          if (brand === 'visa') full('images/checkout/visa-card.svg', 'Visa');
+          else if (brand === 'amex') full('images/checkout/amex-sm.svg', 'American Express');
+          else if (brand === 'mastercard') { base(); glyph('co-brand-chip__glyph--mc', 'images/checkout/mastercard-glyph.svg', 'Mastercard'); }
+          else if (brand === 'discover') { base(); glyph('co-brand-chip__glyph--disc', 'images/checkout/discover-glyph.svg', 'Discover'); }
+          else base();
+          return mark;
+        }
+        var ncNum = $('#nc-num'), ncCvc = $('#nc-cvc');
+        ncCvc.addEventListener('input', function () { var clean = ncCvc.value.replace(/\D/g, ''); if (clean !== ncCvc.value) ncCvc.value = clean; });
+        function renderBrand() {
+          var brand = detectBrand(ncNum.value.replace(/\D/g, '')), slot = $('#nc-brand');
+          slot.textContent = ''; slot.dataset.brand = brand || '';
+          if (brand) slot.appendChild(brandMark(brand));
+          ncCvc.maxLength = brand === 'amex' ? 4 : 3;
+          return brand;
+        }
+        ncNum.addEventListener('input', function () {
+          var brand = detectBrand(ncNum.value.replace(/\D/g, ''));
+          var d = ncNum.value.replace(/\D/g, '').slice(0, brand === 'amex' ? 15 : 16);
+          ncNum.value = brand === 'amex' ? [d.slice(0, 4), d.slice(4, 10), d.slice(10)].filter(Boolean).join(' ') : d.replace(/(.{4})/g, '$1 ').trim();
+          renderBrand();
+        });
+        $('#nc-exp').addEventListener('input', function (e) {
+          var d = e.target.value.replace(/\D/g, '').slice(0, 4);
+          e.target.value = d.length > 2 ? d.slice(0, 2) + ' / ' + d.slice(2) : d;
+        });
+        function setErr(id, msg) {
+          var inp = $('#' + id);
+          qs('[data-err=' + id + ']').textContent = msg;
+          if (msg) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid');
+          return !msg;
+        }
+        var POSTAL_LOCALES = {
+          CA: { label: 'Postal code', inputmode: 'text', test: /^[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z] \d[ABCEGHJ-NPRSTV-Z]\d$/,
+                format: function (v) { var c = v.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6); return c.length > 3 ? c.slice(0, 3) + ' ' + c.slice(3) : c; } },
+          US: { label: 'Zip code', inputmode: 'numeric', test: /^\d{5}(-\d{4})?$/,
+                format: function (v) { var d = v.replace(/\D/g, '').slice(0, 9); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; } }
+        };
+        var POSTAL_LOCALE, POSTAL, zipInput = $('#nc-zip'), countrySel = $('#nc-country');
+        function applyCountry(code) {
+          POSTAL_LOCALE = POSTAL_LOCALES[code] || POSTAL_LOCALES.US; POSTAL = POSTAL_LOCALE.test;
+          $('#nc-zip-label').textContent = POSTAL_LOCALE.label;
+          zipInput.setAttribute('inputmode', POSTAL_LOCALE.inputmode);
+          zipInput.value = POSTAL_LOCALE.format(zipInput.value);
+        }
+        countrySel.value = 'CA'; applyCountry('CA');
+        countrySel.addEventListener('change', function () { setErr('nc-zip', ''); zipInput.value = ''; applyCountry(countrySel.value); });
+        zipInput.addEventListener('input', function () { zipInput.value = POSTAL_LOCALE.format(zipInput.value); });
+
+        var CHECKS = {
+          'nc-num': function () { var d = $('#nc-num').value.replace(/\D/g, ''), b = detectBrand(d); return d.length < (b ? BRANDS[b].len : 16) ? 'Your card number is incomplete.' : ''; },
+          'nc-exp': function () {
+            var d = $('#nc-exp').value.replace(/\D/g, '');
+            if (d.length < 4) return 'Your card’s expiration date is incomplete.';
+            var mm = parseInt(d.slice(0, 2), 10), yy = 2000 + parseInt(d.slice(2), 10), now = new Date(), cy = now.getFullYear(), cm = now.getMonth() + 1;
+            if (mm < 1 || mm > 12) return 'Your card’s expiration month is invalid.';
+            if (yy < cy) return 'Your card’s expiration year is in the past.';
+            if (yy > cy + 50) return 'Your card’s expiration year is invalid.';
+            if (yy === cy && mm < cm) return 'Your card’s expiration date is in the past.';
+            return '';
+          },
+          'nc-cvc': function () { var b = detectBrand($('#nc-num').value.replace(/\D/g, '')); return $('#nc-cvc').value.length < (b ? BRANDS[b].cvc : 3) ? 'Your security code is incomplete.' : ''; },
+          'nc-zip': function () {
+            var v = $('#nc-zip').value.trim(), name = POSTAL_LOCALE.label.toLowerCase();
+            if (!v) return 'Your ' + name + ' is incomplete.';
+            return POSTAL.test(v) ? '' : 'Your ' + name + ' is invalid.';
+          }
+        };
+        var touchedCard = {};
+        function checkField(id) { return setErr(id, CHECKS[id]()); }
+        Object.keys(CHECKS).forEach(function (id) {
+          var input = $('#' + id), errEl = qs('[data-err=' + id + ']');
+          errEl.id = 'err-' + id; input.setAttribute('aria-describedby', errEl.id);
+          input.addEventListener('blur', function () { touchedCard[id] = true; checkField(id); });
+          input.addEventListener('input', function () { if (touchedCard[id]) checkField(id); });
+          input.addEventListener('input', updatePay);
+        });
+        ncNum.addEventListener('input', function () {
+          var d = ncNum.value.replace(/\D/g, ''), b = detectBrand(d);
+          if (!touchedCard['nc-num'] && d.length >= (b ? BRANDS[b].len : 16)) { touchedCard['nc-num'] = true; checkField('nc-num'); }
+          if (touchedCard['nc-cvc']) checkField('nc-cvc');
+        });
+        countrySel.addEventListener('change', function () { touchedCard['nc-zip'] = false; updatePay(); });
+        // True when every new-card field passes its inline check (nothing is shown; the button just follows).
+        function newCardValid() { return Object.keys(CHECKS).every(function (id) { return CHECKS[id]() === ''; }); }
+        function validateNewCard() {
+          var firstBad = null;
+          Object.keys(CHECKS).forEach(function (id) { touchedCard[id] = true; if (!checkField(id) && !firstBad) firstBad = id; });
+          if (firstBad) $('#' + firstBad).focus();
+          return !firstBad;
+        }
+        /* Entering valid card details is enough: there is no accept/cancel step. The main button saves the card and uses it. */
+        function commitNewCard() {
+          var num = $('#nc-num').value.replace(/\D/g, ''), btn = mk('button', 'co-card');
+          btn.type = 'button'; btn.setAttribute('role', 'radio'); btn.dataset.last4 = num.slice(-4);
+          var brand = detectBrand(num); if (brand) btn.dataset.brand = brand;
+          btn.appendChild(brandMark(brand));
+          btn.appendChild(mk('span', 'co-card__info', 'ending ···· ' + num.slice(-4)));
+          addBtn.parentNode.insertBefore(btn, addBtn);
+          newCard.reset(); renderBrand(); touchedCard = {};
+          qa('[aria-invalid]', newCard).forEach(function (i) { i.removeAttribute('aria-invalid'); });
+          qa('.co-field__err', newCard).forEach(function (n) { n.textContent = ''; });
+          selectCard(btn);
+        }
+        newCard.addEventListener('submit', function (e) { e.preventDefault(); });
+
+        cpPay.addEventListener('click', function () {
+          // An open new-card form is validated and saved first, then used for this payment.
+          if (qs('input[name=method]:checked').value === 'card' && !newCard.hidden) {
+            if (!validateNewCard()) return;
+            commitNewCard();
+          }
+          if (cpSingle) cpPlan = [{ i: +$('#cp-single').getAttribute('data-i'), due: parseFloat($('#cp-single').getAttribute('data-due')), paid: parseFloat($('#cp-amt').value.replace(/[$,\s]/g, '')) }];
+          var plan = cpPlan.slice(), total = plan.reduce(function (n, p) { return n + p.paid; }, 0);
+          // The dialog shrinks into the confirmation card; the list only updates once the success state has run.
+          morph(function () { cdlg.classList.add('is-processing'); });
+          runPaymentProgress(function () {
+            plan.forEach(function (p) { applyPayment(p.i, p.paid, p.due); });
+            syncAll(); apply();
+            toast('Payment of ' + usd(total) + ' successful');
+          });
+        });
+
+        /* Processing -> successful: the spinner finishes its turn, closes into a green ring and draws the check,
+           then the dialog closes and `onDone` returns the user to the list. */
+        var doneCard = $('#done-card'), doneIcon = $('#done-icon'), doneText = $('#done-title');
+        var doneReady = false, doneFinished = false, doneTimers = [], doneCb = null;
+        function later(fn, ms) { doneTimers.push(setTimeout(fn, ms)); }
+        function finishPayment() {
+          if (doneFinished) return;
+          doneFinished = true;
+          doneCard.classList.remove('is-processing');
+          doneCard.classList.add('is-complete');
+          doneText.textContent = 'Payment successful';
+          later(function () {
+            cdlg.close();
+            var cb = doneCb; doneCb = null;
+            if (cb) cb();
+          }, 1600);
+        }
+        function runPaymentProgress(onDone) {
+          doneTimers.forEach(clearTimeout); doneTimers = [];
+          doneReady = false; doneFinished = false; doneCb = onDone;
+          doneCard.className = 'co-done__card iv-cp__done is-processing';
+          doneText.textContent = 'Processing payment';
+          later(function () { doneReady = true; }, 2200);
+          later(finishPayment, 3600); // fallback when animations are off (reduced motion)
+        }
+        doneIcon.addEventListener('animationiteration', function () { if (doneReady) finishPayment(); });
+        syncMethods();
+
+        /* Toast on the list page: confirms the send, then dismisses itself. */
+        var toastEl = $('#iv-toast'), toastTimer;
+        function toast(msg) {
+          clearTimeout(toastTimer);
+          $('#iv-toast-msg').textContent = msg;
+          toastEl.hidden = false;
+          toastEl.classList.remove('is-in'); void toastEl.offsetWidth; toastEl.classList.add('is-in');
+          toastTimer = setTimeout(function () { toastEl.hidden = true; }, 6000);
+        }
+        $('#iv-toast-close').addEventListener('click', function () { clearTimeout(toastTimer); toastEl.hidden = true; });
+        $('#iv-send-form').addEventListener('submit', function (e) {
+          var n = selectedRows().length, to = sTo.value.trim();
+          if (!EMAIL_RE.test(to)) { e.preventDefault(); sTo.setAttribute('data-touched', '1'); syncSend(); sTo.focus(); return; }
+          boxes().forEach(function (b) { b.checked = false; });
+          syncAll();
+          toast((n === 1 ? 'Invoice' : n + ' invoices') + ' sent to ' + to);
+        });
+
+        /* Status filter: a multiselect menu. Rows match when their status is any of the ticked ones; it combines with the tabs and search. */
+        var fmenu = $('#iv-fmenu'), fbtn = $('#iv-status-btn');
+        var STATUSES = ['Unpaid', 'Partial', 'Overdue', 'Paid'];
+        function renderFilterMenu() {
+          fmenu.innerHTML = STATUSES.map(function (st) {
+            var on = statusSel.indexOf(st) > -1;
+            return '<div class="iv-menu__item iv-menu__item--check" role="option" tabindex="-1" aria-selected="' + on + '" data-v="' + st + '">' +
+              '<input type="checkbox" class="co-check" tabindex="-1" aria-hidden="true"' + (on ? ' checked' : '') + ' />' +
+              '<span>' + st + '</span></div>';
+          }).join('') + '<div class="iv-menu__clear' + (statusSel.length ? '' : ' is-disabled') + '" role="button" tabindex="-1" aria-disabled="' + !statusSel.length + '">Clear</div>';
+        }
+        function syncFilterButton() {
+          $('#iv-status-label').textContent = statusSel.length ? 'Status (' + statusSel.length + ')' : 'Status';
+          fbtn.classList.toggle('is-active', statusSel.length > 0);
+          syncClearAll();
+        }
+        function closeFilterMenu(restore) {
+          if (fmenu.hidden) return;
+          fmenu.hidden = true; fbtn.setAttribute('aria-expanded', 'false');
+          if (restore) fbtn.focus();
+        }
+        function openFilterMenu() {
+          closeDueMenu(); closeCustMenu();
+          renderFilterMenu();
+          fbtn.setAttribute('aria-expanded', 'true');
+          place(fmenu, fbtn, true);
+          fmenu.querySelector('.iv-menu__item').focus();
+        }
+        function toggleStatus(st) {
+          var i = statusSel.indexOf(st);
+          if (i > -1) statusSel.splice(i, 1); else statusSel.push(st);
+          var at = document.activeElement && document.activeElement.getAttribute ? document.activeElement.getAttribute('data-v') : null;
+          renderFilterMenu();
+          var again = at && fmenu.querySelector('[data-v="' + at + '"]'); if (again) again.focus();
+          syncFilterButton(); apply();
+        }
+        function clearStatus() { statusSel = []; renderFilterMenu(); syncFilterButton(); apply(); var f = fmenu.querySelector('.iv-menu__item'); if (f) f.focus(); }
+        fbtn.addEventListener('click', function (e) { e.stopPropagation(); fmenu.hidden ? openFilterMenu() : closeFilterMenu(); });
+        fmenu.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var it = e.target.closest('.iv-menu__item'), clr = e.target.closest('.iv-menu__clear');
+          if (it) toggleStatus(it.getAttribute('data-v'));
+          else if (clr && statusSel.length) clearStatus();
+        });
+        fmenu.addEventListener('keydown', function (e) {
+          var items = Array.prototype.slice.call(fmenu.querySelectorAll('.iv-menu__item, .iv-menu__clear:not(.is-disabled)')), i = items.indexOf(document.activeElement);
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(items.length - 1, i + 1)].focus(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); items[Math.max(0, i - 1)].focus(); }
+          else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+          else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+          else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            var el2 = document.activeElement;
+            if (el2.classList.contains('iv-menu__item')) toggleStatus(el2.getAttribute('data-v')); else if (el2.classList.contains('iv-menu__clear')) clearStatus();
+          }
+          else if (e.key === 'Escape') { e.preventDefault(); closeFilterMenu(true); }
+          else if (e.key === 'Tab') closeFilterMenu();
+        });
+        document.addEventListener('click', function () { closeFilterMenu(); });
+        window.addEventListener('resize', function () { closeFilterMenu(); });
+
+        /* Due date filter: From / To fields that open the same date picker used in Record payment. */
+        var dmenu = $('#iv-dmenu'), dbtn = $('#iv-due-btn'), dFrom = $('#df-from'), dTo = $('#df-to');
+        var shortDate = function (iso) {
+          var p = iso.split('-'), y = +p[0];
+          return MON[+p[1] - 1] + ' ' + (+p[2]) + (y !== today.getFullYear() ? ', ' + y : '');
+        };
+        function syncDueFilter() {
+          var bad = !!(dueFrom && dueTo && dueFrom > dueTo);
+          $('#df-err').textContent = bad ? 'The end date must be on or after the start date.' : '';
+          dTo.classList.toggle('is-invalid', bad); dTo.setAttribute('aria-invalid', String(bad));
+          var label = 'Due date';
+          if (!bad) {
+            if (dueFrom && dueTo) label = 'Due ' + shortDate(dueFrom) + ' \u2013 ' + shortDate(dueTo);
+            else if (dueFrom) label = 'Due from ' + shortDate(dueFrom);
+            else if (dueTo) label = 'Due by ' + shortDate(dueTo);
+          }
+          $('#iv-due-label').textContent = label;
+          dbtn.classList.toggle('is-active', label !== 'Due date');
+          $('#df-clear').disabled = !dueFrom && !dueTo;
+          syncClearAll();
+          apply();
+        }
+        function openDueMenu() {
+          closeFilterMenu(); closeCustMenu();
+          dbtn.setAttribute('aria-expanded', 'true');
+          place(dmenu, dbtn, false);
+          focusPlain(dFrom);
+        }
+        function closeDueMenu(restore) {
+          if (dmenu.hidden) return;
+          closePopups();
+          dmenu.hidden = true; dbtn.setAttribute('aria-expanded', 'false');
+          if (restore) dbtn.focus();
+        }
+        dbtn.addEventListener('click', function (e) { e.stopPropagation(); dmenu.hidden ? openDueMenu() : closeDueMenu(); });
+        dmenu.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var t = e.target;
+          if (t.classList.contains('iv-date')) { openFor === t ? closePopups() : openCal(t); }
+          else if (openFor) closePopups();
+        });
+        dmenu.addEventListener('keydown', function (e) {
+          if (e.target.classList.contains('iv-date') && e.key === 'ArrowDown') { e.preventDefault(); openCal(e.target); }
+        });
+        // Picking from the calendar, or typing a real MM/DD/YYYY date, sets that end of the range.
+        dmenu.addEventListener('change', function (e) {
+          if (e.target === dFrom) dueFrom = dFrom.getAttribute('data-iso') || '';
+          if (e.target === dTo) dueTo = dTo.getAttribute('data-iso') || '';
+          syncDueFilter();
+        });
+        dmenu.addEventListener('focusout', function (e) {
+          var t = e.target;
+          if (!t.classList.contains('iv-date') || cal.contains(e.relatedTarget)) return;
+          if (!t.value.trim()) { if (t.getAttribute('data-iso')) setDate(t, ''); return; }
+          var iso = parseUS(t.value);
+          if (iso) setDate(t, iso); else t.value = t.getAttribute('data-iso') ? fmtUS(t.getAttribute('data-iso')) : '';
+        });
+        $('#df-clear').addEventListener('click', function () {
+          closePopups();
+          dFrom.value = dTo.value = ''; dFrom.setAttribute('data-iso', ''); dTo.setAttribute('data-iso', '');
+          dueFrom = dueTo = ''; syncDueFilter();
+          focusPlain(dFrom);
+        });
+        document.addEventListener('click', function (e) {
+          if (!document.querySelector('dialog[open]') && openFor && !e.target.closest('#iv-cal, .iv-date')) closePopups();
+          if (!e.target.closest('#iv-dmenu, #iv-cal')) closeDueMenu();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key !== 'Escape' || document.querySelector('dialog[open]')) return;
+          if (openFor) { e.preventDefault(); closePopups(true); }
+          else if (!dmenu.hidden) { e.preventDefault(); closeDueMenu(true); }
+        });
+        window.addEventListener('resize', function () { closeDueMenu(); });
+
+        /* Supplier filter: single choice of company, each with its rep underneath like the invoice rows. */
+        var cmenu = $('#iv-cmenu'), cbtn = $('#iv-cust-btn');
+        function customerList() {
+          var seen = {}, list = [];
+          INVOICES.forEach(function (r) { if (!seen[r.supplier]) { seen[r.supplier] = true; list.push({ name: r.supplier }); } });
+          return list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+        }
+        /* Brand logo: a circular thumbnail beside each supplier in the filter. */
+        var LOGOS = {
+          'Thirty Three Threads': 'images/checkout/logo-bitmap2.png',
+          'Gaea Yoga Co.': 'images/invoices/suppliers/gaea-yoga.svg',
+          'Halo Active': 'images/invoices/suppliers/halo-active.svg',
+          'Jade Harmony': 'images/invoices/suppliers/jade-harmony.svg',
+          'Lifeform Props': 'images/invoices/suppliers/lifeform-props.svg'
+        };
+        function companyMark(name) {
+          return '<img class="iv-avatar iv-avatar--logo" src="' + LOGOS[name] + '" alt="" />';
+        }
+        function renderCustMenu() {
+          cmenu.innerHTML = customerList().map(function (c) {
+            var on = custSel.indexOf(c.name) > -1;
+            return '<div class="iv-menu__item iv-menu__item--cust' + (on ? ' is-selected' : '') + '" role="option" tabindex="-1" aria-selected="' + on + '" data-v="' + esc(c.name) + '">' +
+              companyMark(c.name) +
+              '<span class="iv-cust"><span>' + esc(c.name) + '</span></span>' +
+              '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.6 13.4 4.4 10.2l-1.1 1.1 4.3 4.3 9-9-1.1-1.1z" /></svg></div>';
+          }).join('') + '<div class="iv-menu__clear' + (custSel.length ? '' : ' is-disabled') + '" role="button" tabindex="-1" aria-disabled="' + !custSel.length + '">Clear</div>';
+        }
+        function syncCustButton() {
+          $('#iv-cust-label').textContent = custSel.length ? custSel[0] : 'Supplier';
+          cbtn.classList.toggle('is-active', custSel.length > 0);
+          syncClearAll();
+        }
+        function closeCustMenu(restore) {
+          if (cmenu.hidden) return;
+          cmenu.hidden = true; cbtn.setAttribute('aria-expanded', 'false');
+          if (restore) cbtn.focus();
+        }
+        function openCustMenu() {
+          closeFilterMenu(); closeDueMenu();
+          renderCustMenu();
+          cbtn.setAttribute('aria-expanded', 'true');
+          place(cmenu, cbtn, true);
+          cmenu.querySelector('.iv-menu__item').focus();
+        }
+        // Single select: choosing a company replaces any previous choice and closes the menu; choosing it again clears it.
+        function toggleCustomer(name) {
+          custSel = custSel[0] === name ? [] : [name];
+          syncCustButton(); apply();
+          closeCustMenu(true);
+        }
+        function clearCustomers() { custSel = []; syncCustButton(); apply(); closeCustMenu(true); }
+        cbtn.addEventListener('click', function (e) { e.stopPropagation(); cmenu.hidden ? openCustMenu() : closeCustMenu(); });
+        cmenu.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var it = e.target.closest('.iv-menu__item'), clr = e.target.closest('.iv-menu__clear');
+          if (it) toggleCustomer(it.getAttribute('data-v'));
+          else if (clr && custSel.length) clearCustomers();
+        });
+        cmenu.addEventListener('keydown', function (e) {
+          var items = Array.prototype.slice.call(cmenu.querySelectorAll('.iv-menu__item, .iv-menu__clear:not(.is-disabled)')), i = items.indexOf(document.activeElement);
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[Math.min(items.length - 1, i + 1)].focus(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); items[Math.max(0, i - 1)].focus(); }
+          else if (e.key === 'Home') { e.preventDefault(); items[0].focus(); }
+          else if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); }
+          else if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            var el2 = document.activeElement;
+            if (el2.classList.contains('iv-menu__item')) toggleCustomer(el2.getAttribute('data-v')); else if (el2.classList.contains('iv-menu__clear')) clearCustomers();
+          }
+          else if (e.key === 'Escape') { e.preventDefault(); closeCustMenu(true); }
+          else if (e.key === 'Tab') closeCustMenu();
+        });
+        document.addEventListener('click', function () { closeCustMenu(); });
+        window.addEventListener('resize', function () { closeCustMenu(); });
+
+        /* Clear all: shown while any of the three filters is active; resets Supplier, Status and Due date in one go. */
+        function syncClearAll() { $('#iv-clearall').hidden = !(custSel.length || statusSel.length || dueFrom || dueTo); }
+        $('#iv-clearall').addEventListener('click', function () {
+          closeFilterMenu(); closeCustMenu(); closeDueMenu();
+          statusSel = []; custSel = []; dueFrom = ''; dueTo = '';
+          dFrom.value = dTo.value = ''; dFrom.setAttribute('data-iso', ''); dTo.setAttribute('data-iso', '');
+          syncFilterButton(); syncCustButton(); syncDueFilter();
+          cbtn.focus(); // the button hides itself, so keep focus on the filter row
+        });
+        /* Download PDF: any invoices, any status, from any suppliers. One invoice downloads as a PDF; several download together. */
+        $('#iv-download').addEventListener('click', function () {
+          var sel = selectedRows(), n = sel.length;
+          if (!n) return;
+          boxes().forEach(function (b) { b.checked = false; });
+          syncAll();
+          toast(n === 1 ? sel[0].inv + '.pdf downloaded' : n + ' invoice PDFs downloaded');
+        });
+        $('#iv-clear').addEventListener('click', function () {
+          boxes().forEach(function (b) { b.checked = false; });
+          syncAll();
+        });
+
+        /* Sortable columns: click to sort, click again to reverse. Rows are reordered in place so filters and ticks survive. */
+        var KEYS = {
+          inv: function (r) { return parseInt(r.inv.slice(4), 10); },
+          date: function (r) { return r.dateV.getTime(); },
+          order: function (r) { var p = r.order.split('-'); return parseInt(p[0], 10) * 100 + (parseInt(p[1], 10) || 0); },
+          due: function (r) { return r.dueV.getTime(); }
+        };
+        var ths = Array.prototype.slice.call(document.querySelectorAll('.iv-th'));
+        var sortKey = 'date', sortDir = -1;
+        function sortRows() {
+          var k = KEYS[sortKey];
+          // Ties keep the list's own order so equal dates stay newest-first.
+          var idx = INVOICES.map(function (_, i) { return i; }).sort(function (a, b) { return (k(INVOICES[a]) - k(INVOICES[b])) * sortDir || a - b; });
+          idx.forEach(function (i) { body.appendChild(rows[i]); });
+          ths.forEach(function (t) {
+            var on = t.getAttribute('data-sort') === sortKey;
+            t.setAttribute('aria-sort', on ? (sortDir > 0 ? 'ascending' : 'descending') : 'none');
+          });
+        }
+        ths.forEach(function (t) {
+          t.querySelector('button').addEventListener('click', function () {
+            var key = t.getAttribute('data-sort');
+            sortDir = key === sortKey ? -sortDir : (key === 'date' || key === 'due' ? -1 : 1);
+            sortKey = key;
+            sortRows();
+          });
+        });
+
+      })();
+    </script>
+  </body>
+</html>

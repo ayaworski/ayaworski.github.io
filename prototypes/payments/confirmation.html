@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order confirmation — NuORDER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=20261031e" />
+  </head>
+
+  <body class="co cf">
+    <!-- Brand nav -->
+    <nav class="cf-nav" aria-label="Main">
+      <span class="cf-nav__active" aria-hidden="true"></span>
+      <a class="cf-nav__i" aria-label="Home" style="left:20px;top:21px;width:20px;height:18px"><img src="images/confirmation/nav-home.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Orders" style="left:20px;top:79px;width:24px;height:24px"><img src="images/confirmation/nav-basket.svg" alt="" /></a>
+      <span class="cf-nav__badge" aria-hidden="true"></span>
+      <a class="cf-nav__i cf-nav__i--inset" aria-label="Marketplace" style="left:19px;top:131px;width:24px;height:24px"><img src="images/confirmation/nav-marketplace.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Stores" style="left:20px;top:183px;width:24px;height:24px"><img src="images/confirmation/nav-storefront.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Promotions" style="left:20px;top:235px;width:20px;height:20px"><img src="images/confirmation/nav-tag.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Linesheets" style="left:20px;top:283px;width:24px;height:24px"><img src="images/confirmation/nav-linesheets.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Lists" style="left:19px;top:335px;width:20px;height:24px"><img src="images/confirmation/nav-list.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Whiteboard" style="left:18px;top:387px;width:24px;height:24px"><img src="images/confirmation/nav-whiteboard.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Order history" style="left:18px;top:439px;width:22px;height:18px"><img src="images/confirmation/nav-orders.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Customers" style="left:18px;top:485px;width:24px;height:17px"><img src="images/confirmation/nav-people.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Tasks" style="left:18px;top:530px;width:20px;height:24px"><img src="images/confirmation/nav-checklist.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Payments" style="left:18px;top:582px;width:24px;height:24px"><img src="images/confirmation/nav-payments.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Settings" style="left:18px;top:634px;width:24px;height:24px"><img src="images/confirmation/nav-settings.svg" alt="" /></a>
+      <div class="cf-nav__avatar" aria-hidden="true">
+        <img class="cf-nav__oval" src="images/confirmation/nav-oval.svg" alt="" />
+        <img class="cf-nav__mark" src="images/confirmation/nav-avatar-logo.svg" alt="" />
+        <span>AY</span>
+      </div>
+    </nav>
+
+    <div class="cf-page">
+      <header class="cf-header">
+        <div class="co-brand">
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <span>NuORDER</span>
+        </div>
+        <img src="images/checkout/cart.svg" width="24" height="24" alt="Cart" />
+      </header>
+
+      <div class="cf-layout">
+        <!-- ================================ Confirmation ================================ -->
+        <main class="cf-main">
+          <div class="cf-main__inner">
+            <section class="cf-intro">
+              <h1>Thank you for your order!</h1>
+              <p>A confirmation email was sent to <span id="cf-email"></span> with the full order details. Expect email updates with payment and delivery information when each order ships.</p>
+              <p>Order <span id="cf-order-no" class="cf-link"></span> was divided into <strong id="cf-split"></strong>:</p>
+            </section>
+
+            <div class="cf-deliveries" id="cf-deliveries"></div>
+
+            <div class="cf-footer">
+              <p>Questions? Explore the <span class="cf-link"><span class="cf-link__text">NuORDER Knowledge Base</span> <img src="images/confirmation/disclosure.svg" width="16" height="16" alt="" /></span></p>
+              <a class="co-btn co-btn--primary cf-continue" href="checkout.html">Continue shopping</a>
+            </div>
+          </div>
+        </main>
+
+        <!-- ================================ Order summary ================================ -->
+        <aside class="co-aside" aria-labelledby="sum-title">
+          <div class="co-aside__inner">
+            <div class="co-rows">
+              <h2 id="sum-title" style="margin-bottom:8px">Order summary</h2>
+              <div class="co-row"><span>Deliveries</span><span id="sum-deliveries"></span></div>
+              <div class="co-row"><span>Products</span><span id="sum-products"></span></div>
+              <div class="co-row"><span>Units</span><span id="sum-units"></span></div>
+            </div>
+
+            <img class="co-rule co-rule--soft" src="images/checkout/line-soft.svg" alt="" />
+
+            <div class="co-rows" id="sum-deliveries-list"></div>
+
+            <img class="co-rule co-rule--soft" src="images/checkout/line-soft.svg" alt="" />
+
+            <div class="co-rows">
+              <div class="co-row"><span>Sub total</span><span id="sum-items"></span></div>
+              <div class="co-row" id="row-discount" hidden><span class="co-row__label" id="discount-label"></span><span id="sum-discount"></span></div>
+              <div class="co-row"><span class="co-row__label" id="ship-label"></span><span id="sum-ship"></span></div>
+              <div class="co-row"><span id="tax-label">Sales tax</span><span id="sum-tax"></span></div>
+            </div>
+
+            <div class="co-total">
+              <img class="co-rule co-rule--strong" src="images/checkout/line-strong.svg" alt="" />
+              <div class="co-total__row">
+                <span>Order total <span class="co-total__cur">USD</span></span>
+                <span id="order-total"></span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var order;
+        try { order = JSON.parse(sessionStorage.getItem('co-order')); } catch (e) { order = null; }
+        if (!order) { location.replace('checkout.html'); return; }
+
+        var $ = function (s, r) { return (r || document).querySelector(s); };
+        var fmt = function (n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+        var cents = function (c) { return fmt(c / 100); };
+        var esc = function (v) { return String(v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+        var TAG = '<img src="images/checkout/tag.svg" alt="" />';
+        var codeTag = function (c) { return '<span class="co-codetag">' + TAG + esc(c) + '</span>'; };
+
+        /* ---- Intro ---- */
+        $('#cf-email').textContent = order.email;
+        $('#cf-order-no').textContent = '#' + order.number;
+        $('#cf-split').textContent = order.deliveries.length + ' separate orders';
+        document.title = 'Order #' + order.number + ' confirmed — NuORDER';
+
+        /* ---- Delivery cards ---- */
+        function lineItem(p) {
+          var sizes = p.sizes ? '<div class="co-item__line"><span class="co-item__label">Sizes:</span>' + p.sizes.map(function (s) { return esc(s).replace(' ', '&nbsp;'); }).join('  ') + '</div>' : '';
+          var promo = p.code ? '<span class="co-item__promo">' + TAG + esc(p.code) + '</span><s class="co-item__was">' + cents(p.was) + '</s>' : '';
+          return '<li class="co-item">' +
+            '<div class="co-item__thumb"><img src="images/checkout/products/' + esc(p.img) + '.jpg" alt="' + esc(p.name) + '" /><span class="co-item__badge">' + p.units + '</span></div>' +
+            '<div class="co-item__data"><p class="co-item__name">' + esc(p.name) + '</p>' +
+            '<div class="co-item__line"><span class="co-item__label">Colour:</span>' + esc(p.colour) + '</div>' + sizes +
+            '<div class="co-item__line"><span class="co-item__label">Unit price:</span>' + cents(p.unit) + '</div></div>' +
+            '<div class="co-item__price"><span>' + cents(p.total) + '</span>' + promo + '</div></li>';
+        }
+        function breakdown(d) {
+          var rows = '<div class="co-row"><span>Sub total</span><span>' + cents(d.sub) + '</span></div>';
+          if (d.discount) rows += '<div class="co-row"><span class="co-row__label">Discount (' + order.pct + '%) ' + order.discountCodes.map(codeTag).join('') + '</span><span>−' + cents(d.discount) + '</span></div>';
+          rows += '<div class="co-row"><span class="co-row__label">Shipping ' + order.shipCodes.map(codeTag).join('') + '</span><span>' + (order.shipCodes.length && d.shipOrig ? '<s class="co-was">' + cents(d.shipOrig) + '</s>' : '') + cents(d.ship) + '</span></div>';
+          rows += '<div class="co-row"><span>Sales tax (' + order.taxRate + '%)</span><span>' + cents(d.tax) + '</span></div>';
+          return '<div class="co-rows cf-breakdown">' + rows + '</div>';
+        }
+        function payments(d) {
+          return '<div class="cf-field"><p class="cf-label">Payment method</p>' + d.payments.map(function (p) {
+            return '<p class="cf-pay"><span>' + esc(p.name) + '</span><br><span>' + cents(p.amount) + '</span> <span class="cf-badge cf-badge--' + ({ Paid: 'success', Unpaid: 'caution', Overdue: 'danger' }[p.status] || 'neutral') + '">' + esc(p.status) + '</span></p>';
+          }).join('') + '</div>';
+        }
+        $('#cf-deliveries').innerHTML = order.deliveries.map(function (d, i) {
+          var id = 'cf-prod-' + i;
+          return '<article class="cf-card">' +
+            '<h2 class="cf-card__title">Delivery ' + (i + 1) + ' of ' + order.deliveries.length + '</h2>' +
+            '<div class="cf-card__cols">' +
+              '<div class="cf-col">' +
+                '<div class="cf-field"><p class="cf-label">Estimated delivery date</p><p>' + esc(d.date) + '</p></div>' +
+                '<div class="cf-field"><p class="cf-label">Delivery address</p><p>' + order.address.map(esc).join('<br>') + '</p></div>' +
+                '<div class="cf-field"><p class="cf-label">Delivery method</p><p>FedEx Ground <span class="cf-link">' + esc(d.tracking) + '</span></p></div>' +
+              '</div>' +
+              '<div class="cf-col">' + payments(d) +
+                '<div class="cf-field"><p class="cf-label">Billing address</p><p>' + order.billing.map(esc).join('<br>') + '</p></div>' +
+                '<div class="cf-field"><p class="cf-label">Order total</p><p>' + cents(d.total) + ' USD</p></div>' +
+              '</div>' +
+              '<div class="cf-col cf-col--right"><div class="cf-field"><p class="cf-label">Order #</p><p><span class="cf-link">' + esc(order.number) + '-' + (i + 1) + '</span></p></div></div>' +
+            '</div>' +
+            '<button type="button" class="co-delivery__toggle" aria-expanded="false" aria-controls="' + id + '"><span>Products ' + d.items.length + ', Units ' + d.units + '</span><span class="co-chev"><img src="images/checkout/chevron-down.svg" alt="" /></span></button>' +
+            '<div class="cf-products" id="' + id + '" hidden><ul class="co-products">' + d.items.map(lineItem).join('') + '</ul>' + breakdown(d) + '</div>' +
+          '</article>';
+        }).join('');
+        Array.prototype.forEach.call(document.querySelectorAll('.co-delivery__toggle'), function (b) {
+          b.addEventListener('click', function () {
+            var open = b.getAttribute('aria-expanded') === 'true';
+            b.setAttribute('aria-expanded', String(!open));
+            document.getElementById(b.getAttribute('aria-controls')).hidden = open;
+          });
+        });
+
+        /* ---- Order summary ---- */
+        var units = 0, products = 0;
+        order.deliveries.forEach(function (d) { units += d.units; products += d.items.length; });
+        $('#sum-deliveries').textContent = order.deliveries.length;
+        $('#sum-products').textContent = products;
+        $('#sum-units').textContent = units;
+        $('#sum-deliveries-list').innerHTML = order.deliveries.map(function (d, i) {
+          return '<div class="co-row"><span>Delivery ' + (i + 1) + ' of ' + order.deliveries.length + '</span><span>' + cents(d.sub) + '</span></div>';
+        }).join('');
+        $('#sum-items').textContent = cents(order.items);
+        $('#row-discount').hidden = !order.discount;
+        $('#discount-label').innerHTML = 'Discount (' + order.pct + '%)' + order.discountCodes.map(codeTag).join('');
+        $('#sum-discount').textContent = '−' + cents(order.discount);
+        $('#ship-label').innerHTML = 'Shipping total' + order.shipCodes.map(codeTag).join('');
+        $('#sum-ship').innerHTML = (order.shipCodes.length && order.shipOrig ? '<s class="co-was">' + cents(order.shipOrig) + '</s>' : '') + cents(order.ship);
+        $('#tax-label').textContent = 'Sales tax (' + order.taxRate + '%)';
+        $('#sum-tax').textContent = cents(order.tax);
+        $('#order-total').textContent = cents(order.total);
+      })();
+    </script>
+  </body>
+</html>

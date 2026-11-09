@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Copper &amp; Cedar logo"><title>Copper &amp; Cedar</title>
+  <g fill="none" stroke="#b0643a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 14 C50 8 57 8 57 14 C57 19 50 20 50 26"/>
+    <path d="M50 26 L24 44 H76 Z"/>
+  </g>
+  <text x="50" y="62" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="800" font-size="12.5" letter-spacing="1.6" fill="#b0643a">COPPER</text>
+  <text x="50" y="78" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="13" fill="#5a4636">&amp; Cedar</text></svg>

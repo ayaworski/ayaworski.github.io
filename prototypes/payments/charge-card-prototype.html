@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charge Card Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#222; --muted:#666; --line:#d4d4d4; --band:#f1f1f1;
+    --teal:#3bb3a8; --link:#6cc7c0; --danger:#c0392b; --bg:#f5f5f5;
+  }
+  *{box-sizing:border-box}
+  /* app chrome (copied from customer-invoices.html / checkout.css) */
+  :root{--co-border-soft:#e6e8e8;--co-go:#00a39e;--co-soft:#5d5e5e}
+  .cf-nav,.cf-header{font-family:Lato,sans-serif;font-size:14px;line-height:20px;color:#2d2d2d;pointer-events:none;user-select:none}
+  .cf-nav a,.cf-nav img,.cf-header img{display:block}
+  .cf-nav *,.cf-header *{margin:0;padding:0}
+  .cf-nav{position:fixed;left:max(0px,calc(50vw - 720px));top:0;bottom:0;width:60px;min-height:720px;background:#2d2d2d;z-index:5}
+  .cf-nav__active{position:absolute;left:0;top:0;width:60px;height:60px;background:rgba(88,88,88,.3)}
+  .cf-nav__i{position:absolute;display:block}
+  .cf-nav__i img{position:absolute;inset:0;width:100%;height:100%}
+  .cf-nav__avatar{position:absolute;left:10px;bottom:35px;width:40px;height:76px;color:#fff}
+  .cf-nav__oval{position:absolute;left:0;top:0;width:40px;height:40px}
+  .cf-nav__mark{position:absolute;left:4px;top:60px;width:32px;height:16px}
+  .cf-nav__avatar span{position:absolute;left:8px;right:7px;top:7px;text-align:center;font-size:20px;line-height:24px;letter-spacing:.25px}
+  .iv-pointer{position:absolute;left:48px;top:400px;width:16px;height:16px;display:block}
+  .iv-pointer img{position:absolute;left:6.7%;right:6.7%;top:0;bottom:25%;width:86.6%;height:75%;transform:rotate(-90deg);transform-origin:center}
+  .cf-header{height:60px;padding:0 24px 0 26px;background:#fff;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--co-border-soft);margin:0 -16px}
+  .co-brand{display:flex;align-items:center;gap:9px;font-size:16px;line-height:24px;letter-spacing:.2px}
+  .cf-header__logo{width:42px;height:42px;object-fit:cover}
+  .iv-user{display:inline-flex;align-items:center;gap:4px;font-weight:700;padding:6px 0}
+  .iv-user__avatar{width:36px;height:36px;margin-right:6px;border-radius:50%;background:#d2ac63;color:#fff;display:grid;place-content:center;font-weight:400;font-size:14px;letter-spacing:.25px}
+  .cv-user__text{display:flex;flex-direction:column;line-height:20px}
+  .cv-user__text small{font-weight:400;font-size:12px;line-height:16px;color:var(--co-soft)}
+  .page-gap{height:24px}
+
+  .panel{pointer-events:none;user-select:none;cursor:default}
+  .panel *{cursor:default!important}
+  html{background:#d9dadc}
+  body{width:1440px;margin:0 auto;position:relative;background:var(--bg);font-family:Lato,system-ui,sans-serif;color:var(--ink);padding:0 16px 0 76px;min-height:100vh}
+  .panel{max-width:920px;margin:0 auto;background:#fff;padding:36px 36px 48px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  h2{font-weight:400;font-size:22px;margin:0 0 14px}
+  hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+  .radio{display:flex;align-items:center;gap:14px;font-size:15px;cursor:pointer;margin-left:2px}
+  .radio .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--teal);display:grid;place-items:center;background:#fff;flex:none}
+  .radio .dot::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--teal)}
+  .radio.off .dot{border-color:#aaa}.radio.off .dot::after{display:none}
+  .note{font-size:11.5px;line-height:1.5;margin:10px 0 0}
+  .note b{font-weight:700}
+  .panel{padding:0!important;background:#f1f1f1!important;box-shadow:none!important;max-width:none}
+  .ship-head{display:flex;align-items:center;gap:18px;padding:30px 36px 14px 34px;font-size:15px;letter-spacing:1px;text-transform:uppercase;line-height:1.25}
+  .ship-head .sh-name{text-transform:none;font-size:16px;margin-right:2px;align-self:center}
+  .ship-head .sh-date{display:flex;flex-direction:column;margin-right:18px}
+  .ship-head .sh-po{margin-left:auto;align-self:flex-start;margin-top:6px}
+  .inner{background:#fff;margin:0 34px 0;padding:56px 32px 48px;border-radius:2px}
+  h2{text-transform:uppercase;font-size:18px;letter-spacing:.2px}
+  h2.caps{margin-top:6px}
+  .lead{font-size:14px;margin:0 0 26px;letter-spacing:.2px}
+  .opts{display:flex;flex-direction:column;gap:14px}
+  .opts .radio{font-size:14px;letter-spacing:.3px;gap:20px;margin-left:4px}
+  .opts .radio .dot{border-color:var(--teal)}
+  .opts .radio.off .dot{border-color:#111}
+  .charge-later-note{transition:opacity .2s}
+  .charge-later-note.hidden{display:none}
+
+  .amount-wrap{display:flex;gap:30px;align-items:flex-start}
+  .amounts{width:455px;max-width:100%}
+  .row{display:flex;justify-content:space-between;align-items:center;background:var(--band);padding:0 10px;height:30px;font-size:12px;margin-bottom:10px}
+  .row .k{font-family:"Libre Baskerville",serif;font-style:italic;font-size:11.5px;color:#555}
+  .row.lg .k{font-size:14px}
+  .row.lg{height:34px}
+  .rule{border-top:1.5px solid #aaa;margin:6px 0 14px}
+  .rule.dark{border-top:2px solid #111;margin:20px 0 10px}
+  .row.neg .v{color:var(--danger)}
+  .toggle{display:flex;align-items:center;gap:20px;margin-top:6px;background:none;border:0;font:inherit;color:#555;cursor:pointer;text-align:left;font-size:14px;line-height:1.15;padding:0}
+  .toggle svg{transition:transform .2s}
+  .toggle.closed svg{transform:rotate(180deg)}
+  .ship-list{margin:12px 0 0 18px;font-size:13px;min-width:230px}
+  .ship-item{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .ship-item.cancelled .lbl{text-decoration:line-through;color:#999}
+  .ship-item button{border:1px solid var(--line);background:#fff;border-radius:3px;font:inherit;font-size:11.5px;padding:3px 8px;cursor:pointer}
+  .ship-item button:hover{border-color:var(--teal);color:var(--teal)}
+  .ship-empty{color:#888;font-size:12px;padding:6px 0}
+  .hidden{display:none!important}
+
+  .card-pick{display:flex;flex-wrap:wrap;align-items:center;gap:26px;font-size:12px}
+  .card-pick label.sel{display:flex;align-items:center;gap:14px}
+  select{font:inherit;font-size:11.5px;border:0;border-bottom:1px solid var(--line);padding:8px 6px;min-width:280px;background:#fff;color:#333;cursor:pointer}
+  .chk{display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer}
+  .chk input{width:16px;height:16px;accent-color:#2563eb;margin:0;cursor:pointer}
+  .add-row{display:flex;align-items:center;gap:60px;margin-top:20px;font-size:11.5px;flex-wrap:wrap}
+  .add{display:flex;align-items:center;gap:10px;background:none;border:0;font:inherit;cursor:pointer;color:#222;padding:0}
+  .plus{width:20px;height:20px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font-size:16px;line-height:1}
+  .accepted{display:flex;align-items:center;gap:8px}
+  .brand-chip{width:24px;height:16px;border:1px solid #ccc;border-radius:2px;display:grid;place-items:center;font-size:6px;font-weight:700;font-style:italic;color:#1a1f71;background:#fff}
+  .brand-chip.mc{position:relative}
+  .brand-chip.mc i{width:9px;height:9px;border-radius:50%;background:#eb001b;display:block;margin-right:-3px}
+  .brand-chip.mc i+i{background:#f79e1b;opacity:.9;margin:0 0 0 -3px}
+  .brand-chip.mc{display:flex;justify-content:center;align-items:center}
+  .brand-chip.disc{color:#444;font-size:5px}
+  .brand-chip.amex{background:#2e77bc;color:#fff;border-color:#2e77bc;font-style:normal;font-size:5.5px}
+  .manage{display:inline-block;margin-top:22px;font-size:11.5px;color:var(--link);text-decoration:none;cursor:pointer;background:none;border:0;padding:0;font-family:inherit}
+  .manage:hover{text-decoration:underline}
+  .under{border-bottom:1px solid var(--line);width:658px;max-width:100%;margin-top:14px}
+
+  .info-wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:16px;font-size:13px;letter-spacing:.5px;margin:14px 0 36px}
+  .brand .logo{font-weight:900;font-style:italic;font-size:20px;letter-spacing:-1px;color:#222;min-width:54px}
+  dl{display:grid;grid-template-columns:100px 1fr;row-gap:16px;margin:0;font-size:13px;letter-spacing:.3px}
+  dt{font-weight:700;color:#333}
+  dd{margin:0}
+  dl .gap{grid-column:1/-1;height:2px}
+  .tag{display:inline-block;margin-left:10px;font-size:10.5px;padding:1px 7px;border-radius:9px;background:#fdecea;color:var(--danger);font-weight:700;letter-spacing:0}
+  .avatar{width:216px;height:216px;border-radius:50%;border:8px solid #fff;box-shadow:0 2px 12px rgba(0,0,0,.35);overflow:hidden;flex:none;margin:-40px 20px 0 0;background:#2b2b2b}
+  .avatar svg{width:100%;height:100%;display:block}
+
+  .actions{display:flex;gap:12px;margin-top:34px}
+  .btn{font:inherit;font-size:13px;font-weight:700;padding:10px 22px;border-radius:4px;border:1px solid var(--teal);cursor:pointer}
+  .btn.primary{background:var(--teal);color:#fff}
+  .btn.ghost{background:#fff;color:var(--teal)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#222;color:#fff;font-size:13px;padding:10px 18px;border-radius:6px;opacity:0;transition:.25s;pointer-events:none}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  dialog{border:0;border-radius:8px;padding:0;width:min(460px,92vw);box-shadow:0 10px 40px rgba(0,0,0,.35);font-family:inherit}
+  dialog::backdrop{background:rgba(0,0,0,.4)}
+  .dlg{padding:24px}
+  .dlg h3{margin:0 0 16px;font-weight:400;font-size:20px}
+  .field{display:block;margin-bottom:12px;font-size:12px;color:#555}
+  .field input{display:block;width:100%;margin-top:4px;padding:9px 10px;font:inherit;font-size:14px;border:1px solid #ccc;border-radius:4px;color:#222}
+  .field input:focus,select:focus{outline:2px solid var(--teal);outline-offset:1px}
+  .field input.bad{border-color:var(--danger)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .err{color:var(--danger);font-size:12px;min-height:16px;margin:0 0 4px}
+  .dlg .actions{margin-top:10px;justify-content:flex-end}
+  .mgr-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;gap:10px}
+  .mgr-item small{color:#888;display:block}
+  .mgr-item button{border:1px solid var(--line);background:#fff;border-radius:3px;padding:4px 10px;font:inherit;font-size:12px;cursor:pointer;color:var(--danger)}
+
+  .card-pick{display:block}
+  .card-pick label.sel{display:block;font-size:15px;letter-spacing:.3px}
+  select{display:block;width:100%;max-width:690px;margin-top:14px;font-size:14px;letter-spacing:.3px;border:0;border-bottom:1px solid #ccc;padding:8px 0;appearance:none;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0h12L6 7z' fill='%23ccc'/%3E%3C/svg%3E") no-repeat right 20px center}
+  .add-row{font-size:14px;gap:70px;letter-spacing:.2px}
+  .add{font-size:14px}
+  .manage{color:#0000ee;text-decoration:underline;font-size:15px;letter-spacing:.2px;margin-top:20px}
+  .under{width:100%;margin-top:12px}
+  dl{font-size:16px;grid-template-columns:130px 1fr;row-gap:16px;letter-spacing:.3px}
+  dt{font-weight:400}
+  .brand{font-size:17px}
+  .brand .logo{font-size:24px}
+  .auth{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;line-height:26px;letter-spacing:.3px}
+  .auth input{margin-top:6px;width:16px;height:16px;flex:none}
+  .auth a{color:#0000ee}
+  .inner{margin-bottom:26px!important}
+  .foot{background:#2b2b2b;height:110px;margin:36px -16px -24px;display:flex;justify-content:space-between;align-items:flex-end;padding:0}
+  .foot{padding:0 16px!important}
+  .foot-in{width:100%;max-width:none;margin:0 auto;height:100%;display:flex;justify-content:space-between;align-items:flex-end;padding:0 34px}
+  .foot .back{margin:0 0 33px 0;align-self:flex-end;border:2px solid #fff;color:#fff;width:210px;height:40px;display:flex;align-items:center;gap:36px;padding-left:20px;font-size:15px;letter-spacing:1.5px}
+  .foot .submit{background:#5ccfc8;color:#fff;width:auto;height:58px;display:flex;align-items:center;gap:40px;padding:0 40px;font-size:22px;letter-spacing:1.5px;align-self:flex-end;margin-bottom:24px}
+  @media(max-width:700px){
+    .panel{padding:24px 18px 40px}
+    .amount-wrap{flex-direction:column;gap:6px}
+    select{min-width:0;width:100%}
+    .card-pick label.sel{flex-direction:column;align-items:flex-start;gap:6px;width:100%}
+    .add-row{gap:20px}
+    .avatar{width:150px;height:150px;margin:0}
+  }
+</style>
+</head>
+<body>
+    <nav class="cf-nav" aria-label="Main" inert>
+      <span class="cf-nav__active" aria-hidden="true"></span>
+      <a class="cf-nav__i" aria-label="Home" style="left:20px;top:21px;width:20px;height:18px"><img src="images/invoices/nav-home.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Promotions" style="left:20px;top:84px;width:20px;height:20px"><img src="images/invoices/nav-tag.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Linesheets" style="left:20px;top:128px;width:20px;height:24px"><img src="images/invoices/nav-linesheets.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Lists" style="left:20px;top:176px;width:20px;height:24px"><img src="images/invoices/nav-list.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Whiteboard" style="left:19px;top:224px;width:22px;height:22px"><img src="images/invoices/nav-linesheets-fill.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Tasks" style="left:20px;top:270px;width:20px;height:24px"><img src="images/invoices/nav-checklist.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Suppliers" style="left:18px;top:318px;width:24px;height:17px"><img src="images/invoices/nav-people.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Orders" style="left:19px;top:359px;width:22px;height:18px"><img src="images/invoices/nav-orders.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Invoices" aria-current="page" style="left:18px;top:396px;width:24px;height:24px"><img src="images/invoices/nav-payments.svg" alt="" /></a>
+      <span class="iv-pointer" aria-hidden="true"><img src="images/invoices/nav-pointer.svg" alt="" /></span>
+      <a class="cf-nav__i" aria-label="Reporting" style="left:18px;top:443px;width:23px;height:21px"><img src="images/invoices/nav-reporting.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Partners" style="left:18px;top:488px;width:24px;height:15px"><img src="images/invoices/nav-handshake.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Settings" style="left:18px;top:527px;width:24px;height:24px"><img src="images/invoices/nav-settings.svg" alt="" /></a>
+    </nav>
+      <header class="cf-header iv-header" inert>
+        <div class="co-brand">
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <span>NuORDER</span>
+        </div>
+        <div class="iv-user">
+          <span class="iv-user__avatar" aria-hidden="true">JB</span>
+          <span class="cv-user__text">Jane Buyer<small>Element Pilates Studio</small></span>
+        </div>
+      </header>
+<div class="page-gap"></div>
+<main class="panel" inert>
+  <header class="ship-head">
+    <svg class="box" width="42" height="34" viewBox="0 0 42 34" aria-hidden="true">
+      <path d="M21 2L4 9v16l17 7 17-7V9z" fill="#5ccfc8"/>
+      <path d="M4 9l17 7 17-7L21 2z" fill="#7fddd6"/>
+      <path d="M21 16v16" stroke="#3fb5ae" stroke-width="1.5"/>
+      <path d="M27 5l11 4.5v7L27 12z" fill="#fff" opacity=".9"/>
+    </svg>
+    <span class="sh-name">Shipment 1</span>
+    <span class="sh-date"><span>SHIP START</span><span>NOV 02, 2023</span></span>
+    <span class="sh-date"><span>SHIP END</span><span>NOV 25, 2023</span></span>
+    <span class="sh-po">PO #: 2</span>
+  </header>
+  <div class="inner">
+
+  <h2 class="caps">When do you want to charge the card?</h2>
+  <p class="lead">Your card will not be charged until $STG02 Default Payments has reviewed your order and initiates the charge.</p>
+  <div class="opts" role="radiogroup" aria-label="Enter payment information">
+    <div class="radio opt" data-v="yes" role="radio" aria-checked="true" tabindex="0"><span class="dot"></span><span>Yes, I'll enter payment information</span></div>
+    <div class="radio opt off" data-v="no" role="radio" aria-checked="false" tabindex="0"><span class="dot"></span><span>No, I don't want to enter payment information</span></div>
+  </div>
+  <hr>
+
+  <div id="payBody">
+  <h2>Finalize Amount:</h2>
+  <div class="amount-wrap">
+    <div class="amounts">
+      <div class="row"><span class="k">Order Sub Total:</span><span class="v" id="sub"></span></div>
+      <div class="row"><span class="k">Previous Shipping Charges:</span><span class="v" id="ship"></span></div>
+      <div class="rule"></div>
+      <div class="row"><span class="k">Total:</span><span class="v" id="total"></span></div>
+      <div style="height:16px"></div>
+      <div class="row lg"><span class="k">Paid so Far:</span><span class="v" id="paid"></span></div>
+      <div class="rule dark"></div>
+      <div class="row"><span class="k" id="remLabel">Remaining Balance:</span><span class="v" id="rem"></span></div>
+    </div>
+    <div>
+      <div class="toggle" style="margin-top:12px;cursor:default">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#222" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l5-5 5 5"/></svg>
+        <span>View or Cancel<br>Shipping Charges</span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>Card To Save:</h2>
+  <div class="card-pick">
+    <label class="sel">Select Card On File:
+      <select id="cardSel"></select>
+    </label>
+  </div>
+  <div class="add-row">
+    <button class="add" id="addBtn"><span class="plus">+</span><u>Add New Card</u></button>
+    <span class="accepted">Accepted payment methods:
+      <span class="brand-chip mc"><i></i><i></i></span>
+      <span class="brand-chip amex">AMEX</span>
+      <span class="brand-chip">VISA</span>
+    </span>
+  </div>
+  <button class="manage" id="manageBtn">Click here to manage your credit cards</button>
+  <hr style="margin-top:22px">
+  <h2>Authorize:</h2>
+  <label class="auth">
+    <input type="checkbox">
+    <span>This represents your electronic signature to be bound by the terms of the Spreedly <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a> and the Authorize.Net <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a> which solely govern your transactions in credit card purchases by or for you. You acknowledge that NuORDER, Inc is not a party to your transactions, but you hereby permit NuORDER, Inc. to share your information that is relevant to the transaction with the parties involved in the transaction.</span>
+  </label>
+  </div>
+  <p class="note hidden" id="skipNote">No payment information will be collected with this order.</p>
+  </div>
+</main>
+<footer class="foot" inert>
+ <div class="foot-in">
+  <div class="back"><svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L5 9l7 7M21 2l-7 7 7 7"/></svg><span>BACK</span></div>
+  <div class="submit"><svg width="14" height="17" viewBox="0 0 14 17" fill="#fff"><rect x="1" y="7" width="12" height="9" rx="1.5"/><path d="M3.5 7V5a3.5 3.5 0 017 0v2" stroke="#fff" stroke-width="1.8" fill="none"/></svg><span>SUBMIT ORDER</span></div>
+ </div>
+</footer>
+
+<dialog id="addDlg">
+  <form class="dlg" id="addForm" method="dialog" novalidate>
+    <h3>Add New Card</h3>
+    <label class="field">Nickname<input name="nick" placeholder="e.g. business card" maxlength="30"></label>
+    <label class="field">Card owner<input name="owner" required></label>
+    <label class="field">Email<input name="email" type="email" required></label>
+    <label class="field">Card number<input name="num" inputmode="numeric" placeholder="4242 4242 4242 4242" maxlength="23" required></label>
+    <div class="two">
+      <label class="field">Expiry (MM/YY)<input name="exp" placeholder="MM/YY" maxlength="5" required></label>
+      <label class="field">CVC<input name="cvc" inputmode="numeric" maxlength="4" required></label>
+    </div>
+    <p class="err" id="addErr"></p>
+    <div class="actions">
+      <button type="button" class="btn ghost" id="addCancel">Cancel</button>
+      <button type="submit" class="btn primary">Add Card</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="mgrDlg">
+  <div class="dlg">
+    <h3>Manage Buyer's Cards</h3>
+    <div id="mgrList"></div>
+    <div class="actions"><button class="btn primary" id="mgrClose">Done</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const fmt = n => (n<0?'-':'') + '$' + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  /* ---------- state ---------- */
+  const initial = () => ({
+    charging:'later',
+    subTotal:2314.00,
+    paid:0,
+    shipping:[{id:1,label:'Shipping',amt:36.03,cancelled:false}],
+    cards:[
+      {id:1,brand:'VISA',last4:'1111',nick:'Studio Visa',owner:'Jane Buyer',email:'jane.buyer@elementpilates.com',exp:'11/2031',addedBy:'Jane Buyer (jane.buyer@elementpilates.com)',addedOn:'12/2022'}
+    ],
+    selected:1,
+    defaultId:1,
+    nextId:3
+  });
+  let S = initial();
+
+  /* ---------- render ---------- */
+  function shipTotal(){return S.shipping.filter(s=>!s.cancelled).reduce((a,s)=>a+s.amt,0)}
+  function renderAmounts(){
+    const ship = shipTotal(), total = S.subTotal+ship, rem = Math.round((total-S.paid)*100)/100;
+    $('sub').textContent = fmt(S.subTotal);
+    $('ship').textContent = fmt(ship);
+    $('total').textContent = fmt(total);
+    $('paid').textContent = fmt(S.paid);
+    const r = $('rem').parentElement;
+    r.classList.toggle('neg', rem<0);
+    $('remLabel').textContent = rem<0 ? 'Refund Due:' : 'Remaining Balance:';
+    $('rem').textContent = fmt(Math.abs(rem));
+      }
+  function expired(exp){
+    const [m,y]=exp.split('/').map(Number); const yr = y<100?2000+y:y;
+    return new Date(yr,m,1) <= new Date(); // first of month after expiry
+  }
+  const card = () => S.cards.find(c=>c.id===S.selected);
+  function renderCards(){
+    $('cardSel').innerHTML = S.cards.map(c=>`<option value="${c.id}" ${c.id===S.selected?'selected':''}>${c.nick||c.brand} ${c.brand.toUpperCase()} ending in ${c.last4}</option>`).join('');
+      }
+  function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+  function renderAll(){renderAmounts();renderCards()}
+
+  function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2200)}
+
+  /* ---------- events ---------- */
+
+
+  $('cardSel').addEventListener('change',e=>{S.selected=+e.target.value;renderCards()});
+  
+  /* add card */
+  const dlg=$('addDlg'), form=$('addForm');
+  $('addBtn').onclick=()=>{form.reset();$('addErr').textContent='';form.querySelectorAll('.bad').forEach(i=>i.classList.remove('bad'));dlg.showModal();form.nick.focus()};
+  $('addCancel').onclick=()=>dlg.close();
+  form.num.addEventListener('input',e=>{
+    const d=e.target.value.replace(/\D/g,'').slice(0,19);
+    e.target.value=d.replace(/(.{4})/g,'$1 ').trim();
+  });
+  form.exp.addEventListener('input',e=>{
+    let d=e.target.value.replace(/\D/g,'').slice(0,4);
+    e.target.value = d.length>2 ? d.slice(0,2)+'/'+d.slice(2) : d;
+  });
+  const luhn = n => {let s=0,alt=false;for(let i=n.length-1;i>=0;i--){let x=+n[i];if(alt){x*=2;if(x>9)x-=9}s+=x;alt=!alt}return s%10===0};
+  const brandOf = n => /^4/.test(n)?'VISA':/^(5[1-5]|2[2-7])/.test(n)?'Mastercard':/^3[47]/.test(n)?'Amex':/^(6011|65)/.test(n)?'Discover':null;
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    form.querySelectorAll('.bad').forEach(i=>i.classList.remove('bad'));
+    const f=Object.fromEntries(new FormData(form)), num=f.num.replace(/\D/g,'');
+    const fail=(el,msg)=>{form[el].classList.add('bad');$('addErr').textContent=msg;form[el].focus()};
+    if(!f.owner.trim()) return fail('owner','Card owner is required.');
+    if(!/^\S+@\S+\.\S+$/.test(f.email)) return fail('email','Enter a valid email.');
+    const brand=brandOf(num);
+    if(!brand) return fail('num','Only Visa, Mastercard, Discover and Amex are accepted.');
+    if(num.length<13||!luhn(num)) return fail('num','That card number looks invalid.');
+    const m=f.exp.match(/^(\d{2})\/(\d{2})$/);
+    if(!m||+m[1]<1||+m[1]>12) return fail('exp','Expiry must be MM/YY.');
+    if(expired(f.exp)) return fail('exp','That card is expired.');
+    if(!/^\d{3,4}$/.test(f.cvc)) return fail('cvc','Enter a 3–4 digit CVC.');
+    const now=new Date(), c={
+      id:S.nextId++,brand,last4:num.slice(-4),nick:f.nick.trim(),owner:f.owner.trim(),email:f.email.trim(),
+      exp:f.exp,addedBy:'Jane Buyer (jane.buyer@elementpilates.com)',
+      addedOn:String(now.getMonth()+1).padStart(2,'0')+'/'+now.getFullYear()
+    };
+    S.cards.push(c);S.selected=c.id;
+    dlg.close();renderCards();toast('Card ending in '+c.last4+' added');
+  });
+
+  /* manage cards */
+  function renderMgr(){
+    $('mgrList').innerHTML=S.cards.map(c=>`
+      <div class="mgr-item"><div>${esc(c.nick||c.brand)} · ${c.brand} •••• ${c.last4}<small>Exp ${c.exp}${c.id===S.defaultId?' · default':''}</small></div>
+      ${S.cards.length>1&&c.id!==S.defaultId?`<button data-id="${c.id}">Remove</button>`:''}</div>`).join('');
+  }
+  $('manageBtn').onclick=()=>{renderMgr();$('mgrDlg').showModal()};
+  $('mgrClose').onclick=()=>$('mgrDlg').close();
+  $('mgrList').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    S.cards=S.cards.filter(c=>c.id!=b.dataset.id);
+    if(!S.cards.some(c=>c.id===S.selected)) S.selected=S.defaultId;
+    renderMgr();renderCards();
+  });
+
+
+  /* enter payment info? */
+  function setOpt(v){
+    document.querySelectorAll('.opt').forEach(o=>{
+      const on=o.dataset.v===v; o.classList.toggle('off',!on); o.setAttribute('aria-checked',on);
+    });
+    $('payBody').classList.toggle('hidden',v==='no');
+    $('skipNote').classList.toggle('hidden',v!=='no');
+  }
+  document.querySelectorAll('.opt').forEach(o=>{
+    o.addEventListener('click',()=>setOpt(o.dataset.v));
+    o.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setOpt(o.dataset.v)}});
+  });
+
+  renderAll();
+
+  /* Shipment 2: static copy of the rendered form with different data */
+  const main = document.querySelector('main.panel');
+  const two = main.cloneNode(true);
+  const q = (id) => two.querySelector('#'+id);
+  const sh = two.querySelector('.ship-head');
+  sh.querySelector('.sh-name').textContent = 'Shipment 2';
+  const dates = sh.querySelectorAll('.sh-date span:last-child');
+  dates[0].textContent = 'DEC 01, 2023';
+  dates[1].textContent = 'DEC 15, 2023';
+  sh.querySelector('.sh-po').textContent = 'PO #: 3';
+  q('sub').textContent = fmt(1180.00);
+  q('ship').textContent = fmt(18.50);
+  q('total').textContent = fmt(1198.50);
+  q('paid').textContent = fmt(0);
+  q('rem').textContent = fmt(1198.50);
+  two.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+  two.style.marginTop = '24px';
+  main.after(two);
+})();
+</script>
+</body>
+</html>

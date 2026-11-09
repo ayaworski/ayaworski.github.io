@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Thistle &amp; Tweed logo"><title>Thistle &amp; Tweed</title>
+  <rect x="30" y="10" width="40" height="34" rx="6" fill="#6b5340"/>
+  <g stroke="#d9c3a5" stroke-width="2" stroke-linecap="round" fill="none">
+    <path d="M36 20 L42 26 L48 20 L54 26 L60 20 L66 26"/>
+    <path d="M36 30 L42 36 L48 30 L54 36 L60 30 L66 36"/>
+  </g>
+  <text x="50" y="62" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="14" letter-spacing="1.2" fill="#6b5340">THISTLE</text>
+  <text x="50" y="79" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="13" fill="#6b5340">&amp; Tweed</text></svg>
