@@ -36,7 +36,7 @@
     <div class="cf-page">
       <header class="cf-header iv-header">
         <div class="co-brand">
-          <img class="co-brand__logo" src="images/checkout/logo-bitmap2.png" alt="" />
+          <img class="co-brand__logo" src="images/checkout/logo-bitmap2.webp" alt="" />
           <span>Thirty Three Threads</span>
         </div>
         <div class="iv-user">
@@ -99,7 +99,7 @@
               <p><strong>Subject:</strong> <span id="mp-subject"></span></p>
             </div>
             <div class="iv-mail__body">
-              <img class="iv-mail__logo" src="images/invoices/33-threads-logo.png" alt="33 Threads" />
+              <img class="iv-mail__logo" src="images/invoices/33-threads-logo.webp" alt="33 Threads" />
               <p class="iv-mail__msg" id="mp-msg"></p>
               <div class="iv-mail__list" id="mp-list"></div>
               <div class="iv-mail__total"><strong>Total amount</strong><span><span class="iv-mail__cur">USD</span> <strong id="mp-total"></strong></span></div>
@@ -420,7 +420,7 @@
         h += '<section class="id-card" aria-labelledby="id-os"><h2 class="id-h" id="id-os">Order summary</h2>';
         h += '<div class="id-table" role="table" aria-label="Products"><div class="id-trow id-trow--head" role="row"><span>Product</span><span class="id-r">Unit price</span><span class="id-r">Qty</span><span class="id-r">Discount</span><span class="id-r">Item subtotal</span></div>';
         lines.forEach(function (l) {
-          h += '<div class="id-trow" role="row"><span class="id-prod"><img src="images/checkout/products/' + l.img + '.jpg" alt="" /><span class="id-prod__info"><strong class="id-prod__name">' + esc(l.name) + '</strong><span><span class="id-prod__k">Colour:</span> ' + esc(l.colour) + '</span><span><span class="id-prod__k">Sizes:</span> ' + esc(l.sizes) + '</span></span></span><span class="id-r">' + money(l.unit) + '</span><span class="id-r">' + l.qty + '</span><span class="id-r">' + money(l.disc) + '</span><span class="id-r">' + money(l.sub) + '</span></div>';
+          h += '<div class="id-trow" role="row"><span class="id-prod"><img src="images/checkout/products/' + l.img + '.webp" alt="" /><span class="id-prod__info"><strong class="id-prod__name">' + esc(l.name) + '</strong><span><span class="id-prod__k">Colour:</span> ' + esc(l.colour) + '</span><span><span class="id-prod__k">Sizes:</span> ' + esc(l.sizes) + '</span></span></span><span class="id-r">' + money(l.unit) + '</span><span class="id-r">' + l.qty + '</span><span class="id-r">' + money(l.disc) + '</span><span class="id-r">' + money(l.sub) + '</span></div>';
         });
         h += '</div>';
         h += '<dl class="id-totals">';

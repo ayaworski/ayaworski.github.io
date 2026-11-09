@@ -182,10 +182,10 @@ const CART='<svg viewBox="0 0 24 24"><path d="M1 3h3.500l.7 3H22l-2.200 9.500H7.
 const depts=['Sports & Outdoor','Apparel','Footwear','Accessories','Home & Gear'];
 const cats=['Camp & Hike','Climb','Cycle','Water','Run','Snow','Travel','Golf','Surf & Skate'];
 const brands=[
- {n:'Burton',img:'images/outdoor/b-burton.png',cart:0,cats:['Snow','Surf & Skate']},
- {n:'Orage',img:'images/outdoor/b-orage.png',cart:3,cats:['Snow']},
- {n:'Helly Hansen',img:'images/outdoor/b-hh.png',cart:0,full:true,cats:['Water','Snow','Run']},
- {n:'The North Face',img:'images/outdoor/b-tnf.png',cart:9,cats:['Camp & Hike','Climb','Snow','Travel']}
+ {n:'Burton',img:'images/outdoor/b-burton.webp',cart:0,cats:['Snow','Surf & Skate']},
+ {n:'Orage',img:'images/outdoor/b-orage.webp',cart:3,cats:['Snow']},
+ {n:'Helly Hansen',img:'images/outdoor/b-hh.webp',cart:0,full:true,cats:['Water','Snow','Run']},
+ {n:'The North Face',img:'images/outdoor/b-tnf.webp',cart:9,cats:['Camp & Hike','Climb','Snow','Travel']}
 ];
 const PR={p1:[449,560],p2:[179,225],p3:[249,310],p4:[389,485],p5:[139,175]};
 const SW={p1:[['#c4466f','Berry'],['#1c1c1e','Black'],['#2b6a3e','Forest'],['#c8c2b4','Bone']],p2:[['#2a3fb0','Neptune'],['#1c2a44','Deep navy'],['#1c1c1e','Black'],['#9a1b2e','Garnet']],p3:[['#3d4a73','Atlantic'],['#1c1c1e','Black'],['#6b7a45','Olive'],['#a89d8a','Stone']],p4:[['#1f7a80','Balsam'],['#1c1c1e','Black'],['#4a5568','Steel'],['#d9a441','Gold']],p5:[['#b9b89a','Teak'],['#5d625a','Kambaba'],['#1c1c1e','Black'],['#d1432b','Red']]};
@@ -225,7 +225,7 @@ function render(){
   $('#brands').innerHTML=bl.map(b=>`<button class="brand${b.full?' full':''}" aria-label="${b.n}${b.cart?', '+b.cart+' in cart':''}"><img src="${b.img}" alt="${b.n}">${b.cart?`<span class="bcart">${CART}${b.cart}</span>`:''}</button>`).join('');
   const pl=products.map((p,i)=>({p,i})).filter(({p})=>(!cat||p.cats.includes(cat))&&(!q||(p.b+' '+p.n+' 545469').toLowerCase().includes(q)));
   $('#grid').innerHTML=pl.map(({p,i})=>`<article class="card" data-i="${i}">
-    <div class="ph"${p.bg?` style="background:${p.bg}"`:''}>${p.best?'<span class="tag">Best seller</span>':''}<button class="heart${p.fav?' on':''}" aria-label="Favourite"><svg class="i" viewBox="0 0 24 24"><path d="M12 21s-8-5.500-8-11a4.500 4.500 0 018-2.800A4.500 4.500 0 0120 10c0 5.500-8 11-8 11z"/></svg></button><img src="images/outdoor/m${p.img.slice(1)}.jpg" alt="${p.b}"></div>
+    <div class="ph"${p.bg?` style="background:${p.bg}"`:''}>${p.best?'<span class="tag">Best seller</span>':''}<button class="heart${p.fav?' on':''}" aria-label="Favourite"><svg class="i" viewBox="0 0 24 24"><path d="M12 21s-8-5.500-8-11a4.500 4.500 0 018-2.800A4.500 4.500 0 0120 10c0 5.500-8 11-8 11z"/></svg></button><img src="images/outdoor/m${p.img.slice(1)}.webp" alt="${p.b}"></div>
     <div class="pb">${p.b}</div><div class="pn">${p.n}</div><div class="ps">545469</div>
     <div class="sw">${SW[p.img].map((s,k)=>`<button style="background:${s[0]}" aria-label="${s[1]}" aria-pressed="${k===(p.sw||0)&&p.sw!=null}"></button>`).join('')}</div>
     <div class="price">CAD $${PR[p.img][0]}.00<s>$${PR[p.img][1]}.00</s></div></article>`).join('');

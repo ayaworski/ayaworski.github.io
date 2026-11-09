@@ -39,7 +39,7 @@
       <!-- ============================ Header ============================ -->
       <header class="mp-header">
         <a class="mp-brand" href="#">
-          <img class="mp-brand__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <img class="mp-brand__logo" src="images/confirmation/nuorder-logo.webp" alt="" />
           <span>NuORDER</span>
         </a>
         <div class="mp-center">
@@ -261,7 +261,7 @@
       const { market, arrivals, liked } = window.MP_PRODUCTS;
       const jewelry = window.MP_PRODUCTS.jewelry || [];
       const catData = window.MP_PRODUCTS.catData || {};     // Gap catalogue by category slug (men's, kids', shoes, bags, accessories)   // supplementary jewelry catalogue (Banana Republic Canada) // "You might like" has its own 15 styles, none repeated above
-      let marketAll = MP_CAT.productsFor('Recently viewed').slice(0, 15);   // carousel: 15 of the 20 recently viewed products
+      let marketAll = MP_CAT.productsFor('Recently viewed').slice(0, 15);   // carousel: the 15 recently viewed products
       const lists = { market: marketAll, arrivals, like: liked };
       const MAX_SWATCHES = 5;
 
@@ -355,9 +355,9 @@
       const cats = [
         ['Women\'s tops',        'images/hero/tops.webp', null],
         ['Women\'s bottoms',     'images/hero/bottoms.webp', null],
-        ['Women\'s footwear',    'images/stock/footwear.jpg', null],
-        ['Women\'s accessories', 'images/stock/accessories.jpg', null],
-        ['Women\'s jewelry',     'images/stock/jewelry-color.jpg', null],
+        ['Women\'s footwear',    'images/stock/footwear.webp', null],
+        ['Women\'s accessories', 'images/stock/accessories.webp', null],
+        ['Women\'s jewelry',     'images/stock/jewelry-color.webp', null],
         ['Women\'s outerwear',   'images/hero/outerwear.webp', null]
       ];
       const catMeta = (t) => { const l = MP_CAT.productsFor(t); return `${l.length} products, ${new Set(l.map((p) => brandOf[p.name])).size} brands`; };
@@ -410,7 +410,7 @@
       // product count per category card
       const linkCounts = links.map(([n]) => String(MP_CAT.productsFor(n).length));
       document.getElementById('linkgrid').innerHTML = links.map(([n], i) =>
-        `<a class="mp-linkcard" href="marketplace-category.html?category=${encodeURIComponent(n)}"><span class="mp-linkcard__img"><img src="images/link-${i + 1}.jpg" alt="" loading="lazy" /></span>
+        `<a class="mp-linkcard" href="marketplace-category.html?category=${encodeURIComponent(n)}"><span class="mp-linkcard__img"><img src="images/link-${i + 1}.webp" alt="" loading="lazy" /></span>
            <span class="mp-linkcard__text"><span class="mp-linkcard__name">${n}</span><span class="mp-linkcard__meta">${linkCounts[i]} products</span></span></a>`).join('');
 
       /* ---------- Carousels ----------
@@ -835,6 +835,7 @@
       });
       // Women's Jewelry shows only jewelry; Women's Accessories leads with it
       pages.forEach((pg) => {
+        if (pg.slug === 'recently-viewed') pg.only = true;      // the view-all page lists just the 15 recently viewed products
         if (pg.slug === 'women-s-jewelry') { pg.first = () => jewelry; pg.only = true; }
         if (pg.slug === 'women-s-accessories') pg.first = () => jewelry;
         if (catData[pg.slug]) {                                  // categories with their own catalogue

@@ -38,7 +38,7 @@
     <div class="cf-page">
       <header class="cf-header">
         <div class="co-brand">
-          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.webp" alt="" />
           <span>NuORDER</span>
         </div>
         <img src="images/checkout/cart.svg" width="24" height="24" alt="Cart" />
@@ -122,7 +122,7 @@
           var sizes = p.sizes ? '<div class="co-item__line"><span class="co-item__label">Sizes:</span>' + p.sizes.map(function (s) { return esc(s).replace(' ', '&nbsp;'); }).join('  ') + '</div>' : '';
           var promo = p.code ? '<span class="co-item__promo">' + TAG + esc(p.code) + '</span><s class="co-item__was">' + cents(p.was) + '</s>' : '';
           return '<li class="co-item">' +
-            '<div class="co-item__thumb"><img src="images/checkout/products/' + esc(p.img) + '.jpg" alt="' + esc(p.name) + '" /><span class="co-item__badge">' + p.units + '</span></div>' +
+            '<div class="co-item__thumb"><img src="images/checkout/products/' + esc(p.img) + '.webp" alt="' + esc(p.name) + '" /><span class="co-item__badge">' + p.units + '</span></div>' +
             '<div class="co-item__data"><p class="co-item__name">' + esc(p.name) + '</p>' +
             '<div class="co-item__line"><span class="co-item__label">Colour:</span>' + esc(p.colour) + '</div>' + sizes +
             '<div class="co-item__line"><span class="co-item__label">Unit price:</span>' + cents(p.unit) + '</div></div>' +

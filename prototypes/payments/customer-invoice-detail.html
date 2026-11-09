@@ -93,7 +93,7 @@
     <div class="cf-page">
       <header class="cf-header iv-header">
         <div class="co-brand">
-          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.png" alt="" />
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.webp" alt="" />
           <span>NuORDER</span>
         </div>
         <div class="iv-user">
@@ -126,7 +126,7 @@
               <p><strong>Subject:</strong> <span id="mp-subject"></span></p>
             </div>
             <div class="iv-mail__body">
-              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/33-threads-logo.png" alt="Thirty Three Threads" />
+              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/33-threads-logo.webp" alt="Thirty Three Threads" />
               <p class="cv-mail__sup" id="mp-supline">Invoice from <strong id="mp-sup"></strong></p>
               <p class="iv-mail__msg" id="mp-msg"></p>
               <div class="iv-mail__list" id="mp-list"></div>
@@ -373,7 +373,7 @@
           h += '</div></div>';
 
           h += '<article class="cd-doc" aria-label="Invoice ' + esc(r.inv) + '">';
-          h += '<div class="cd-banner"><div class="cd-banner__top">' + (r.supplier === 'Thirty Three Threads' ? '<img class="cd-logo" src="images/invoices/33-threads-logo.png" alt="Thirty Three Threads" />' : '<span class="cd-mark">' + esc(r.supplier) + '</span>') +
+          h += '<div class="cd-banner"><div class="cd-banner__top">' + (r.supplier === 'Thirty Three Threads' ? '<img class="cd-logo" src="images/invoices/33-threads-logo.webp" alt="Thirty Three Threads" />' : '<span class="cd-mark">' + esc(r.supplier) + '</span>') +
             '<div class="cd-banner__no"><span class="cd-banner__kind">Invoice</span><span class="cd-banner__num">' + esc(r.inv) + '</span></div></div>';
           h += '</div>';
           h += '<div class="cd-top"><div class="cd-lead"><div class="cd-key">' +
@@ -395,7 +395,7 @@
 
           h += '<div class="cd-table" role="table" aria-label="Items"><div class="cd-row cd-row--head" role="row"><span>Product</span><span class="cd-n">Unit price</span><span class="cd-n">Qty</span><span class="cd-n">Discount</span><span class="cd-n">Item subtotal</span></div>';
           lines.forEach(function (l) {
-            h += '<div class="cd-row" role="row"><span class="id-prod"><img src="images/checkout/products/' + l.img + '.jpg" alt="" /><span class="id-prod__info"><strong class="id-prod__name">' + esc(l.name) + '</strong><span><span class="id-prod__k">Colour:</span> ' + esc(l.colour) + '</span><span><span class="id-prod__k">Sizes:</span> ' + esc(l.sizes) + '</span></span></span>' +
+            h += '<div class="cd-row" role="row"><span class="id-prod"><img src="images/checkout/products/' + l.img + '.webp" alt="" /><span class="id-prod__info"><strong class="id-prod__name">' + esc(l.name) + '</strong><span><span class="id-prod__k">Colour:</span> ' + esc(l.colour) + '</span><span><span class="id-prod__k">Sizes:</span> ' + esc(l.sizes) + '</span></span></span>' +
               '<span class="cd-n">' + money(l.unit) + '</span><span class="cd-n">' + l.qty + '</span><span class="cd-n">' + money(l.disc) + '</span><span class="cd-n">' + money(l.sub) + '</span></div>';
           });
           h += '</div>';

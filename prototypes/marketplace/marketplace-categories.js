@@ -20,12 +20,12 @@ window.MP_CAT = (function () {
     "kids' apparel": cat['kids-apparel'],
     "kids' shoes & accessories": cat['kids-shoes-accessories'],
   };
-  // Recently viewed: 20 products, round-robin across men's, kids', shoes, bags and accessories (first 15 feed the homepage carousel)
+  // Recently viewed: 15 products, round-robin across men's, kids', shoes, bags and accessories
   const groups = ['men-s-apparel', 'kids-apparel', 'women-s-shoes', 'women-s-handbags', 'men-s-accessories'].map((k) => cat[k] || []);
   const recent = [];
-  for (let i = 0; recent.length < 20 && i < 8; i++) groups.forEach((g) => { if (g[i] && recent.length < 20) recent.push(g[i]); });
+  for (let i = 0; recent.length < 15 && i < 8; i++) groups.forEach((g) => { if (g[i] && recent.length < 15) recent.push(g[i]); });
   // Live list: opening a product puts it first (max 20, oldest drops off). Stored in the browser so every page shares it.
-  const RECENT_KEY = 'mp-recent-v1', RECENT_MAX = 20;
+  const RECENT_KEY = 'mp-recent-v1', RECENT_MAX = 15;
   // Everlane and Gap products alternate in lists, so neither brand's photos bunch together
   const isGap = (p) => !!(p.colors && p.colors[0] && /\/gap\//.test(p.colors[0].img));
   const weave = (a, b) => { const out = []; for (let i = 0; i < Math.max(a.length, b.length); i++) { if (i < a.length) out.push(a[i]); if (i < b.length) out.push(b[i]); } return out; };
@@ -136,5 +136,14 @@ window.MP_CAT = (function () {
   }
   const isNew = (p) => hash('new|' + p.name) % 5 === 0;   // ~20% of products
   const isTop = (p) => hash('top|' + p.name) % 7 === 0 && !isNew(p);   // ~12%: "Top seller" badge (never on a New product)
+  // Homepage carousels show 15 products each. "New arrivals" and "You might like" have fewer than 15 styles of their own, so top them up
+  // from products that no carousel uses yet (the same product objects, so there is nothing extra to download).
+  const CAROUSEL = 15;
+  const inRecent = defaultRecent().slice(0, CAROUSEL);
+  const spare = market.filter((p) => !inRecent.includes(p) && !arrivals.includes(p) && !liked.includes(p));
+  const catPool = []; for (let i = 0; i < 6; i++) Object.values(cat).forEach((g) => { if (g[i]) catPool.push(g[i]); });
+  const pool = spare.concat(catPool, jewelry).filter((p, i, a) => a.indexOf(p) === i);
+  const shown = new Set(inRecent.concat(arrivals, liked).map((p) => p.name));   // a few styles share a name, so compare by name
+  [arrivals, liked].forEach((list) => { while (list.length < CAROUSEL && pool.length) { const p = pool.shift(); if (!shown.has(p.name)) { shown.add(p.name); list.push(p); } } });
   return { all, everything, productsFor, fill, getRecent, pushRecent, isNew, isTop, landing: LANDING, landingAll: LANDING.concat(TRENDING) };
 })();

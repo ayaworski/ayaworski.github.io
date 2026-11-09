@@ -42,7 +42,7 @@
       ['Winter warmers', img(find(/\bhat\b|beanie|cap\b/i))],
       ['Holiday gift guide', img(jewelry[0] || find(/necklace|ring|earring/i))],
       ['Rainy-day jackets', img(find(/parka|trench|puffer|liner|jacket/i, (p) => !/hat/i.test(p.name)))],
-      ['Canadian makers', 'images/brand-1.jpg'],
+      ['Canadian makers', 'images/brand-1.webp'],
       ['Layering basics', img(find(/henley|rib mock|mockneck|long.sleeve/i))],
       ['Weekend travel edit', img(find(/tote|backpack|jogger|hoodie/i))],
     ];
