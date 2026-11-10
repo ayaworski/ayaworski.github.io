@@ -21,20 +21,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Gochi+Hand&display=swap" rel="stylesheet">
 
   <script>document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="style.css?v=20261109a">
+  <link rel="stylesheet" href="style.css?v=20261110b">
 </head>
 <body class="case-page">
 
+<div class="case-fab case-fab--pager" id="case-pager"><nav class="pager" aria-label="Case studies"><a class="pager__btn" href="wholesale-marketplace.html" aria-label="Previous case study: Designing how brands and retailers grow their networks" title="Designing how brands and retailers grow their networks">←</a><span class="pager__btn is-off" aria-disabled="true" aria-label="Next case study">→</span></nav></div>
+<div class="case-fab case-fab--close" id="case-close"><a class="x-btn" href="index.html#case-studies" aria-label="Close case study and return to case studies">✕</a></div>
+<div class="case-fab case-fab--top is-away" id="case-top"><button type="button" class="x-btn" aria-label="Back to top">↑</button></div>
+
+<main>
+<div class="under" id="under">
 <header class="case-head">
   <div class="glow" aria-hidden="true"><div></div></div>
-  <nav class="case-nav" aria-label="Main Navigation">
-    <a href="index.html" class="logo">andrew.design</a>
-    <div class="nav-pills">
-      <a class="pill" href="index.html#case-studies">Case studies</a>
-      <a class="pill" href="index.html#about">About</a>
-      <a class="pill" href="#contact">Contact</a>
-    </div>
-  </nav>
+  <div class="case-nav"><a href="index.html" class="logo">andrew.design</a></div>
   <div class="case-intro">
     <div class="case-intro__text">
       <div class="chips mono"><span class="chip">B2B</span><span class="chip">Payments</span><span class="chip">Fintech</span><span class="chip">Wholesale</span></div>
@@ -43,9 +42,24 @@
     </div>
   </div>
 </header>
-
-<main>
-  <section class="overview">
+</div>
+<div class="over">
+<section class="proto-sec" aria-label="Interactive prototype">
+<div class="proto" role="region" aria-label="Interactive prototype">
+<div class="proto__stage grid-bg">
+<div class="proto__inner">
+<div class="proto__bar">
+<div class="proto__hint" aria-hidden="true"><svg width="48" height="56" viewBox="0 0 48 56" fill="none"><path d="M4 6 C 30 6, 42 22, 34 50" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"></path><path d="M24 41 L 34 52 L 43 40" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Click me, I'm interactive.</span></div>
+<div class="proto__row"><div class="proto__tabs" role="tablist"><button type="button" class="proto__tab" role="tab" aria-selected="true" data-key="checkout" data-src="prototypes/payments/checkout.html">Checkout</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="invoices" data-src="prototypes/payments/supplier-invoices.html">Invoice table</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="invoice-detail" data-src="prototypes/payments/supplier-invoices.html?open=unpaid">Invoice detail</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="payment-link" data-src="prototypes/payments/payment-link.html">Payment links</button></div><button type="button" class="proto__full" aria-label="Open full screen">Full screen <span aria-hidden="true">↗</span></button></div>
+</div>
+<div class="laptop"><div class="laptop__screen"><div class="laptop__notch"></div>
+<div class="laptop__view" style="height:540px"><div class="laptop__clip"><iframe title="B2B payments prototype" allowfullscreen></iframe></div></div></div>
+<div class="laptop__base"></div></div>
+</div>
+</div>
+</div>
+</section>
+<section class="overview">
     <div class="overview__copy">
       <span class="mono muted">Overview</span>
       <p class="big">A loosely scoped checkout redesign evolved into an end-to-end payments solution.</p>
@@ -63,7 +77,6 @@
     <div class="results__head"><h2 class="h-display" id="h-results">Measurable Impact</h2><span class="mono muted">First year after launch</span></div>
     <div class="cards"><div class="card"><span class="big-n">5×</span><span class="body-text">Payment volume to $17.5M</span></div><div class="card"><span class="big-n">+24%</span><span class="body-text">Supplier adoption</span></div><div class="card"><span class="big-n">11×</span><span class="body-text">Invoices issued on platform</span></div><div class="card"><span class="big-n">94%</span><span class="body-text">Checkout completion</span></div></div>
   </section>
-
 <section id="the-problem" aria-labelledby="h-01">
 <div class="ch">
 <div class="ch__top">
@@ -126,19 +139,6 @@
 </div>
 </div>
 </div>
-<div class="proto" role="region" aria-label="Interactive prototype">
-<div class="proto__stage grid-bg">
-<div class="proto__inner">
-<div class="proto__bar">
-<div class="proto__hint" aria-hidden="true"><svg width="48" height="56" viewBox="0 0 48 56" fill="none"><path d="M4 6 C 30 6, 42 22, 34 50" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round"></path><path d="M24 41 L 34 52 L 43 40" stroke="#1A1A1A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Click me, I'm interactive.</span></div>
-<div class="proto__row"><div class="proto__tabs" role="tablist"><button type="button" class="proto__tab" role="tab" aria-selected="true" data-key="checkout" data-src="prototypes/payments/checkout.html">Checkout</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="invoices" data-src="prototypes/payments/supplier-invoices.html">Invoice table</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="invoice-detail" data-src="prototypes/payments/supplier-invoices.html?open=unpaid">Invoice detail</button><button type="button" class="proto__tab" role="tab" aria-selected="false" data-key="payment-link" data-src="prototypes/payments/payment-link.html">Payment links</button></div><button type="button" class="proto__full" aria-label="Open full screen">Full screen <span aria-hidden="true">↗</span></button></div>
-</div>
-<div class="laptop"><div class="laptop__screen"><div class="laptop__notch"></div>
-<div class="laptop__view" style="height:540px"><div class="laptop__clip"><iframe title="B2B payments prototype" allowfullscreen></iframe></div></div></div>
-<div class="laptop__base"></div></div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section id="measurable-impact" aria-labelledby="h-05">
@@ -164,6 +164,7 @@
       <div class="next-card__body"><span class="h-sub">Wholesale Marketplace</span><span class="mono">Explore Marketplace →</span></div>
     </a>
   </section>
+</div>
 </main>
 
 <footer id="contact">
@@ -198,7 +199,7 @@
   </div>
 </div>
 
-<script src="script.js?v=20261108b"></script>
+<script src="script.js?v=20261109p"></script>
 </body>
 </html>
 
