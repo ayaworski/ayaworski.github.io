@@ -297,49 +297,6 @@
     requestAnimationFrame(loop);
   }
 
-  /* ---------- Case study layout (stacked / carousel) ---------- */
-  const track = document.getElementById('track');
-  const bar = document.getElementById('carousel-bar');
-  const btnStack = document.getElementById('layout-stack');
-  const btnCar = document.getElementById('layout-car');
-  const prev = document.getElementById('car-prev');
-  const next = document.getElementById('car-next');
-  const pos = document.getElementById('car-pos');
-  const fill = document.getElementById('car-fill');
-  const cards = [...track.children];
-  let idx = 0;
-
-  const pad = n => String(n).padStart(2, '0');
-  function paint() {
-    pos.textContent = pad(idx + 1) + ' / ' + pad(cards.length);
-    fill.style.width = ((idx + 1) / cards.length * 100).toFixed(1) + '%';
-    prev.disabled = idx === 0; next.disabled = idx >= cards.length - 1;
-  }
-  function setLayout(car) {
-    track.classList.toggle('is-carousel', car);
-    bar.classList.toggle('is-visible', car);
-    btnStack.classList.toggle('is-on', !car); btnStack.setAttribute('aria-pressed', String(!car));
-    btnCar.classList.toggle('is-on', car); btnCar.setAttribute('aria-pressed', String(car));
-    idx = 0; track.scrollLeft = 0; paint();
-  }
-  function go(d) {
-    idx = Math.max(0, Math.min(cards.length - 1, idx + d));
-    track.scrollTo({ left: cards[idx].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
-    paint();
-  }
-  btnStack.addEventListener('click', () => setLayout(false));
-  btnCar.addEventListener('click', () => setLayout(true));
-  prev.addEventListener('click', () => go(-1));
-  next.addEventListener('click', () => go(1));
-  track.addEventListener('scroll', () => {
-    if (!track.classList.contains('is-carousel')) return;
-    const x = track.scrollLeft + 4; let i = 0;
-    cards.forEach((k, j) => { if (k.offsetLeft - cards[0].offsetLeft <= x) i = j; });
-    if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 4) i = cards.length - 1;
-    if (i !== idx) { idx = i; paint(); }
-  });
-  paint();
-
     /* Rainbow grid glow on each case image + scroll reveals */
     $$('.case-media').forEach(media => trackGlow(media, $('.case-glow', media)));
     revealOnScroll($$('.reveal'));
@@ -347,6 +304,79 @@
 
   /* ================= Case study pages ================= */
   function initCase() {
+    /* Pin the opening content by its bottom edge so the prototype section scrolls over it */
+    (function () {
+      const under = $('#under');
+      if (!under) return;
+      const fit = () => { under.style.top = Math.min(0, window.innerHeight - under.offsetHeight) + 'px'; };
+      fit();
+      window.addEventListener('resize', fit);
+      window.addEventListener('load', fit);
+      if ('ResizeObserver' in window) new ResizeObserver(fit).observe(under);
+    })();
+
+    /* Floating close (X) + back-to-top controls */
+    (function () {
+      const closeEl = $('#case-close'), topEl = $('#case-top'), pagerEl = $('#case-pager');
+      if (!closeEl || !topEl) return;
+      let last = window.scrollY, idle = null;
+      const stage = $('.proto__stage');
+      let hovering = false, focused = false;
+      const overlaps = () => {
+        if (!stage) return false;
+        const r = stage.getBoundingClientRect();
+        return r.top < 96 && r.bottom > 0;       /* prototype is behind the top controls */
+      };
+      const blocked = () => hovering || focused || overlaps();
+      const away = (el, on) => {
+        if (el === closeEl) {
+          const v = on || blocked();               /* never show the X / arrows over the prototype */
+          el.classList.toggle('is-away', v);
+          if (pagerEl) pagerEl.classList.toggle('is-away', v);
+        } else el.classList.toggle('is-away', on);
+      };
+      const settle = () => { away(closeEl, false); };
+      away(closeEl, false);
+      if (stage) {
+        stage.addEventListener('pointerenter', () => { hovering = true; away(closeEl, true); });
+        stage.addEventListener('pointerleave', () => { hovering = false; clearTimeout(idle); idle = setTimeout(settle, 450); });
+        /* clicks inside the iframe do not bubble, but the window loses focus to it */
+        window.addEventListener('blur', () => {
+          setTimeout(() => {
+            focused = !!document.activeElement && document.activeElement.tagName === 'IFRAME' && stage.contains(document.activeElement);
+            if (focused) away(closeEl, true);
+          }, 0);
+        });
+        window.addEventListener('focus', () => {
+          focused = false;
+          clearTimeout(idle); idle = setTimeout(settle, 450);
+        });
+      }
+      $('.x-btn', topEl).addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }));
+      window.addEventListener('scroll', () => {
+        const y = window.scrollY, dy = y - last;
+        last = y;
+        clearTimeout(idle);
+        if (y < 40) { away(closeEl, false); away(topEl, true); return; }
+        if (dy > 2) {            /* scrolling down: wipe away quickly */
+          away(closeEl, true); away(topEl, true);
+        } else if (dy < -2) {    /* scrolling up: always show both */
+          away(closeEl, false); away(topEl, false);
+        }
+        /* whenever scrolling goes quiet (incl. tiny momentum tail events), bring the X and arrows back */
+        idle = setTimeout(settle, 450);
+      }, { passive: true });
+    })();
+
+    /* Rainbow grid glow on every gridded panel (same effect as the homepage cards) */
+    $$('.grid-bg').forEach(panel => {
+      const g = document.createElement('div');
+      g.className = 'grid-glow';
+      g.setAttribute('aria-hidden', 'true');
+      panel.insertBefore(g, panel.firstChild);
+      trackGlow(panel, g);
+    });
+
     /* Header grid glow */
     const head = $('.case-head');
     if (head) trackGlow(head, $('.glow', head));
@@ -355,9 +385,12 @@
     if (!reduceMotion && 'IntersectionObserver' in window) {
       const vh = window.innerHeight;
       const items = [];
-      $$('main > section').forEach(sec => [...sec.children].forEach(el => {
-        if (el.getBoundingClientRect().top > vh * 0.9) items.push(el);
+      /* reveal each block on its own (text block, big image figure) rather than a whole chapter at once */
+      const blocks = [];
+      $$('main section').forEach(sec => [...sec.children].forEach(el => {
+        if (el.classList.contains('ch')) blocks.push(...el.children); else blocks.push(el);
       }));
+      blocks.forEach(el => { if (el.getBoundingClientRect().top > vh * 0.9) items.push(el); });
       items.forEach(el => el.classList.add('reveal'));
       const marks = $$('.mark').filter(m => m.getBoundingClientRect().top > vh * 0.85);
       marks.forEach(m => m.classList.add('pre'));
