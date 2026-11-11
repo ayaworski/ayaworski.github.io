@@ -490,6 +490,36 @@
         window.openLightbox(el.dataset.zoomSrc, el.dataset.zoomAlt, el)));
     }
 
+    /* ---------- Annotated screens (hotspots) ---------- */
+    $$('[data-hs]').forEach(hs => {
+      const shot = $('.hs__shot', hs), dots = $$('.hs__dot', hs), notes = $$('.hs__note', hs);
+      const close = () => { notes.forEach(n => n.hidden = true); dots.forEach(d => d.setAttribute('aria-expanded', 'false')); };
+      dots.forEach(dot => dot.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = dot.getAttribute('aria-expanded') === 'true';
+        close();
+        if (open) return;
+        const note = notes[+dot.dataset.i];
+        note.hidden = false;
+        dot.setAttribute('aria-expanded', 'true');
+        if (matchMedia('(max-width: 640px)').matches) {      /* small screens: show the note below the image instead of over it */
+          note.classList.add('hs__note--flow');
+          $('.hs__visual', hs).insertBefore(note, $('.hs__hint', hs));
+          note.style.left = note.style.top = '';
+          return;
+        }
+        if (note.classList.contains('hs__note--flow')) { note.classList.remove('hs__note--flow'); shot.appendChild(note); }
+        const sw = shot.clientWidth, sh = shot.clientHeight, nw = note.offsetWidth, nh = note.offsetHeight;
+        const x = dot.offsetLeft, y = dot.offsetTop;
+        let l = x < sw / 2 ? x + 24 : x - 24 - nw;           /* open toward the roomier side */
+        l = Math.max(8, Math.min(l, sw - nw - 8));
+        const t = Math.max(8, Math.min(y - nh / 2, sh - nh - 8));
+        note.style.left = l + 'px'; note.style.top = t + 'px';
+      }));
+      document.addEventListener('click', e => { if (!e.target.closest('.hs__note')) close(); });
+      hs.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+    });
+
     /* ---------- Prototype viewer ---------- */
     const proto = $('.proto');
     if (proto) {
