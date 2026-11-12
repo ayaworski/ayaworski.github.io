@@ -490,6 +490,32 @@
         window.openLightbox(el.dataset.zoomSrc, el.dataset.zoomAlt, el)));
     }
 
+    /* ---------- Screenshot carousels (customer / supplier views) ---------- */
+    $$('[data-car]').forEach(car => {
+      const track = $('.hs__track', car), slides = $$('.hs__slide', car), dots = $$('.hs__pdot', car), cap = $('.hs__cap', car);
+      let i = 0;
+      const go = n => {
+        i = (n + slides.length) % slides.length;
+        track.style.transform = 'translateX(' + (-100 * i) + '%)';
+        slides.forEach((s, k) => { s.setAttribute('aria-hidden', String(k !== i)); s.inert = k !== i; });
+        dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
+        cap.textContent = slides[i].dataset.label;
+      };
+      $('.hs__arrow--prev', car).addEventListener('click', () => go(i - 1));
+      $('.hs__arrow--next', car).addEventListener('click', () => go(i + 1));
+      dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+      const view = $('.hs__car', car);
+      view.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') go(i - 1); else if (e.key === 'ArrowRight') go(i + 1); });
+      let x0 = null;
+      view.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+      view.addEventListener('touchend', e => {
+        if (x0 === null) return;
+        const dx = e.changedTouches[0].clientX - x0; x0 = null;
+        if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
+      });
+      go(0);
+    });
+
     /* ---------- Annotated screens (hotspots) ---------- */
     $$('[data-hs]').forEach(hs => {
       const shot = $('.hs__shot', hs), dots = $$('.hs__dot', hs), notes = $$('.hs__note', hs);
