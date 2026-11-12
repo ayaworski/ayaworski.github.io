@@ -492,19 +492,29 @@
 
     /* ---------- Screenshot carousels (customer / supplier views) ---------- */
     $$('[data-car]').forEach(car => {
+      const view = $('.hs__car', car);
       const track = $('.hs__track', car), slides = $$('.hs__slide', car), dots = $$('.hs__pdot', car), cap = $('.hs__cap', car);
-      let i = 0;
-      const go = n => {
-        i = (n + slides.length) % slides.length;
+      let i = 0, swapTimer = null;
+      const go = (n, animate = true) => {
+        const next = (n + slides.length) % slides.length;
+        if (animate && next === i) return;
+        i = next;
+        if (animate) {                                             /* hotspots fade out as the image swaps, then fade back in on the new one */
+          view.classList.add('is-swapping');
+          clearTimeout(swapTimer);
+          swapTimer = setTimeout(() => view.classList.remove('is-swapping'), 450);
+        }
         track.style.transform = 'translateX(' + (-100 * i) + '%)';
         slides.forEach((s, k) => { s.setAttribute('aria-hidden', String(k !== i)); s.inert = k !== i; });
         dots.forEach((d, k) => d.setAttribute('aria-current', String(k === i)));
         cap.textContent = slides[i].dataset.label;
+        view.dataset.slide = i;
+        $$('.hs__note', car).forEach(n => { n.hidden = true; });           /* close any open note when the view changes */
+        $$('.hs__dot', car).forEach(d => d.setAttribute('aria-expanded', 'false'));
       };
       $('.hs__arrow--prev', car).addEventListener('click', () => go(i - 1));
       $('.hs__arrow--next', car).addEventListener('click', () => go(i + 1));
       dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
-      const view = $('.hs__car', car);
       view.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') go(i - 1); else if (e.key === 'ArrowRight') go(i + 1); });
       let x0 = null;
       view.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
@@ -513,13 +523,20 @@
         const dx = e.changedTouches[0].clientX - x0; x0 = null;
         if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1));
       });
-      go(0);
+      go(0, false);
     });
 
     /* ---------- Annotated screens (hotspots) ---------- */
     $$('[data-hs]').forEach(hs => {
       const shot = $('.hs__shot', hs), dots = $$('.hs__dot', hs), notes = $$('.hs__note', hs);
       const close = () => { notes.forEach(n => n.hidden = true); dots.forEach(d => d.setAttribute('aria-expanded', 'false')); };
+      notes.forEach((n, k) => {                                  /* an x in each popover so a click closes it */
+        const x = document.createElement('button');
+        x.type = 'button'; x.className = 'hs__x'; x.setAttribute('aria-label', 'Close');
+        x.innerHTML = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8"/></svg>';
+        x.addEventListener('click', e => { e.stopPropagation(); close(); dots[k].focus(); });
+        n.appendChild(x);
+      });
       dots.forEach(dot => dot.addEventListener('click', e => {
         e.stopPropagation();
         const open = dot.getAttribute('aria-expanded') === 'true';
