@@ -758,7 +758,8 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
   width: 22px; height: 22px; border-radius: 50%; background: #3b6fd8; border: 3px solid #fff;
   box-shadow: 0 0 0 2px #3b6fd8, 0 4px 10px rgba(30,60,140,.35); transition: transform .12s, background .12s;
 }
-.hs__dot::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #3b6fd8; animation: hs-pulse 2.2s ease-out infinite; pointer-events: none; }
+.hs__dot::before { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #3b6fd8; opacity: 0; pointer-events: none; }
+.hs__dot:hover::before, .hs__dot:focus-visible::before { animation: hs-pulse 1.3s ease-out infinite; }
 .hs__dot:hover { transform: translate(-50%, -50%) scale(1.15); }
 .hs__dot[aria-expanded="true"] { background: var(--fg-primary); box-shadow: 0 0 0 2px var(--fg-primary), 0 4px 10px rgba(0,0,0,.3); }
 .hs__dot[aria-expanded="true"]::before { animation: none; opacity: 0; }
@@ -768,6 +769,11 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
   background: #fff; border: 2px solid var(--border-primary); box-shadow: 5px 5px 0 var(--border-primary); font-size: 15px; line-height: 1.5; color: var(--fg-secondary);
 }
 .hs__note[hidden] { display: none; }
+.hs__note { padding-right: 46px; }
+.hs__x { all: unset; box-sizing: border-box; cursor: pointer; position: absolute; top: 8px; right: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--fg-muted); transition: background .15s, color .15s; }
+.hs__x svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.hs__x:hover { background: var(--bg-panel); color: var(--fg-primary); }
+.hs__x:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 1px; }
 .hs__note strong { font: 800 18px/1.25 var(--font-display); letter-spacing: -0.02em; color: var(--fg-primary); }
 .hs__note .mono { color: var(--fg-muted); }
 .hs__hint { text-align: center; }
@@ -781,11 +787,22 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .pr .ch__main { flex: none; max-width: none; }
 .pr .ch__head p { max-width: none; }
 .pr__fig { min-width: 0; }
+.kis { display: flex; flex-direction: column; gap: 28px; padding-top: 28px; border-top: 2px solid var(--border-line); }
+.ki { display: flex; flex-direction: column; gap: 10px; }
+/* key insights sit a step below the section's main text in the hierarchy */
+.kis { gap: 20px; padding-top: 24px; }
+.kis .ki { gap: 6px; }
+.kis .h-sub { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.25; letter-spacing: -0.01em; }
+.kis .body-text { font-size: 15px; line-height: 1.55; color: var(--fg-muted); }
 .pr__fig .fig__frame { width: 100%; margin-inline: 0; padding: clamp(16px, 2.5vw, 32px); }
 @media (max-width: 900px) { .pr { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Screenshot carousel (customer / supplier views) ---------- */
-.hs__car { overflow: hidden; }
+.hs__clip { overflow: hidden; height: 100%; border-radius: 12px; }   /* clips the sliding slides only, so hotspots can overhang the image */
+.hs__dot { transition: transform .12s, background .12s, opacity .2s; }
+.hs__car.is-swapping .hs__dot, .hs__car.is-swapping .hs__note { opacity: 0 !important; pointer-events: none; }   /* hotspots fade away while the image swaps */
+.hs__car:not([data-slide="1"]) .hs__dot[data-s="1"], .hs__car:not([data-slide="1"]) .hs__note[data-s="1"] { display: none !important; }   /* data-s="1" hotspots belong to the second view only */
+.hs__car[data-slide="1"] .hs__dot[data-s="0"], .hs__car[data-slide="1"] .hs__note[data-s="0"] { display: none !important; }   /* a hotspot marked data-s="0" belongs to the first view only */
 .hs__track { display: flex; height: 100%; transition: transform .45s cubic-bezier(.65,0,.35,1); }
 .hs__slide { position: relative; flex: 0 0 100%; min-width: 0; height: 100%; }
 .hs__controls { display: flex; align-items: center; gap: 12px; }
@@ -805,6 +822,5 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__pdot:hover::before { transform: scale(1.2); }
 .hs__pdot:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 1px; border-radius: 50%; }
 @media (prefers-reduced-motion: reduce) { .hs__track, .hs__arrow { transition: none; } }
-.hs__dot, .hs__note { display: none !important; }   /* hotspots hidden for now: delete this line to bring them back */
 @media (max-width: 640px) { .hs__dot { width: 18px; height: 18px; border-width: 2px; } }
 @media (prefers-reduced-motion: reduce) { .hs__dot::before { animation: none; opacity: 0; } }
