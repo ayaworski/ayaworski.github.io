@@ -27,7 +27,7 @@
   --border-inverse: #f2f4f7;
   --border-inverse-subtle: #3a3a3a;
   /* Layout */
-  --content-max: 1440px;
+  --content-max: 1360px;   /* 1200px of usable width plus an 80px gutter each side */
   --gutter: clamp(24px, 5.5vw, 80px);
   --section-space: clamp(80px, 10vw, 128px);
   /* Type */
@@ -69,14 +69,14 @@ img { display: block; max-width: 100%; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  height: 56px;
-  padding: 0 26px;
+  min-height: 56px; /* grows if the label wraps on very narrow screens */
+  padding: 10px 26px;
   box-sizing: border-box;
   border: 2px solid var(--border-primary);
   box-shadow: 5px 5px 0 var(--border-primary);
   background: var(--bg-surface);
   color: var(--fg-primary);
-  font: 600 18px var(--font-body);
+  font: 600 18px/1.25 var(--font-body);
   text-decoration: none;
   cursor: pointer;
   transition: transform .12s, box-shadow .12s, background .12s;
@@ -174,13 +174,12 @@ h2.section-title {
 .hero-lede {
   margin: 0;
   flex: 1 1 560px;
-  max-width: 880px;
-  font: 400 clamp(26px, 3vw, 40px)/1.3 var(--font-body);
+  max-width: 1000px;
+  font: 400 clamp(28px, 3.5vw, 46px)/1.3 var(--font-body);
   letter-spacing: -0.015em;
-  color: var(--fg-muted);
+  color: var(--fg-primary);
   text-wrap: pretty;
 }
-.hero-lede strong { color: var(--fg-primary); font-weight: 600; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; }
 
 /* Case studies */
@@ -371,14 +370,6 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   .js .hero-cta .btn { animation: rise .8s cubic-bezier(.2, .7, .2, 1) 1.05s both; }
   .js .hero-cta .btn + .btn { animation-delay: 1.15s; }
 
-  /* Strong emphasis in the lede gets underlined once the sentence lands */
-  .js .hero-lede strong { background: linear-gradient(var(--bg-accent), var(--bg-accent)) no-repeat 0 88% / 0% 0.28em; animation: underline .7s ease both; }
-  .js .hero-lede strong:nth-of-type(1) { animation-delay: 1.3s; }
-  .js .hero-lede strong:nth-of-type(2) { animation-delay: 1.45s; }
-  .js .hero-lede strong:nth-of-type(3) { animation-delay: 1.6s; }
-  .js .hero-lede strong:nth-of-type(4) { animation-delay: 1.75s; }
-  @keyframes underline { to { background-size: 100% 0.28em; } }
-
   @media (min-width: 721px) {
     .js .nav-links .pill { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
     .js .nav-links .pill:nth-of-type(1) { animation-delay: .3s; }
@@ -391,6 +382,10 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   .js .reveal { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
   .js .reveal.reveal-x { transform: translateX(-64px); }
   .js .reveal.in { opacity: 1; transform: none; }
+  /* Case study pages: shorter travel and a softer landing; images lift in with a slight scale */
+  .js .case-page .reveal { transform: translateY(24px); transition: opacity .6s cubic-bezier(.22, .61, .36, 1), transform .8s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--d, 0s); }
+  .js .case-page .reveal:is(.fig, .hs__visual, .next-card) { transform: translateY(32px) scale(.985); transform-origin: 50% 100%; }
+  .js .case-page .reveal.in { opacity: 1; transform: none; }
 }
 
 
@@ -532,6 +527,7 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
 .facts dd { margin: 0; font-size: 16px; line-height: 1.55; color: var(--fg-secondary); }
 .facts dd a { text-decoration: underline; text-underline-offset: 3px; }
 .facts dd strong { font-weight: 600; color: var(--fg-primary); }
+.facts dd .fact-note { display: block; margin-top: 6px; font-size: 14px; line-height: 1.5; color: var(--fg-muted); }   /* footnote line under a fact */
 .ico-inline { display: inline-block; vertical-align: 0.05em; }
 
 .results { display: flex; flex-direction: column; gap: 32px; }
@@ -710,6 +706,9 @@ body:has(.overlay:not([hidden])) .case-fab { opacity: 0; visibility: hidden; poi
 /* Scroll stack: the opening content pins while the prototype section slides over it */
 .under { position: sticky; top: 0; z-index: 0; }
 .over { position: relative; z-index: 2; background: var(--bg-page); }
+/* hero parallax: script.js sets --py / --po / --ps on .case-head as the page scrolls.
+   The whole hero drifts up, dims and shrinks toward a point above its centre, so it recedes into the distance. */
+.case-head { transform: translate3d(0, var(--py, 0px), 0) scale(var(--ps, 1)); transform-origin: 50% 35%; opacity: var(--po, 1); will-change: transform, opacity; }
 .case-page .over > section.proto-sec { padding-top: 0; }
 
 /* Case study prev / next arrows */
@@ -717,12 +716,15 @@ body:has(.overlay:not([hidden])) .case-fab { opacity: 0; visibility: hidden; poi
 .pager { display: flex; gap: 10px; }
 .case-fab--pager { right: auto; left: clamp(16px, 3vw, 32px); top: clamp(14px, 2vw, 24px); }
 .case-fab--pager.is-away { transform: translateY(calc(-100% - 40px)); opacity: 1; transition: transform .09s ease-in; }
-@media (max-width: 1360px) { .case-page .logo { margin-left: max(0px, calc(150px - var(--gutter))); } }
+/* keep the logo clear of the fixed prev / next arrows until the centred content column starts 150px in */
+@media (max-width: 1500px) { .case-page .logo { margin-left: max(0px, calc(150px - max(var(--gutter), (100vw - var(--content-max)) / 2 + var(--gutter)))); } }
 .pager__btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; box-sizing: border-box; background: #fff; color: var(--fg-primary); border: 2px solid var(--border-primary); box-shadow: 4px 4px 0 var(--border-primary); font-size: 20px; line-height: 1; text-decoration: none; transition: transform .12s, box-shadow .12s, background .12s; }
 a.pager__btn:hover { background: var(--bg-accent-subtle); transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--border-primary); }
 a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .pager__btn.is-off { opacity: .35; box-shadow: none; border-color: var(--border-line); cursor: default; }
 .js .case-page .logo, .js .case-page .logo::before { animation: none; }
+/* Phone and tablet: no prev / next arrows, so the logo sits flush left */
+@media (max-width: 1024px) { .case-fab--pager { display: none; } .case-page .logo { margin-left: 0; } }
 
 /* Rainbow grid glow on case study grid panels (matches the homepage cards) */
 .grid-bg { position: relative; }
@@ -745,7 +747,7 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 
 /* ---------- Annotated solution screens (hotspots) ---------- */
 .hs-list { display: flex; flex-direction: column; gap: clamp(48px, 6vw, 80px); }
-.hs { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(260px, 1fr); gap: 32px clamp(32px, 5vw, 80px); align-items: center; }
+.hs { display: grid; grid-template-columns: minmax(0, 2.5fr) minmax(260px, 1fr); gap: 32px clamp(32px, 5vw, 80px); align-items: center; }
 .hs__copy { display: flex; flex-direction: column; gap: 16px; }
 .hs__copy .stat { margin-top: 16px; padding-top: 24px; border-top: 2px solid var(--border-line); max-width: none; }
 .hs__visual { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -782,20 +784,23 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__note--flow { position: static; width: auto; }
 
 /* ---------- Problem + reframing: text stacked on the left, legacy screen on the right ---------- */
-.pr { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px clamp(32px, 5vw, 80px); align-items: start; }
-.pr__text { display: flex; flex-direction: column; gap: clamp(48px, 6vw, 80px); min-width: 0; }
-.pr .ch__main { flex: none; max-width: none; }
-.pr .ch__head p { max-width: none; }
+.pr { display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
+.pr .ch__main { flex: none; }   /* stacked: don't let the 480px flex-basis become a fixed height */
 .pr__fig { min-width: 0; }
-.kis { display: flex; flex-direction: column; gap: 28px; padding-top: 28px; border-top: 2px solid var(--border-line); }
-.ki { display: flex; flex-direction: column; gap: 10px; }
-/* key insights sit a step below the section's main text in the hierarchy */
-.kis { gap: 20px; padding-top: 24px; }
-.kis .ki { gap: 6px; }
+.pr__fig .fig__frame { width: 100%; margin-inline: 0; }   /* no bleed: the grid panel lines up with the text column edges */
+/* problem image with the 15% stat beside it on the right; stacks (stat first) on narrow screens */
+.pr__row { display: flex; align-items: center; gap: 32px clamp(32px, 5vw, 80px); }
+.pr__row .pr__fig { flex: 0 1 calc(760px + 2 * var(--fpad)); width: auto; }
+.pr__row .stats { flex: 1 1 0; min-width: 0; }
+@media (max-width: 900px) { .pr__row { flex-direction: column; align-items: stretch; } .pr__row .pr__fig { flex: none; } .pr__row .stats { order: -1; flex: none; } }
+.pr__fig--tall .fig__frame { width: min(100%, calc(760px + 2 * var(--fpad))); align-self: flex-start; }   /* grid panel hugs the capped image */
+.pr__fig--tall .zoomable { max-width: 760px; margin-inline: 0; }   /* near-square screenshot: capped to the caption's width and sharing its left edge */
+.kis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px clamp(24px, 4vw, 56px); }
+.kis > .mono { grid-column: 1 / -1; }
+.ki { display: flex; flex-direction: column; gap: 6px; }
 .kis .h-sub { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.25; letter-spacing: -0.01em; }
 .kis .body-text { font-size: 15px; line-height: 1.55; color: var(--fg-muted); }
-.pr__fig .fig__frame { width: 100%; margin-inline: 0; padding: clamp(16px, 2.5vw, 32px); }
-@media (max-width: 900px) { .pr { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 900px) { .kis { grid-template-columns: minmax(0, 1fr); } }
 
 /* ---------- Screenshot carousel (customer / supplier views) ---------- */
 .hs__clip { overflow: hidden; height: 100%; border-radius: 12px; }   /* clips the sliding slides only, so hotspots can overhang the image */

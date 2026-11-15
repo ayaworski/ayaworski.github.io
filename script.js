@@ -10,16 +10,34 @@
 
   /* ================= Shared ================= */
 
-  /* Fade/slide elements in once they scroll into view (adds .in; styles live in style.css) */
+  /* Fade/slide elements in once they scroll into view (adds .in; styles live in style.css).
+     opts.stagger (ms): elements that arrive together cascade in DOM order instead of popping at once.
+     opts.cleanup: drop the reveal classes when the animation ends, so the element's own transitions (hover etc.) work again. */
   function revealOnScroll(els, opts) {
     if (!els.length) return;
     if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
+    const { stagger = 0, cleanup = false, ...ioOpts } = opts || {};
+    const show = (el, i) => {
+      if (el.classList.contains('in')) return;
+      if (stagger) el.style.setProperty('--d', Math.min(i, 4) * stagger + 'ms');
+      el.classList.add('in');
+      if (cleanup) {
+        const done = e => {
+          if (e.target !== el || e.propertyName !== 'transform') return;
+          el.removeEventListener('transitionend', done);
+          el.classList.remove('reveal', 'in'); el.style.removeProperty('--d');
+        };
+        el.addEventListener('transitionend', done);
+      }
+    };
     const io = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-    }, Object.assign({ threshold: 0.12, rootMargin: '0px 0px -6% 0px' }, opts));
+      const hits = entries.filter(en => en.isIntersecting).map(en => en.target);
+      hits.sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1);
+      hits.forEach((el, i) => { show(el, i); io.unobserve(el); });
+    }, Object.assign({ threshold: 0.12, rootMargin: '0px 0px -6% 0px' }, ioOpts));
     els.forEach(el => io.observe(el));
     // safety net so nothing already on screen stays hidden if the observer never fires
-    setTimeout(() => els.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('in'); }), 1500);
+    setTimeout(() => els.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight) show(el, 0); }), 1500);
   }
 
   /* Rainbow grid glow that follows the pointer inside `area` (CSS reveals it on :hover) */
@@ -313,6 +331,22 @@
       window.addEventListener('resize', fit);
       window.addEventListener('load', fit);
       if ('ResizeObserver' in window) new ResizeObserver(fit).observe(under);
+
+      /* Parallax: while the prototype section slides over the pinned hero, the hero content drifts up
+         at a fraction of the scroll speed and dims a little, so it reads as sitting further back */
+      const head = $('.case-head', under);
+      if (!head || reduceMotion) return;
+      let ticking = false;
+      const drift = () => {
+        ticking = false;
+        const h = under.offsetHeight;
+        const y = Math.max(0, Math.min(window.scrollY, h));      /* nothing to do once the hero is covered */
+        head.style.setProperty('--py', (-y * 0.28).toFixed(1) + 'px');
+        head.style.setProperty('--po', (1 - (y / h) * 0.6).toFixed(3));
+        head.style.setProperty('--ps', (1 - (y / h) * 0.12).toFixed(4));   /* shrink toward a vanishing point as it recedes */
+      };
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(drift); } }, { passive: true });
+      drift();
     })();
 
     /* Floating close (X) + back-to-top controls */
@@ -385,16 +419,20 @@
     if (!reduceMotion && 'IntersectionObserver' in window) {
       const vh = window.innerHeight;
       const items = [];
-      /* reveal each block on its own (text block, big image figure) rather than a whole chapter at once */
+      /* reveal each piece of content on its own (heading block, image, stat, card) rather than a whole
+         chapter at once: walk down through the layout-only wrappers and stop at the first real block */
+      const WRAP = ['ch', 'ch__top', 'ch__main', 'pr', 'pr__row', 'stats', 'cards', 'kis', 'facts', 'hs-list', 'hs', 'quotes', 'principles-w', 'principles-l', 'after'];
       const blocks = [];
-      $$('main section').forEach(sec => [...sec.children].forEach(el => {
-        if (el.classList.contains('ch')) blocks.push(...el.children); else blocks.push(el);
-      }));
+      const walk = el => {
+        if (el.tagName === 'SECTION' || WRAP.some(c => el.classList.contains(c))) [...el.children].forEach(walk);
+        else blocks.push(el);
+      };
+      $$('main section').forEach(walk);
       blocks.forEach(el => { if (el.getBoundingClientRect().top > vh * 0.9) items.push(el); });
       items.forEach(el => el.classList.add('reveal'));
       const marks = $$('.mark').filter(m => m.getBoundingClientRect().top > vh * 0.85);
       marks.forEach(m => m.classList.add('pre'));
-      revealOnScroll(items, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+      revealOnScroll(items, { threshold: 0, rootMargin: '0px 0px -12% 0px', stagger: 90, cleanup: true });
       revealOnScroll(marks, { threshold: 1, rootMargin: '0px 0px -30% 0px' });
     }
 

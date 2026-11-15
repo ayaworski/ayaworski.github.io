@@ -126,7 +126,7 @@
               <p><strong>Subject:</strong> <span id="mp-subject"></span></p>
             </div>
             <div class="iv-mail__body">
-              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/33-threads-logo.webp" alt="Thirty Three Threads" />
+              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/sundara-yoga-supply-logo.webp" alt="Sundara Yoga Supply" />
               <p class="cv-mail__sup" id="mp-supline">Invoice from <strong id="mp-sup"></strong></p>
               <p class="iv-mail__msg" id="mp-msg"></p>
               <div class="iv-mail__list" id="mp-list"></div>
@@ -310,7 +310,7 @@
 
         /* Who issued it (the list only carries the supplier's name). */
         var SUP = {
-          'Thirty Three Threads': { legal: 'Thirty Three Threads Vancouver', addr: '123 Another Street, Vancouver BC, V6J 1J2, Canada', phone: '+1 604 506-5646', email: 'sales@33threads.com', tax: 'GST/HST 812345678 RT0001' },
+          'Sundara Yoga Supply': { legal: 'Sundara Yoga Supply Vancouver', addr: '123 Another Street, Vancouver BC, V6J 1J2, Canada', phone: '+1 604 506-5646', email: 'sales@sundarayogasupply.com', tax: 'GST/HST 812345678 RT0001' },
           'Gaea Yoga Co.': { legal: 'Gaea Yoga Co. Portland', addr: '410 NW Davis Street, Portland OR, 97209, USA', phone: '+1 503 555-0134', email: 'priya.nair@gaeayoga.com', tax: 'EIN 93-1204567' },
           'Halo Active': { legal: 'Halo Active Toronto', addr: '77 Spadina Avenue, Toronto ON, M5V 2J4, Canada', phone: '+1 416 555-0178', email: 'lena.fischer@haloactive.com', tax: 'GST/HST 845671234 RT0001' },
           'Jade Harmony': { legal: 'Jade Harmony Seattle', addr: '900 Pine Street, Seattle WA, 98101, USA', phone: '+1 206 555-0192', email: 'marcus.bell@jadeharmony.com', tax: 'EIN 91-7788123' },
@@ -373,7 +373,7 @@
           h += '</div></div>';
 
           h += '<article class="cd-doc" aria-label="Invoice ' + esc(r.inv) + '">';
-          h += '<div class="cd-banner"><div class="cd-banner__top">' + (r.supplier === 'Thirty Three Threads' ? '<img class="cd-logo" src="images/invoices/33-threads-logo.webp" alt="Thirty Three Threads" />' : '<span class="cd-mark">' + esc(r.supplier) + '</span>') +
+          h += '<div class="cd-banner"><div class="cd-banner__top">' + (r.supplier === 'Sundara Yoga Supply' ? '<img class="cd-logo" src="images/invoices/sundara-yoga-supply-logo.webp" alt="Sundara Yoga Supply" />' : '<span class="cd-mark">' + esc(r.supplier) + '</span>') +
             '<div class="cd-banner__no"><span class="cd-banner__kind">Invoice</span><span class="cd-banner__num">' + esc(r.inv) + '</span></div></div>';
           h += '</div>';
           h += '<div class="cd-top"><div class="cd-lead"><div class="cd-key">' +
@@ -683,7 +683,7 @@
           $('#mp-total').textContent = usd(dueNow());
           $('#mp-sup').textContent = r.supplier;
           // The supplier's logo heads the email; a supplier without one shows its name instead.
-          var hasLogo = r.supplier === 'Thirty Three Threads';
+          var hasLogo = r.supplier === 'Sundara Yoga Supply';
           $('#mp-logo').hidden = !hasLogo; $('#mp-supline').hidden = hasLogo;
           syncSend(); sdlg.showModal(); focusPlain(sTo);
         }
