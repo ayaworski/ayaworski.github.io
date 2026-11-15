@@ -173,7 +173,7 @@
               <p><strong>Subject:</strong> <span id="mp-subject"></span></p>
             </div>
             <div class="iv-mail__body">
-              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/33-threads-logo.webp" alt="Thirty Three Threads" />
+              <img class="iv-mail__logo" id="mp-logo" src="images/invoices/sundara-yoga-supply-logo.webp" alt="Sundara Yoga Supply" />
               <p class="cv-mail__sup" id="mp-supline">Invoices from <strong id="mp-sup"></strong></p>
               <p class="iv-mail__msg" id="mp-msg"></p>
               <div class="iv-mail__list" id="mp-list"></div>
@@ -339,7 +339,7 @@
     <script>
       (function () {
         /* The customer's side of the ledger: Element Pilates Studio's invoices from the suppliers it buys from.
-           The order placed in checkout shows up as paid Thirty Three Threads invoices (one per delivery, due on receipt). */
+           The order placed in checkout shows up as paid Sundara Yoga Supply invoices (one per delivery, due on receipt). */
         var order;
         try { order = JSON.parse(sessionStorage.getItem('co-order')); } catch (e) { order = null; }
         var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -353,8 +353,8 @@
         var TERMS = function (n) { return n ? 'Net ' + n : 'Due upon receipt'; };
 
         /* Each supplier has one net-terms length; "Due upon receipt" is separate. */
-        var NET_DAYS = { 'Thirty Three Threads': 30, 'Gaea Yoga Co.': 30, 'Halo Active': 15, 'Jade Harmony': 60, 'Lifeform Props': 30 };
-        var EMAILS = { 'Thirty Three Threads': 'sales@33threads.com', 'Gaea Yoga Co.': 'priya.nair@gaeayoga.com', 'Halo Active': 'lena.fischer@haloactive.com', 'Jade Harmony': 'marcus.bell@jadeharmony.com', 'Lifeform Props': 'sofia.reyes@lifeformprops.com' };
+        var NET_DAYS = { 'Sundara Yoga Supply': 30, 'Gaea Yoga Co.': 30, 'Halo Active': 15, 'Jade Harmony': 60, 'Lifeform Props': 30 };
+        var EMAILS = { 'Sundara Yoga Supply': 'sales@sundarayogasupply.com', 'Gaea Yoga Co.': 'priya.nair@gaeayoga.com', 'Halo Active': 'lena.fischer@haloactive.com', 'Jade Harmony': 'marcus.bell@jadeharmony.com', 'Lifeform Props': 'sofia.reyes@lifeformprops.com' };
 
         /* One row. Due date = invoice date + net days; the note reads from today. */
         function inv(o) {
@@ -369,7 +369,7 @@
           return r;
         }
         var rows = [];
-        var TTT = 'Thirty Three Threads';
+        var TTT = 'Sundara Yoga Supply';
         // [supplier, total in cents, days since invoiced, net days, order #, status, amount still due (partial only)]
         var LIST = [
           ['Halo Active', 184250, 0, 15, '3496021', 'Unpaid'],
@@ -676,7 +676,7 @@
           $('#mp-total').textContent = usd(total);
           $('#mp-sup').textContent = sel[0].supplier;
           // The supplier's logo heads the email; a supplier without one shows its name instead.
-          var hasLogo = sel[0].supplier === 'Thirty Three Threads';
+          var hasLogo = sel[0].supplier === 'Sundara Yoga Supply';
           $('#mp-logo').hidden = !hasLogo; $('#mp-supline').hidden = hasLogo;
           syncSend();
           sdlg.showModal();
@@ -1181,7 +1181,7 @@
         }
         /* Brand logo: a circular thumbnail beside each supplier in the filter. */
         var LOGOS = {
-          'Thirty Three Threads': 'images/checkout/logo-bitmap2.webp',
+          'Sundara Yoga Supply': 'images/checkout/logo-bitmap2.webp',
           'Gaea Yoga Co.': 'images/invoices/suppliers/gaea-yoga.svg',
           'Halo Active': 'images/invoices/suppliers/halo-active.svg',
           'Jade Harmony': 'images/invoices/suppliers/jade-harmony.svg',
