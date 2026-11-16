@@ -26,7 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Gochi+Hand&display=swap" rel="stylesheet">
 
   <script>document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="style.css?v=20261115n">
+  <link rel="stylesheet" href="style.css?v=20261116f">
 </head>
 <body class="case-page">
 
@@ -67,12 +67,12 @@
 <section class="overview">
     <div class="overview__copy">
       <span class="mono muted">Overview</span>
-      <p class="big">A loosely scoped checkout redesign evolved into an end-to-end payments solution.</p>
-      <p>By reframing the problem, validating with real users, and aligning cross-functional partners, I shipped Lightspeed’s foundational B2B checkout and invoice experience and shaped the 18-month roadmap that followed.</p>
+      <p class="big">A loosely scoped checkout redesign evolved into a platform-first payments solution.</p>
+      <p>By reframing the problem, validating with real users, and aligning cross-functional partners, I shipped Lightspeed’s foundational B2B checkout and invoice experience, achieving immediate business impact and shaping the 18-month roadmap that followed.</p>
     </div>
     <dl class="facts">
       <div><dt>Company</dt><dd>Lightspeed Commerce · Shipped 2024</dd></div>
-      <div><dt>Timeline</dt><dd>3-week design spike <svg class="ico-inline" role="img" aria-label="to" width="12" height="11" viewBox="0 0 13 12" fill="none" style="margin:0 4px;vertical-align:0.02em"><path d="M1.5 6 H10.5 M7 2.5 L10.5 6 L7 9.5" stroke="#5B6472" stroke-width="2.4" stroke-linecap="square"></path></svg> 6-month checkout launch</dd></div>
+      <div><dt>Timeline</dt><dd>3-week design spike <svg class="ico-inline" role="img" aria-label="to" width="12" height="11" viewBox="0 0 13 12" fill="none" style="margin:0 4px;vertical-align:0.02em"><path d="M1.5 6 H10.5 M7 2.5 L10.5 6 L7 9.5" stroke="#5B6472" stroke-width="2.4" stroke-linecap="square"></path></svg> 4-month checkout launch</dd></div>
       <div><dt>My Role</dt><dd>Lead Product Designer; owned vision, delivery and roadmap creation<span class="fact-note">*I also covered the PM duties during the checkout development cycle</span></dd></div>
       <div><dt>Team</dt><dd><strong>Discovery:</strong> 2 Designers, 1 PM, 1 UXR, 2 GTM<br><strong>Delivery:</strong> 1 Design, 6 Engineers</dd></div>
     </dl>
@@ -89,20 +89,20 @@
 <div class="ch__head">
 <span class="mono muted">The problem</span>
 <h2 class="h-display" id="h-01">Ordered here, <span class="mark">paid elsewhere.</span></h2>
-<p>Merchants submitted orders on Lightspeed’s wholesale platform, but supplier payment happened elsewhere. The legacy experience was a single payments page that tried to serve both merchants and suppliers, and failed both. Usability issues and confusing messaging eroded merchant confidence. Fragmented and manual workflows failed to support how wholesale suppliers get paid.</p>
+<p>Merchants submitted orders on Lightspeed’s wholesale platform, but supplier payment often happened elsewhere. The legacy experience was a single payments page that tried to serve both merchants and suppliers, and failed both. Usability issues and confusing messaging eroded merchant confidence. Fragmented and manual workflows failed to support how wholesale suppliers get paid.</p>
 </div>
 </div>
 <div class="pr__row">
 <figure class="fig pr__fig pr__fig--tall">
-<div class="fig__frame grid-bg"><button type="button" class="zoomable" data-zoom-src="images/payments-checkout-old.webp" data-zoom-alt="Legacy payments screen" aria-label="Legacy payments screen, open full screen" style="aspect-ratio:2000 / 1969"><img src="images/payments-checkout-old.webp" alt="Legacy payments screen" loading="lazy"></button><figcaption><strong>The before:</strong> The existing payments experience was a single screen that failed to guide merchants and suppliers through the complexities of wholesale purchasing.</figcaption></div>
+<div class="fig__frame grid-bg"><button type="button" class="zoomable" data-zoom-src="images/payments-checkout-old.webp" data-zoom-alt="Legacy payments screen" aria-label="Legacy payments screen, open full screen" style="aspect-ratio:2000 / 1969"><img src="images/payments-checkout-old.webp" alt="Legacy payments screen" loading="lazy"></button><figcaption><strong>The before:</strong> The legacy payments experience was a single screen that failed to guide merchants and suppliers through the complexities of wholesale purchasing.</figcaption></div>
 </figure>
-<div class="stats stats--row"><div class="stat"><span class="big-n">15%</span><span class="body-text">of suppliers had payments enabled. Payments was part of Lightspeed’s broader strategy, and every off-platform transaction meant missed revenue for the business.</span></div></div>
+<div class="stats stats--row"><div class="stat"><span class="big-n">3.8%</span><span class="body-text">representing 153 of 4000 eligible suppliers had payments enabled. Payments was part of Lightspeed’s broader growth strategy, and every off-platform transaction meant missed revenue for the business.</span></div></div>
 </div>
 <div class="ch__main" id="reframing-the-problem" aria-labelledby="h-02">
 <div class="ch__head">
 <span class="mono muted">Reframing the problem</span>
-<h2 class="h-display" id="h-02">Checkout was only <span class="mark">half the problem.</span></h2>
-<p>A single wholesale order often mixes items paid today with items paid after delivery, and nothing guided merchants or suppliers through that. I reframed the initiative as an opportunity to learn directly from our users, using checkout as a lens to uncover new insights and challenge old assumptions. This shifted the focus from fixing checkout to designing a scalable end-to-end payments experience.</p>
+<h2 class="h-display" id="h-02">Payment happens at multiple <span class="mark">operational touch points.</span></h2>
+<p>A typical wholesale order often mixes products paid immediately with products paid after future deliveries. The single payments screen failed to guide merchants or suppliers through that complexity. I reframed this initiative as an opportunity to learn directly from our users, using checkout as a lens to uncover real operation workflows and challenge old platform assumptions. This shifted the focus from fixing a payments screen to designing a comprehensive payments experience.</p>
 </div>
 </div>
 </div>
@@ -115,7 +115,7 @@
 <div class="ch__head">
 <span class="mono muted">Discovery &amp; Alignment</span>
 <h2 class="h-display" id="h-03">Design the happy path. <span class="mark">Learn directly from users.</span></h2>
-<p>Moderated tests with 15 ICP users revealed what we could ship, what needed iteration, and where further discovery was needed. When GTM pushed to solve every edge case up front, I advocated for a pragmatic path: ship an MVP checkout, instrument it with tracking, and use real user data to inform future iterations.</p>
+<p>Moderated tests revealed valuable insights and informed what we could ship immediately versus what required further discovery and iteration. When GTM partners pushed to solve edge cases based on old assumptions, I advocated for a pragmatic path: ship an MVP checkout, instrument it with tracking, and use real user data to inform future decisions.</p>
 </div>
 </div>
 <figure class="fig pr__fig">
@@ -158,10 +158,11 @@
 <div class="ch__main">
 <div class="ch__head">
 <span class="mono muted">Results &amp; Reflection</span>
-<h2 class="h-display" id="h-05">A foundation <span class="mark">for B2B payments.</span></h2>
-<p>Four months after launch, 24% more suppliers were using invoicing, and those suppliers were 2.3× as likely to be paid on platform (50% vs 22%). By the end of the first year, payment volume had grown 5×, from $3.5M to $17.5M. I designed it as a foundation, built to be iterated on as we learned from users and as adjacent and supporting work unlocked new functionality and opportunity for collaboration. Additionally, my solution introduced reusable components and patterns setting the foundation for scalable experiences across the product ecosystem.</p>
+<h2 class="h-display" id="h-05">A platform-first solution <span class="mark">for B2B payments.</span></h2>
+<p>Four months after launch, 24% more suppliers were using invoicing, and those suppliers were 2.3× as likely to be paid on platform (50% vs 22%). By the end of the first year, payment volume had grown 5×, from $3.5M to $17.5M. My payments solution was built as a platform-first foundation, intended to be iterated on as we learned from users and as adjacent and supporting work unlocked new functionality and opportunity for collaboration.</p>
 </div>
 </div>
+<div class="principles-l side-note"><div><span class="h-sub">Built on shared foundations</span><span class="body-text">My solution introduced reusable table components and bulk actions patterns that were adopted by additional designers on the wholesale team, setting the foundation for scalable experiences across our product ecosystem.</span></div></div>
 </div>
 </div>
 </section>
@@ -171,7 +172,7 @@
     <span class="mono muted" id="h-next">Next case study</span>
     <a class="next-card" href="wholesale-marketplace.html">
       <div class="next-card__art grid-bg"><img src="images/b2b-marketplace.webp" alt="Wholesale Marketplace"></div>
-      <div class="next-card__body"><span class="h-sub">Wholesale Marketplace</span><span class="mono">Explore Marketplace →</span></div>
+      <div class="next-card__body"><span class="h-sub">Wholesale Marketplace</span><span class="mono">View case study →</span></div>
     </a>
   </section>
 </div>
