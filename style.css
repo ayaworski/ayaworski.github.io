@@ -550,6 +550,8 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
 .stat { display: flex; flex-direction: column; gap: 8px; min-width: 200px; max-width: 320px; }
 .stats--row { flex-wrap: nowrap; }
 .stats--row .stat { flex: 1 1 0; min-width: 0; }
+.stat--lead { gap: 14px; }
+.stat--lead > p { margin: 0 0 6px; }   /* a lead sentence above the big number */
 .stats--row .stat:only-child { max-width: 760px; }   /* a lone stat runs as wide as the paragraph above it */
 .principles-l { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 32px; gap: 24px; }
 .principles-l > div { display: flex; flex-direction: column; gap: 10px; }
@@ -790,17 +792,21 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 
 /* ---------- Problem + reframing: text stacked on the left, legacy screen on the right ---------- */
 .pr { display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px); }
-.pr .ch__main { flex: none; }   /* stacked: don't let the 480px flex-basis become a fixed height */
+.pr .ch__main { flex: none; }
+#the-problem .pr > #reframing-the-problem { margin-top: clamp(32px, 4.5vw, 64px); }   /* extra air between the problem image and the reframing heading */   /* stacked: don't let the 480px flex-basis become a fixed height */
 .pr__fig { min-width: 0; }
 .pr__fig .fig__frame { width: 100%; margin-inline: 0; }   /* no bleed: the grid panel lines up with the text column edges */
 /* problem image with the 15% stat beside it on the right; stacks (stat first) on narrow screens */
 .pr__row { display: flex; align-items: center; gap: 32px clamp(32px, 5vw, 80px); }
 .pr__row .pr__fig { flex: 0 1 calc(760px + 2 * var(--fpad)); width: auto; }
 .pr__row .stats { flex: 1 1 0; min-width: 0; }
+.pr__row--stack { flex-direction: column; align-items: stretch; }   /* stat on top, figure spanning the full page container */
+.pr__row--stack .pr__fig { flex: none; }
+.pr__row--stack .stats { order: -1; flex: none; }
 @media (max-width: 900px) { .pr__row { flex-direction: column; align-items: stretch; } .pr__row .pr__fig { flex: none; } .pr__row .stats { order: -1; flex: none; } }
 .pr__fig--tall .fig__frame { width: min(100%, calc(760px + 2 * var(--fpad))); align-self: flex-start; }   /* grid panel hugs the capped image */
 .pr__fig--tall .zoomable { max-width: 760px; margin-inline: 0; }   /* near-square screenshot: capped to the caption's width and sharing its left edge */
-.kis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px clamp(24px, 4vw, 56px); }
+.kis { padding-top: 28px; border-top: 2px solid var(--border-line); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px clamp(24px, 4vw, 56px); }
 .kis > .mono { grid-column: 1 / -1; }
 .ki { display: flex; flex-direction: column; gap: 6px; }
 .kis .h-sub { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.25; letter-spacing: -0.01em; }
@@ -831,6 +837,16 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__pdot[aria-current="true"]::before { background: var(--border-primary); }
 .hs__pdot:hover::before { transform: scale(1.2); }
 .hs__pdot:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 1px; border-radius: 50%; }
+/* a carousel inside a captioned figure: the figcaption stays visible, so the slide label is for screen readers only */
+.fig .hs__cap { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* solution carousels: view label on the left, controls on the right, both inside the grid panel under the screenshot */
+.hs__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; margin-top: clamp(14px, 2vw, 22px); }
+.hs__foot .hs__cap { margin: 0; text-align: left; }
+.hs__foot .hs__pager { margin-left: auto; }
+/* caption on the left, carousel controls in the bottom-right corner of the grid panel; the controls drop below the caption when space is tight */
+.fig__foot { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; }
+.fig__foot figcaption { flex: 1 1 320px; }
+.fig__foot .hs__pager { margin-left: auto; }
 @media (prefers-reduced-motion: reduce) { .hs__track, .hs__arrow { transition: none; } }
 @media (max-width: 640px) { .hs__dot { width: 18px; height: 18px; border-width: 2px; } }
 @media (prefers-reduced-motion: reduce) { .hs__dot::before { animation: none; opacity: 0; } }

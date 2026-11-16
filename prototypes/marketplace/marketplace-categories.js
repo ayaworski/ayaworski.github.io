@@ -132,6 +132,8 @@ window.MP_CAT = (function () {
     else if (own[k] && own[k].length) list = own[k];
     else if (types[k]) list = mix(all.filter((p) => types[k].includes(p.type)));
     else list = all.filter((p) => hash(k + '|' + p.name) % 5 < 3); // other categories: a stable ~60% slice of the catalogue
+    // "Adult …" styles are unisex and shot on men's models: keep them out of the women's categories
+    if (/^women's\b/.test(k)) list = list.filter((p) => !/^Adult\b/.test(p.name));
     return fill(list, k);
   }
   const isNew = (p) => hash('new|' + p.name) % 5 === 0;   // ~20% of products

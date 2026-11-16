@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Orders — NuORDER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout.css?v=20261031e" />
+    <style>
+      /* Customer orders: built on the invoice list (same shell, tabs, toolbar and row rhythm). */
+      .cv-user__text { display: flex; flex-direction: column; line-height: 20px; }
+      .cv-user__text small { font-weight: 400; font-size: 12px; line-height: 16px; color: var(--co-soft); }
+      .iv-pointer { top: 360px; }
+
+      .iv-page__head { flex-direction: row; align-items: center; justify-content: space-between; }
+      .od-row { grid-template-columns: 52px 128px 132px minmax(200px, 1fr) 124px 104px 136px 116px 108px 140px; min-height: 72px; }
+      .od-row.iv-row--head { min-height: 48px; }
+      @media (max-width: 1180px) { .od-row { min-width: 1240px; } }
+      .od-sup { line-height: 20px; }
+      .iv-filter svg { width: 16px; height: 16px; flex: none; }
+
+      /* Secondary dropdown: white fill, grey border, dark label. Static in this version. */
+      .od-menu { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px 0 14px; background: #fff; border: 1px solid var(--co-border); border-radius: var(--co-radius); font-weight: 700; cursor: default; }
+      .od-menu img { width: 16px; height: 16px; }
+
+      /* Order badges: solid dark fill with white text (the invoice list keeps its tinted badges). */
+      .od-row .cf-badge { border-radius: 3px; color: #fff; }
+      .od-row .cf-badge--success { background: #1c6823; }
+      .od-row .cf-badge--info { background: #0b4f9c; }
+      .od-row .cf-badge--danger { background: #b3261e; }
+    </style>
+  </head>
+
+  <body class="co cf">
+    <!-- Brand nav -->
+    <nav class="cf-nav" aria-label="Main">
+      <span class="cf-nav__active" aria-hidden="true"></span>
+      <a class="cf-nav__i" aria-label="Home" style="left:20px;top:21px;width:20px;height:18px"><img src="images/invoices/nav-home.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Promotions" style="left:20px;top:84px;width:20px;height:20px"><img src="images/invoices/nav-tag.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Linesheets" style="left:20px;top:128px;width:20px;height:24px"><img src="images/invoices/nav-linesheets.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Lists" style="left:20px;top:176px;width:20px;height:24px"><img src="images/invoices/nav-list.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Whiteboard" style="left:19px;top:224px;width:22px;height:22px"><img src="images/invoices/nav-linesheets-fill.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Tasks" style="left:20px;top:270px;width:20px;height:24px"><img src="images/invoices/nav-checklist.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Suppliers" style="left:18px;top:318px;width:24px;height:17px"><img src="images/invoices/nav-people.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Orders" aria-current="page" style="left:19px;top:359px;width:22px;height:18px"><img src="images/invoices/nav-orders.svg" alt="" /></a>
+      <span class="iv-pointer" aria-hidden="true"><img src="images/invoices/nav-pointer.svg" alt="" /></span>
+      <a class="cf-nav__i" aria-label="Invoices" style="left:18px;top:396px;width:24px;height:24px"><img src="images/invoices/nav-payments.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Reporting" style="left:18px;top:443px;width:23px;height:21px"><img src="images/invoices/nav-reporting.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Partners" style="left:18px;top:488px;width:24px;height:15px"><img src="images/invoices/nav-handshake.svg" alt="" /></a>
+      <a class="cf-nav__i" aria-label="Settings" style="left:18px;top:527px;width:24px;height:24px"><img src="images/invoices/nav-settings.svg" alt="" /></a>
+      <div class="cf-nav__avatar" aria-hidden="true">
+        <img class="cf-nav__oval" src="images/confirmation/nav-oval.svg" alt="" />
+        <img class="cf-nav__mark" src="images/confirmation/nav-avatar-logo.svg" alt="" />
+        <span>JB</span>
+      </div>
+    </nav>
+
+    <div class="cf-page">
+      <header class="cf-header iv-header">
+        <div class="co-brand">
+          <img class="cf-header__logo" src="images/confirmation/nuorder-logo.webp" alt="" />
+          <span>NuORDER</span>
+        </div>
+        <div class="iv-user">
+          <span class="iv-user__avatar" aria-hidden="true">JB</span>
+          <span class="cv-user__text">Jane Buyer<small>Element Pilates Studio</small></span>
+        </div>
+      </header>
+
+      <main class="iv-page">
+        <div class="iv-page__head">
+          <h1>Orders</h1>
+          <button type="button" class="co-btn co-btn--primary id-primary">Create Order</button>
+        </div>
+
+        <section class="iv-card" aria-label="Orders">
+          <div class="iv-tabs" role="tablist">
+            <button type="button" class="iv-tab" role="tab" aria-selected="true">All</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false">Submitted</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false">Draft</button>
+            <button type="button" class="iv-tab" role="tab" aria-selected="false">Ordered</button>
+          </div>
+
+          <div class="iv-toolbar">
+            <label class="iv-search">
+              <img src="images/invoices/search.svg" alt="" />
+              <span class="sr-only">Search orders</span>
+              <input type="search" placeholder="Search order # or supplier" autocomplete="off" />
+            </label>
+            <div class="iv-filters">
+              <button type="button" class="iv-filter" aria-haspopup="listbox" aria-expanded="false">Status <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-filter" aria-haspopup="listbox" aria-expanded="false">Fulfillment <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-filter" aria-haspopup="listbox" aria-expanded="false">Payment <img src="images/invoices/chevron-down-16.svg" alt="" /></button>
+              <button type="button" class="iv-filter" aria-haspopup="dialog" aria-expanded="false">All filters</button>
+              <button type="button" class="iv-filter" aria-haspopup="listbox" aria-expanded="false">
+                <svg viewBox="0 0 16 16" fill="none" stroke="#2D2D2D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 13V3M4.5 13 2 10.5M4.5 13 7 10.5M11.5 13V3M11.5 3 9 5.5M11.5 3 14 5.5" /></svg>
+                Sort
+              </button>
+            </div>
+          </div>
+
+          <div class="iv-table" role="table" aria-label="Orders">
+            <div class="iv-row od-row iv-row--head" role="row">
+              <span><input type="checkbox" class="co-check" aria-label="Select all orders" /></span>
+              <span role="columnheader">Order date</span>
+              <span role="columnheader">Order #</span>
+              <span role="columnheader">Supplier</span>
+              <span role="columnheader">Order type</span>
+              <span role="columnheader">Items</span>
+              <span role="columnheader">Order status</span>
+              <span role="columnheader" class="iv-num">Total</span>
+              <span role="columnheader">Payment</span>
+              <span role="columnheader">Actions</span>
+            </div>
+            <div id="od-body"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        /* Element Pilates Studio's orders across the suppliers it buys from. Static for this version:
+           tabs, filters, sort and the row Actions dropdown are not wired up. */
+        // [order date, order #, supplier, supplier rep, order type, items, order status, total, payment]
+        var S = 'Sundara Yoga Supply', SR = 'Anika Rao';
+        var ORDERS = [
+          ['Nov 13, 2026', '3493984-1', S, SR, 'Prebook', 3, 'Fulfilled', '$1,575.00', 'Unpaid'],
+          ['Nov 13, 2026', '3493984-2', S, SR, 'Prebook', 4, 'Processing', '$2,000.00', 'Unpaid'],
+          ['Nov 13, 2026', '3493984-3', S, SR, 'Prebook', 6, 'Processing', '$3,000.00', 'Unpaid'],
+          ['Sept 11, 2026', '3492336', 'Gaea Yoga Co.', 'Priya Nair', 'Immediate', 15, 'Fulfilled', '$1,305.55', 'Paid'],
+          ['Aug 24, 2026', '3431654', 'Lifeform Props', 'Sofia Reyes', 'Immediate', 20, 'Fulfilled', '$1,576.28', 'Paid'],
+          ['Aug 7, 2026', '3489541', 'Halo Active', 'Lena Fischer', 'Prebook', 13, 'Fulfilled', '$1,250.54', 'Paid'],
+          ['Jul 9, 2026', '3485232', 'Jade Harmony', 'Marcus Bell', 'Immediate', 18, 'Fulfilled', '$1,779.58', 'Paid'],
+          ['Jun 18, 2026', '3479918', 'Gaea Yoga Co.', 'Priya Nair', 'Immediate', 9, 'Fulfilled', '$882.00', 'Paid'],
+          ['May 27, 2026', '3474406', 'Lifeform Props', 'Sofia Reyes', 'Prebook', 24, 'Fulfilled', '$2,140.75', 'Paid'],
+          ['May 4, 2026', '3468127', 'Halo Active', 'Lena Fischer', 'Immediate', 11, 'Fulfilled', '$999.50', 'Paid']
+        ];
+        var STATUS = { Fulfilled: 'success', Processing: 'info' };
+        var PAY = { Paid: 'success', Unpaid: 'danger' };
+        var badge = function (kind, text) { return '<span class="cf-badge cf-badge--' + kind + '">' + text + '</span>'; };
+        document.getElementById('od-body').innerHTML = ORDERS.map(function (o) {
+          return '<div class="iv-row od-row" role="row">' +
+            '<span><input type="checkbox" class="co-check" aria-label="Select order ' + o[1] + '" /></span>' +
+            '<span>' + o[0] + '</span>' +
+            '<span><span class="iv-link">#' + o[1] + '</span></span>' +
+            '<span class="od-sup">' + o[2] + '<span class="iv-sub">' + o[3] + '</span></span>' +
+            '<span>' + o[4] + '</span>' +
+            '<span>' + o[5] + ' items</span>' +
+            '<span>' + badge(STATUS[o[6]], o[6]) + '</span>' +
+            '<span class="iv-num">' + o[7] + '</span>' +
+            '<span>' + badge(PAY[o[8]], o[8]) + '</span>' +
+            '<span><span class="od-menu" role="button" aria-haspopup="menu" aria-disabled="true">Actions <img src="images/invoices/chevron-down-16.svg" alt="" /></span></span>' +
+          '</div>';
+        }).join('');
+      })();
+    </script>
+  </body>
+</html>
