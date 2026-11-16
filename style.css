@@ -21,7 +21,7 @@
   --bg-accent-subtle: #f2ffc2;
   /* Border */
   --border-primary: #1a1a1a;
-  --border-line: #9aa1ad;
+  --border-line: #5b6472;
   --border-grid: oklch(0.95 0.0135 245);
   --border-panel-grid: #e1e9f5;
   --border-inverse: #f2f4f7;
@@ -553,6 +553,8 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
 .stats--row .stat:only-child { max-width: 760px; }   /* a lone stat runs as wide as the paragraph above it */
 .principles-l { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 32px; gap: 24px; }
 .principles-l > div { display: flex; flex-direction: column; gap: 10px; }
+.ch__top > .side-note { flex: 0 1 300px; margin-top: 38.5px;   /* rule sits below the eyebrow, level with the heading */ padding-top: 20px; border-top: 2px solid var(--border-line); }   /* callout beside a section's heading and paragraph */
+@media (max-width: 900px) { .ch__top > .side-note { order: 1; flex: 1 1 100%; margin-top: 0; } }
 .principles-w, .after { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); border-top: 2px solid var(--border-line); }
 .principles-w > div, .after > div { padding: 28px 32px 28px 0; display: flex; flex-direction: column; gap: 10px; }
 .principles-w .mono { color: var(--fg-muted); min-height: 1.2em; line-height: 1.2; }
@@ -595,6 +597,9 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
 .quote blockquote { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 2vw, 28px); line-height: 1.25; letter-spacing: -0.02em; text-wrap: pretty; }
 .quote figcaption { display: flex; flex-direction: column; gap: 4px; }
 .quote figcaption span:first-child { font-size: 16px; font-weight: 600; }
+/* pull quote: no card, a grey bar on the left and larger type */
+.quote--pull { max-width: 880px; padding: 4px 0 4px clamp(20px, 2.4vw, 32px); background: none; border: 0; border-left: 6px solid var(--border-line); box-shadow: none; gap: 20px; }
+.quote--pull blockquote { font-size: clamp(24px, 2.7vw, 36px); line-height: 1.2; }
 
 /* ---------- Prototype viewer ---------- */
 .proto { width: 100vw; margin-left: calc(50% - 50vw); }
