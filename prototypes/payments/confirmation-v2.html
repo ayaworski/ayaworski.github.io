@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Order confirmation — Sundara Yoga Supply</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="checkout-v2.css?v=8" />
+    <style>
+      /* Confirmation-only additions on top of checkout-v2.css */
+      .cf2-intro { display: flex; flex-direction: column; gap: 12px; }
+      .cf2-intro p { font-size: 12px; line-height: 18px; color: var(--co-soft); }
+      .cf2-order { font-size: 14px; line-height: 20px; font-weight: 700; }
+
+      /* Account chip (replaces "Edit cart") */
+      .co-v2 .cf2-user { justify-self: end; margin-right: calc(max(48px, 100% - 488px) - 8px); display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px; border-radius: var(--co-radius); font-size: 13px; }
+      .cf2-user:hover { background: var(--co-inert-bg); }
+      .cf2-user__avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-content: center; background: var(--co-go); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; }
+      .cf2-user svg { color: var(--co-soft); }
+
+      /* Progress stepper */
+      .cf2-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); margin: 12px 0 4px; }
+      .cf2-step { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: 12px; line-height: 16px; color: var(--co-soft); }
+      .cf2-step:first-child { align-items: flex-start; text-align: left; }
+      .cf2-step:last-child { align-items: flex-end; text-align: right; }
+      .cf2-step__icon { position: relative; z-index: 1; width: 32px; height: 32px; display: grid; place-content: center; background: #fff; color: var(--co-inert); }
+      .cf2-step:first-child .cf2-step__icon, .cf2-step:first-child .cf2-step__text { margin-left: 4px; }
+      .cf2-step:last-child .cf2-step__icon, .cf2-step:last-child .cf2-step__text { margin-right: 4px; }
+      .cf2-step__name { display: block; font-weight: 700; }
+      .cf2-step__date { display: block; font-size: 11px; line-height: 14px; }
+      .cf2-step.is-done { color: var(--co-text); }
+      .cf2-step.is-done .cf2-step__icon { color: var(--co-go); }
+      .cf2-step.is-next { color: var(--co-text); }
+      .cf2-step.is-next .cf2-step__icon { color: var(--co-soft); }
+      /* dotted connector between icons */
+      .cf2-step:not(:last-child)::after { content: ''; position: absolute; top: 16px; left: 50%; width: 100%; border-top: 1.5px dotted var(--co-border); }
+      .cf2-step:first-child::after { left: 40px; width: calc(150% - 64px); }
+      .cf2-step:nth-child(2)::after { left: calc(50% + 24px); width: calc(150% - 68px); }
+
+      /* Shipments grouped in one card */
+      .co-v2 .cf2-ships { padding: 0 16px; }
+      .cf2-ships .v2-ship { padding: 14px 0; border-top: 1px solid var(--co-border-soft); }
+      .cf2-ships .v2-ship:first-child { border-top: 0; }
+      .cf2-count { font-weight: 400; color: var(--co-soft); font-size: 11px; }
+
+      .cf2-paynote { display: flex; gap: 20px; }
+      .cf2-paynote h3 { width: 110px; flex: none; font-size: 14px; line-height: 20px; }
+      .cf2-paynote p { font-size: 12px; line-height: 16px; padding-top: 2px; }
+
+      .cf2-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 4px; }
+      .cf2-help { font-size: 12px; line-height: 16px; color: var(--co-soft); }
+      .cf2-help a { color: var(--co-go-text); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+      .cf2-foot .co-btn { width: auto; flex: none; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font-weight: 700; border-radius: var(--co-radius); }
+
+      .cf2-paid { font-size: 18px !important; }
+
+      @media (max-width: 960px) {
+        .co-v2 .cf2-user { margin-right: 8px; }
+      }
+      @media (max-width: 560px) {
+        .cf2-paynote { flex-direction: column; gap: 6px; }
+        .cf2-foot { flex-direction: column-reverse; align-items: stretch; }
+        .cf2-foot .co-btn { width: 100%; }
+        .cf2-step__name { font-size: 11px; }
+      }
+    </style>
+  </head>
+
+  <body class="co co-v2">
+    <header class="co-header">
+      <div class="co-header__inner">
+        <div class="co-brand">
+          <img class="co-brand__logo" src="images/checkout/logo-bitmap2.webp" alt="" />
+          <span>Sundara Yoga Supply</span>
+        </div>
+        <button type="button" class="cf2-user" aria-label="Account: Jane Doe">
+          <span class="cf2-user__avatar" aria-hidden="true">JD</span>
+          <span>Jane Doe</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="co-layout">
+      <!-- ================================ Main column ================================ -->
+      <main class="co-main">
+        <div class="co-main__inner">
+          <div class="cf2-intro">
+            <h1>Thank you for your order!</h1>
+            <p>A confirmation email has been sent to jane@element.com with all of your order details. We’ll continue to update you with payment and delivery information when each of your orders ship.</p>
+            <p class="cf2-order">Order #3493984</p>
+          </div>
+
+          <!-- Order progress -->
+          <ol class="cf2-steps" aria-label="Order progress">
+            <li class="cf2-step is-done">
+              <span class="cf2-step__icon" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="15" r="13"/><path d="M9.5 15.5l3.8 3.8 7.2-7.6"/></svg>
+              </span>
+              <span class="cf2-step__text">
+                <span class="cf2-step__name">Received</span>
+                <span class="cf2-step__date">Nov 13</span>
+                <span class="sr-only">(complete)</span>
+              </span>
+            </li>
+            <li class="cf2-step is-next" aria-current="step">
+              <span class="cf2-step__icon" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 8h15v13H3zM18 12h5l4 4.5V21h-9z"/><circle cx="8" cy="22.5" r="2.3" fill="#fff"/><circle cx="22" cy="22.5" r="2.3" fill="#fff"/></svg>
+              </span>
+              <span class="cf2-step__text"><span class="cf2-step__name">Shipping</span></span>
+            </li>
+            <li class="cf2-step">
+              <span class="cf2-step__icon" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="22" height="15" rx="2"/><path d="M3 12h22M24 20v6M21 23h6"/></svg>
+              </span>
+              <span class="cf2-step__text"><span class="cf2-step__name">Payment</span></span>
+            </li>
+          </ol>
+
+          <!-- Sold to + shipments -->
+          <section class="co-contents" aria-label="Order details">
+            <div class="co-info v2-soldto">
+              <h3>Sold to</h3>
+              <p>Jane Doe - jane@element.com<br />Elements Pilate Studio</p>
+            </div>
+
+            <div class="co-info cf2-ships">
+              <article class="v2-ship">
+                <div class="v2-ship__title">
+                  <h3>Shipment 1 <span class="cf2-count">(1/2)</span></h3>
+                  <span class="v2-badge">Immediate</span>
+                  <span class="v2-ship__date">Nov 20, 2023</span>
+                </div>
+                <div class="v2-ship__detail">
+                  <p>Element Pilates Studio - Vancouver<br />123 Fake Street, Vancouver BC, V6J 1J2, Canada<br />+1 604 506-5646</p>
+                </div>
+              </article>
+              <article class="v2-ship">
+                <div class="v2-ship__title">
+                  <h3>Shipment 2 <span class="cf2-count">(2/2)</span></h3>
+                  <span class="v2-badge v2-badge--prebook">Prebook</span>
+                  <span class="v2-ship__date">May 2024</span>
+                </div>
+                <div class="v2-ship__detail">
+                  <p>Element Pilates Studio - Vancouver<br />123 Fake Street, Vancouver BC, V6J 1J2, Canada<br />+1 604 506-5646</p>
+                </div>
+              </article>
+            </div>
+
+            <div class="co-info cf2-paynote">
+              <h3>Payment</h3>
+              <p>Shipment 1 was charged $1,025.00 today.<br />Shipment 2 ($2,025.00) will be charged when it ships.</p>
+            </div>
+          </section>
+
+          <div class="cf2-foot">
+            <p class="cf2-help">Questions? Contact <a href="#" id="support">NuORDER Support</a></p>
+            <a class="co-btn co-btn--primary" href="#" id="continue">Continue shopping</a>
+          </div>
+        </div>
+      </main>
+
+      <!-- ================================ Order summary ================================ -->
+      <aside class="co-aside v2-aside" aria-labelledby="sum-title">
+        <div class="co-aside__inner">
+          <div class="co-rows">
+            <h2 id="sum-title" style="margin-bottom:8px">Order summary</h2>
+            <div class="co-row"><span>Shipments</span><span>2</span></div>
+            <div class="co-row"><span>Products</span><span>6</span></div>
+            <div class="co-row"><span>Units</span><span>300</span></div>
+          </div>
+
+          <div class="v2-shipments" id="shipments"></div>
+
+          <div class="co-rows">
+            <div class="co-row"><span>Subtotal</span><span id="sum-sub"></span></div>
+            <div class="co-row">
+              <span class="co-row__label">Total shipping
+                <span class="v2-info" tabindex="0" role="img" aria-label="Shipping is an estimate until your items ship" title="Shipping is an estimate until your items ship">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="7" cy="7" r="6"/><path d="M7 6.2v3.6" stroke-linecap="round"/><circle cx="7" cy="4.2" r=".5" fill="currentColor"/></svg>
+                </span>
+              </span>
+              <span><span class="v2-est">(estimate)</span> <span id="sum-ship"></span></span>
+            </div>
+            <div class="co-row"><span>Sales tax</span><span id="sum-tax"></span></div>
+          </div>
+
+          <div class="co-total">
+            <img class="co-rule co-rule--strong" src="images/checkout/line-strong.svg" alt="" />
+            <div class="co-rows">
+              <div class="co-row"><span>Order total</span><span id="order-total"></span></div>
+            </div>
+            <div class="co-total__row">
+              <span>Amount paid <span class="co-total__cur">USD</span></span>
+              <span id="paid" class="cf2-paid"></span>
+            </div>
+            <div class="co-rows">
+              <div class="co-row">
+                <span class="co-row__label">Estimated future due
+                  <span class="v2-info" tabindex="0" role="img" aria-label="The prebook shipment is charged when it ships; final amount may change with shipping and tax" title="The prebook shipment is charged when it ships; final amount may change with shipping and tax">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="7" cy="7" r="6"/><path d="M7 6.2v3.6" stroke-linecap="round"/><circle cx="7" cy="4.2" r=".5" fill="currentColor"/></svg>
+                  </span>
+                </span>
+                <span id="future"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      (function () {
+        var $ = function (s) { return document.querySelector(s); };
+        var cents = function (c) {
+          return '$' + (c / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        };
+        function el(tag, cls, text) {
+          var n = document.createElement(tag);
+          if (cls) n.className = cls;
+          if (text != null) n.textContent = text;
+          return n;
+        }
+
+        /* Order data (cents) — figures follow the confirmation design */
+        var CATALOG = [
+          'Half Toe Crew Grip Socks', 'Half Toe Low Rise Grip Socks', 'Half Toe Mia Grip Socks',
+          'Half Toe Elle Grip Socks', 'Half Toe Ivy Grip Socks', 'Full Toe Low Rise Grip Socks'
+        ];
+        var UNIT = 1000; // $10.00 per unit
+        // Immediate: 2 products / 100 units; Prebook: 4 products / 200 units (same as checkout-v2)
+        var SHIP_EACH = 2500; // FedEx $25.00 per shipment
+        var SHIPMENTS = [[60, 40], [50, 50, 50, 50]].map(function (units) {
+          var s = { items: [], units: 0, sub: 0, ship: SHIP_EACH };
+          units.forEach(function (u, k) {
+            s.items.push({ name: CATALOG[k], units: u, total: u * UNIT });
+            s.units += u; s.sub += u * UNIT;
+          });
+          s.total = s.sub + s.ship;
+          return s;
+        });
+        var SUBTOTAL = SHIPMENTS.reduce(function (a, s) { return a + s.sub; }, 0);   // $3,000.00
+        var SHIP = SHIP_EACH * SHIPMENTS.length, TAX = 0;                           // $50.00, $0.00
+        var TOTAL = SUBTOTAL + SHIP + TAX;                                          // $3,050.00 = sum of shipment totals
+        var PAID = SHIPMENTS[0].total;                                              // Immediate shipment charged at order
+
+        $('#sum-sub').textContent = cents(SUBTOTAL);
+        $('#sum-ship').textContent = cents(SHIP);
+        $('#sum-tax').textContent = cents(TAX);
+        $('#order-total').textContent = cents(TOTAL);
+        $('#paid').textContent = cents(PAID);
+        $('#future').textContent = cents(TOTAL - PAID);
+
+        /* Order summary: expandable shipments (same component as checkout-v2) */
+        var host = $('#shipments');
+        SHIPMENTS.forEach(function (s, i) {
+          var id = 'ship-items-' + (i + 1);
+          var card = el('div', 'v2-sc');
+          var btn = el('button', 'v2-sc__head');
+          btn.type = 'button';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.setAttribute('aria-controls', id);
+          var left = el('span', 'v2-sc__left');
+          left.appendChild(el('span', 'v2-sc__title', 'Shipment ' + (i + 1) + ' of ' + SHIPMENTS.length));
+          left.appendChild(el('span', 'v2-sc__meta', 'Products ' + s.items.length + ', Units ' + s.units));
+          var right = el('span', 'v2-sc__right');
+          var chev = el('span', 'v2-sc__chev');
+          chev.innerHTML = '<img src="images/checkout/chevron-down.svg" alt="" />';
+          right.appendChild(chev);
+          right.appendChild(el('span', 'v2-sc__price', cents(s.total)));
+          btn.appendChild(left); btn.appendChild(right);
+          var list = el('ul', 'v2-sc__items');
+          list.id = id; list.hidden = true;
+          s.items.forEach(function (p) {
+            var li = el('li');
+            li.appendChild(el('span', null, p.name + ' × ' + p.units));
+            li.appendChild(el('span', null, cents(p.total)));
+            list.appendChild(li);
+          });
+          var shipLi = el('li');
+          shipLi.appendChild(el('span', null, 'Shipping (FedEx)'));
+          shipLi.appendChild(el('span', null, cents(s.ship)));
+          list.appendChild(shipLi);
+          btn.addEventListener('click', function () {
+            var open = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', String(!open));
+            list.hidden = open;
+          });
+          card.appendChild(btn); card.appendChild(list);
+          host.appendChild(card);
+        });
+
+        ['#support', '#continue'].forEach(function (s) {
+          $(s).addEventListener('click', function (e) { e.preventDefault(); });
+        });
+      })();
+    </script>
+  </body>
+</html>

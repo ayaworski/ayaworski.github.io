@@ -585,7 +585,8 @@
         dot.setAttribute('aria-expanded', 'true');
         if (matchMedia('(max-width: 640px)').matches) {      /* small screens: show the note below the image instead of over it */
           note.classList.add('hs__note--flow');
-          $('.hs__visual', hs).insertBefore(note, $('.hs__hint', hs));
+          const flow = $('.hs__visual', hs);
+          if (flow) flow.insertBefore(note, $('.hs__hint', hs)); else shot.after(note);   /* a figure with no visual column: right under the screenshot */
           note.style.left = note.style.top = '';
           return;
         }

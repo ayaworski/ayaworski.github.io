@@ -22,8 +22,20 @@
       .iv-filter svg { width: 16px; height: 16px; flex: none; }
 
       /* Secondary dropdown: white fill, grey border, dark label. Static in this version. */
-      .od-menu { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px 0 14px; background: #fff; border: 1px solid var(--co-border); border-radius: var(--co-radius); font-weight: 700; cursor: default; }
-      .od-menu img { width: 16px; height: 16px; }
+      .od-menu { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 10px 0 14px; background: #fff; border: 1px solid var(--co-border); border-radius: var(--co-radius); font-weight: 700; cursor: pointer; }
+      .od-menu img { width: 16px; height: 16px; transition: transform .15s; }
+      .od-menu[aria-expanded="true"] { background: var(--co-inert-bg); }
+      .od-menu[aria-expanded="true"] img { transform: rotate(180deg); }
+
+      /* Row actions menu (closed by default; opens on click) */
+      .od-actions { position: relative; display: inline-block; }
+      .od-pop { position: absolute; z-index: 5; top: calc(100% + 6px); right: 0; min-width: 184px; padding: 6px; list-style: none;
+        background: #fff; border: 1px solid var(--co-border-soft); border-radius: 6px; box-shadow: 0 8px 24px rgba(30, 30, 30, 0.16), 0 1px 3px rgba(30, 30, 30, 0.08); }
+      .od-pop[hidden] { display: none; }
+      .od-pop__item { display: block; width: 100%; padding: 8px 12px; border-radius: 4px; font-size: 14px; line-height: 20px; color: var(--co-text); text-align: left; white-space: nowrap; }
+      .od-pop__item:hover, .od-pop__item.is-active { background: var(--co-inert-bg); color: var(--co-text); }
+      .od-pop__item.is-active { font-weight: 700; }
+      .od-pop__sep { height: 1px; margin: 6px 4px; background: var(--co-border-soft); }
 
       /* Order badges: solid dark fill with white text (the invoice list keeps its tinted badges). */
       .od-row .cf-badge { border-radius: 3px; color: #fff; }
@@ -123,7 +135,7 @@
     <script>
       (function () {
         /* Element Pilates Studio's orders across the suppliers it buys from. Static for this version:
-           tabs, filters, sort and the row Actions dropdown are not wired up. */
+           tabs, filters and sort are not wired up; the row Actions menus open but their items do nothing. */
         // [order date, order #, supplier, supplier rep, order type, items, order status, total, payment]
         var S = 'Sundara Yoga Supply', SR = 'Anika Rao';
         var ORDERS = [
@@ -141,7 +153,24 @@
         var STATUS = { Fulfilled: 'success', Processing: 'info' };
         var PAY = { Paid: 'success', Unpaid: 'danger' };
         var badge = function (kind, text) { return '<span class="cf-badge cf-badge--' + kind + '">' + text + '</span>'; };
-        document.getElementById('od-body').innerHTML = ORDERS.map(function (o) {
+        var ITEMS = [
+          ['View order details'],
+          ['View invoice', true],
+          ['Pay invoice'],
+          ['Track shipment'],
+          ['Download PDF'],
+          'sep',
+          ['Reorder'],
+          ['Contact supplier']
+        ];
+        var menu = function (id) {
+          return '<ul class="od-pop" id="' + id + '" role="menu">' + ITEMS.map(function (it) {
+            if (it === 'sep') return '<li class="od-pop__sep" role="separator"></li>';
+            return '<li role="none"><button type="button" class="od-pop__item' + (it[1] ? ' is-active' : '') + '" role="menuitem">' + it[0] + '</button></li>';
+          }).join('') + '</ul>';
+        };
+        document.getElementById('od-body').innerHTML = ORDERS.map(function (o, i) {
+          var open = false, mid = 'od-menu-' + i;
           return '<div class="iv-row od-row" role="row">' +
             '<span><input type="checkbox" class="co-check" aria-label="Select order ' + o[1] + '" /></span>' +
             '<span>' + o[0] + '</span>' +
@@ -152,9 +181,22 @@
             '<span>' + badge(STATUS[o[6]], o[6]) + '</span>' +
             '<span class="iv-num">' + o[7] + '</span>' +
             '<span>' + badge(PAY[o[8]], o[8]) + '</span>' +
-            '<span><span class="od-menu" role="button" aria-haspopup="menu" aria-disabled="true">Actions <img src="images/invoices/chevron-down-16.svg" alt="" /></span></span>' +
+            '<span><span class="od-actions"><button type="button" class="od-menu" aria-haspopup="menu" aria-controls="' + mid + '" aria-expanded="' + open + '">Actions <img src="images/invoices/chevron-down-16.svg" alt="" /></button>' +
+              (open ? menu(mid) : '') + '</span></span>' +
           '</div>';
         }).join('');
+
+        /* Actions menu: closed by default; each button toggles its own ("View invoice" shown highlighted) */
+        document.getElementById('od-body').addEventListener('click', function (e) {
+          var btn = e.target.closest('.od-menu');
+          if (!btn) return;
+          var wrap = btn.parentNode, pop = wrap.querySelector('.od-pop');
+          if (!pop) { wrap.insertAdjacentHTML('beforeend', menu(btn.getAttribute('aria-controls'))); pop = wrap.querySelector('.od-pop'); pop.hidden = true; }
+          var willOpen = btn.getAttribute('aria-expanded') !== 'true';
+          document.querySelectorAll('.od-menu[aria-expanded="true"]').forEach(function (b) { b.setAttribute('aria-expanded', 'false'); var p = b.parentNode.querySelector('.od-pop'); if (p) p.hidden = true; });
+          btn.setAttribute('aria-expanded', String(willOpen));
+          pop.hidden = !willOpen;
+        });
       })();
     </script>
   </body>
