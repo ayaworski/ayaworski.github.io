@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="checkout-v2.css?v=7" />
+    <link rel="stylesheet" href="checkout-v2.css?v=8" />
   </head>
 
   <body class="co co-v2">
@@ -47,15 +47,30 @@
 
             <article class="co-info v2-ship" data-country="CA">
               <div class="v2-ship__title">
-                <h3>Shipment 1 of 1</h3>
+                <h3>Shipment 1 of 2</h3>
                 <span class="v2-badge">Immediate</span>
-                <span class="v2-ship__date">Nov 13, 2023</span>
+                <span class="v2-ship__date">Nov 20, 2023</span>
               </div>
               <div class="v2-ship__detail">
                 <p>Element Pilates Studio - Vancouver<br />123 Fake Street, Vancouver BC, V6J 1J2, Canada<br />+1 604 506-5646</p>
                 <p class="v2-ship__carrier">FedEx - $25.00</p>
               </div>
-              <button type="button" class="v2-icon-btn v2-ship__edit" aria-label="Edit shipment">
+              <button type="button" class="v2-icon-btn v2-ship__edit" aria-label="Edit shipment 1">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.3 1.7a1.5 1.5 0 012.1 0l.9.9a1.5 1.5 0 010 2.1l-8.4 8.4-3.6.9a.5.5 0 01-.6-.6l.9-3.6 8.7-8.1zM4.3 10.2l-.5 2 2-.5 6.6-6.6-1.5-1.5-6.6 6.6z"/></svg>
+              </button>
+            </article>
+
+            <article class="co-info v2-ship">
+              <div class="v2-ship__title">
+                <h3>Shipment 2 of 2</h3>
+                <span class="v2-badge v2-badge--prebook">Prebook</span>
+                <span class="v2-ship__date">May 2024</span>
+              </div>
+              <div class="v2-ship__detail">
+                <p>Element Pilates Studio - Vancouver<br />123 Fake Street, Vancouver BC, V6J 1J2, Canada<br />+1 604 506-5646</p>
+                <p class="v2-ship__carrier">FedEx - $25.00</p>
+              </div>
+              <button type="button" class="v2-icon-btn v2-ship__edit" aria-label="Edit shipment 2">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M11.3 1.7a1.5 1.5 0 012.1 0l.9.9a1.5 1.5 0 010 2.1l-8.4 8.4-3.6.9a.5.5 0 01-.6-.6l.9-3.6 8.7-8.1zM4.3 10.2l-.5 2 2-.5 6.6-6.6-1.5-1.5-6.6 6.6z"/></svg>
               </button>
             </article>
@@ -201,7 +216,7 @@
             <h2 id="sum-title" style="margin-bottom:8px">Order summary</h2>
             <div class="co-row"><span>Shipments</span><span>2</span></div>
             <div class="co-row"><span>Products</span><span>6</span></div>
-            <div class="co-row"><span>Units</span><span>600</span></div>
+            <div class="co-row"><span>Units</span><span>300</span></div>
           </div>
 
           <div class="v2-shipments" id="shipments"></div>
@@ -271,21 +286,23 @@
           { name: 'Full Toe Low Rise Grip Socks', img: 'full-toe-low-rise-grip-socks', colour: 'Candy Clause' }
         ];
         var UNIT = 1000; // $10.00 per unit
-        // [units per product] for each shipment: 2 products / 100 units, 4 / 200, 6 / 300
-        var SHIPMENTS = [[60, 40], [50, 50, 50, 50], [50, 50, 50, 50, 50, 50]].map(function (units, i) {
-          var s = { items: [], units: 0, sub: 0 };
+        // [units per product] for each shipment: Immediate 2 products / 100 units, Prebook 4 / 200
+        var SHIP_EACH = 2500; // FedEx $25.00 per shipment
+        var SHIPMENTS = [[60, 40], [50, 50, 50, 50]].map(function (units, i) {
+          var s = { items: [], units: 0, sub: 0, ship: SHIP_EACH };
           units.forEach(function (u, k) {
             var p = CATALOG[k];
             s.items.push({ name: p.name, img: p.img, colour: p.colour, units: u, unit: UNIT, was: u * UNIT, total: u * UNIT });
             s.units += u; s.sub += u * UNIT;
           });
+          s.total = s.sub + s.ship;
           return s;
         });
-        var SUBTOTAL = 600000;
-        var SHIP = 7500;
+        var SUBTOTAL = SHIPMENTS.reduce(function (a, s) { return a + s.sub; }, 0);   // $3,000.00
+        var SHIP = SHIP_EACH * SHIPMENTS.length;                                      // $50.00
         var TAX = 0;
-        var TOTAL = 102500;
-        var DUE_TODAY = 50000;
+        var TOTAL = SUBTOTAL + SHIP + TAX;                                            // $3,050.00 = sum of shipment totals
+        var DUE_TODAY = SHIPMENTS[0].total;                                           // Immediate shipment is charged now
         var REMAINING = TOTAL - DUE_TODAY;
 
         $('#sum-sub').textContent = cents(SUBTOTAL);
@@ -310,7 +327,7 @@
           var right = el('span', 'v2-sc__right');
           right.appendChild(el('span', 'v2-sc__chev'));
           right.firstChild.innerHTML = '<img src="images/checkout/chevron-down.svg" alt="" />';
-          right.appendChild(el('span', 'v2-sc__price', cents(s.sub)));
+          right.appendChild(el('span', 'v2-sc__price', cents(s.total)));
           btn.appendChild(left); btn.appendChild(right);
           var list = el('ul', 'v2-sc__items');
           list.id = id; list.hidden = true;
@@ -320,6 +337,10 @@
             li.appendChild(el('span', null, cents(p.total)));
             list.appendChild(li);
           });
+          var shipLi = el('li');
+          shipLi.appendChild(el('span', null, 'Shipping (FedEx)'));
+          shipLi.appendChild(el('span', null, cents(s.ship)));
+          list.appendChild(shipLi);
           btn.addEventListener('click', function () {
             var open = btn.getAttribute('aria-expanded') === 'true';
             btn.setAttribute('aria-expanded', String(!open));
@@ -626,11 +647,10 @@
         function buildOrder() {
           var method = selectedMethod();
           var net = $('input[name=option]:checked').value === 'net';
-          var shipEach = Math.floor(SHIP / SHIPMENTS.length);
-          var tracking = ['9965 5678 9456', '9965 5678 9012', '9965 5678 9333'];
+            var tracking = ['9965 5678 9456', '9965 5678 9012', '9965 5678 9333'];
           var days = [0, 14, 28];
           var deliveries = SHIPMENTS.map(function (s, i) {
-            var ship = i === SHIPMENTS.length - 1 ? SHIP - shipEach * (SHIPMENTS.length - 1) : shipEach;
+            var ship = s.ship;
             var d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() + days[i]);
             var MONTHS = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
             var total = s.sub + ship;
