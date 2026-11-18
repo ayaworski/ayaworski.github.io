@@ -20,7 +20,7 @@ window.MP_BRANDS = (function () {
     ['Dune Denim Co.',  'Denim',            1400, 4.5, 22, '',              'Mexico City, MX']
   ];
   // one photo per brand: [file, object-position]
-  const imgs = [['brand-1.webp', 'center 62%'], ['brand-2.webp', 'center 50%'], ['brand-3.webp', 'center 30%'], ['brand-4.webp', 'center 50%'],
+  const imgs = [['brand-1.webp', 'center 62%'], ['brand-2.webp?v=4', 'center top'], ['brand-3.webp', 'center 30%'], ['brand-4.webp', 'center 50%'],
                 ['brand-5.webp', 'center 40%'], ['brand-6.webp', 'center 50%'], ['brand-7.webp', 'center 50%'], ['brand-8.webp', 'center 50%'],
                 ['brand-9.webp', 'center 60%'], ['brand-10.webp', 'center 50%'], ['brand-11.webp', 'center 35%'], ['brand-12.webp', 'center 50%'], ['brand-13.webp', 'center 65%']];
   const slug = (n) => n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');

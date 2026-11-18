@@ -1,7 +1,9 @@
 /* Brand detail page */
 .mp-bd { padding: 0 var(--mp-gutter) 64px; max-width: 1440px; margin: 0 auto; }
 .mp-bd__crumbs { margin: 24px 0 16px; }
-.mp-bd__hero { height: 176px; border-radius: 8px; overflow: hidden; background: var(--mp-border-soft); }
+.mp-bd.mp-bd--top { padding-bottom: 0; }
+/* Full-bleed hero: spans the page edge to edge, taller than the catalog cards (cards ≈ 17vw at 5-up) */
+.mp-bd__hero { height: clamp(180px, calc(22vw - 60px), 360px); overflow: hidden; background: var(--mp-border-soft); }
 .mp-bd__hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 .mp-bd__head { display: flex; align-items: flex-start; gap: 20px; padding: 24px 0 20px; }

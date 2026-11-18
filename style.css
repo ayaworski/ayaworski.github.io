@@ -846,6 +846,7 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 /* solution carousels: view label on the left, controls on the right, both inside the grid panel under the screenshot */
 .hs__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; margin-top: clamp(14px, 2vw, 22px); }
 .hs__foot .hs__cap { margin: 0; text-align: left; }
+.hs__cap-note { display: block; margin-top: 2px; font-size: 14px; color: var(--fg-muted); }
 .hs__foot .hs__pager { margin-left: auto; }
 /* caption on the left, carousel controls in the bottom-right corner of the grid panel; the controls drop below the caption when space is tight */
 .fig__foot { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; }
