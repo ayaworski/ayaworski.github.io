@@ -175,7 +175,7 @@ h2.section-title {
   margin: 0;
   flex: 1 1 560px;
   max-width: 1000px;
-  font: 400 clamp(28px, 3.5vw, 46px)/1.3 var(--font-body);
+  font: 600 clamp(26px, 3vw, 40px)/1.3 var(--font-body);
   letter-spacing: -0.015em;
   color: var(--fg-primary);
   text-wrap: pretty;
@@ -283,14 +283,14 @@ h2.section-title {
 }
 .about-grid { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px 80px; align-items: start; }
 .about-copy { display: flex; flex-direction: column; gap: 22px; }
-.about-copy .lead { margin: 0; font: 600 clamp(26px, 3vw, 40px)/1.3 var(--font-body); letter-spacing: -0.015em; text-wrap: pretty; }
-.about-copy p:not(.lead) { margin: 0; font-size: 20px; line-height: 1.65; color: var(--fg-secondary); text-wrap: pretty; }
+.about-copy .lead { margin: 0; font: 800 clamp(28px, 2.8vw, 40px)/1.08 var(--font-display); letter-spacing: -0.03em; text-wrap: pretty; }
+.about-copy p:not(.lead) { margin: 0; font-size: 16px; line-height: 1.65; color: var(--fg-secondary); text-wrap: pretty; }
 .principles .mono { display: block; color: var(--fg-muted); margin-bottom: 12px; }
 .principle { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 22px 0; border-top: 2px solid var(--border-line); }
 .principle .mono { padding-top: 6px; margin: 0; }
 .principle-text { display: flex; flex-direction: column; gap: 8px; }
 .principle-title { font: 800 clamp(22px, 2vw, 28px)/1.15 var(--font-display); letter-spacing: -0.02em; }
-.principle-desc { font-size: 18px; line-height: 1.55; color: var(--fg-secondary); }
+.principle-desc { font-size: 16px; line-height: 1.55; color: var(--fg-secondary); }
 
 /* Footer */
 footer { background: var(--bg-inverse); color: var(--fg-inverse); }
@@ -742,6 +742,8 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
   mask-image: radial-gradient(circle 170px at var(--gx) var(--gy), #000 0%, rgba(0,0,0,.45) 40%, transparent 100%);
 }
 .grid-bg:hover > .grid-glow { opacity: 1; }
+/* panel content (images, captions, carousel controls) sits above the glow, so it only lights the grid lines */
+.grid-bg > :not(.grid-glow) { position: relative; z-index: 1; }
 .grid-glow::before {
   content: ''; position: absolute; inset: 0;
   background: radial-gradient(circle 170px at var(--gx) var(--gy), #e98bb8, #e6c45a, #6fcfa3, #6fa6e8, #a98be3, #e98bb8);
@@ -825,22 +827,25 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__car:not([data-slide="2"]) .hs__dot[data-s="2"], .hs__car:not([data-slide="2"]) .hs__note[data-s="2"] { display: none !important; }
 .hs__track { display: flex; height: 100%; transition: transform .45s cubic-bezier(.65,0,.35,1); }
 .hs__slide { position: relative; flex: 0 0 100%; min-width: 0; height: 100%; }
-.hs__controls { display: flex; align-items: center; gap: 12px; }
+.hs__controls { display: flex; align-items: center; gap: 14px; }
 .hs__arrow {
-  all: unset; box-sizing: border-box; cursor: pointer; width: 28px; height: 28px; flex: none; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; color: var(--fg-muted); transition: background .15s, color .15s;
+  all: unset; box-sizing: border-box; cursor: pointer; width: 36px; height: 36px; flex: none;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg-surface); color: var(--fg-primary); border: 2px solid var(--border-primary); box-shadow: 3px 3px 0 var(--border-primary);
+  transition: transform .12s, box-shadow .12s, background .12s;
 }
-.hs__arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-.hs__arrow:hover { background: var(--bg-panel); color: var(--fg-primary); }
-.hs__arrow:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 2px; }
+.hs__arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: square; stroke-linejoin: miter; }
+.hs__arrow:hover { background: var(--bg-accent-subtle); transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--border-primary); }
+.hs__arrow:active { background: var(--bg-accent); transform: translate(3px, 3px); box-shadow: 0 0 0 var(--border-primary); }
+.hs__arrow:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__pager { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .hs__cap { margin: clamp(14px, 2vw, 22px) 0 0; text-align: center; font-size: 16px; line-height: 1.55; color: var(--fg-caption); }
-.hs__dots { display: flex; gap: 4px; }
-.hs__pdot { all: unset; box-sizing: border-box; cursor: pointer; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
-.hs__pdot::before { content: ''; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--border-primary); background: transparent; transition: background .15s, transform .15s; }
-.hs__pdot[aria-current="true"]::before { background: var(--border-primary); }
-.hs__pdot:hover::before { transform: scale(1.2); }
-.hs__pdot:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 1px; border-radius: 50%; }
+.hs__dots { display: flex; align-items: center; gap: 2px; }
+.hs__pdot { all: unset; box-sizing: border-box; cursor: pointer; height: 24px; min-width: 18px; display: flex; align-items: center; justify-content: center; }
+.hs__pdot::before { content: ''; width: 8px; height: 8px; border-radius: 4px; box-sizing: border-box; border: 2px solid var(--border-primary); background: var(--bg-surface); transition: width .25s cubic-bezier(.65,0,.35,1), background .15s; }
+.hs__pdot:hover::before { background: var(--bg-accent); }
+.hs__pdot[aria-current="true"]::before { width: 24px; background: var(--border-primary); }
+.hs__pdot:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 1px; border-radius: 4px; }
 /* a carousel inside a captioned figure: the figcaption stays visible, so the slide label is for screen readers only */
 .fig .hs__cap { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 /* solution carousels: view label on the left, controls on the right, both inside the grid panel under the screenshot */
@@ -852,6 +857,6 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .fig__foot { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; }
 .fig__foot figcaption { flex: 1 1 320px; }
 .fig__foot .hs__pager { margin-left: auto; }
-@media (prefers-reduced-motion: reduce) { .hs__track, .hs__arrow { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .hs__track, .hs__arrow, .hs__pdot::before { transition: none; } }
 @media (max-width: 640px) { .hs__dot { width: 18px; height: 18px; border-width: 2px; } }
 @media (prefers-reduced-motion: reduce) { .hs__dot::before { animation: none; opacity: 0; } }
