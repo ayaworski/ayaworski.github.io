@@ -322,6 +322,22 @@
 
   /* ================= Case study pages ================= */
   function initCase() {
+    /* Skeleton loading: screenshots shimmer in their reserved space until the file arrives.
+       Lazy images keep the shimmer until they scroll near the viewport and load. */
+    $$('.zoomable img, .next-card__art img').forEach(img => {
+      if (img.complete && img.naturalWidth) return;
+      img.classList.add('is-loading');
+      // Hotspot dots for this screenshot wait too, so they don't pulse over an empty placeholder.
+      // In a carousel only the dots for this image's slide (data-s) wait; the other slides keep theirs.
+      const shot = img.closest('.hs__shot'), slide = img.closest('.hs__slide');
+      const s = slide ? String($$('.hs__slide', slide.parentElement).indexOf(slide)) : null;
+      const dots = shot ? $$('.hs__dot', shot).filter(d => s === null || d.dataset.s === s) : [];
+      dots.forEach(d => d.classList.add('is-waiting'));
+      const done = () => { img.classList.remove('is-loading'); dots.forEach(d => d.classList.remove('is-waiting')); };
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+    });
+
     /* Pin the opening content by its bottom edge so the prototype section scrolls over it */
     (function () {
       const under = $('#under');
@@ -635,15 +651,26 @@
       new ResizeObserver(fit).observe(view);
       fit();
 
+      /* The prototype frames shimmer until their page has loaded (about:blank, used to unload the modal, doesn't count). */
+      const loadFrame = (f, box, src) => {
+        box.classList.add('is-loading');
+        f.src = src;
+      };
+      [[frame, view], [$('#proto-modal iframe'), $('#proto-modal .modal__view')]].forEach(([f, box]) => {
+        if (f && box) f.addEventListener('load', () => {
+          if (f.getAttribute('src') && f.getAttribute('src') !== 'about:blank') box.classList.remove('is-loading');
+        });
+      });
+
       let current = tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0];
       const select = tab => {
         current = tab;
         tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
-        frame.src = tab.dataset.src;
+        loadFrame(frame, view, tab.dataset.src);
         frame.title = tab.textContent.trim() + ' prototype';
       };
       tabs.forEach(t => t.addEventListener('click', () => select(t)));
-      frame.src = current.dataset.src;
+      loadFrame(frame, view, current.dataset.src);
 
       // Full-screen modal
       const modal = $('#proto-modal');
@@ -664,7 +691,7 @@
         $('.proto__full', proto).focus();
       };
       $('.proto__full', proto).addEventListener('click', () => {
-        mFrame.src = current.dataset.src;
+        loadFrame(mFrame, mView, current.dataset.src);
         mLabel.textContent = current.textContent.trim();
         modal.hidden = false;
         mSize();
