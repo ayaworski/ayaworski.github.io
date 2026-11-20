@@ -651,9 +651,18 @@
       new ResizeObserver(fit).observe(view);
       fit();
 
-      /* The prototype frames shimmer until their page has loaded (about:blank, used to unload the modal, doesn't count). */
+      /* The prototype frames shimmer until their page has loaded (about:blank, used to unload the modal, doesn't count).
+         A tab that only changes the #hash of the page already in the frame (e.g. Marketplace → Brands page) is an
+         in-page jump: no load event fires, so it must not shimmer or the frame would stay hidden. As a backstop,
+         the shimmer never outlasts 10s. */
       const loadFrame = (f, box, src) => {
-        box.classList.add('is-loading');
+        const next = new URL(src, location.href), cur = f.getAttribute('src') ? new URL(f.src) : null;
+        const sameDoc = cur && next.hash && cur.href.split('#')[0] === next.href.split('#')[0];
+        if (!sameDoc) {
+          box.classList.add('is-loading');
+          clearTimeout(box._skelTimer);
+          box._skelTimer = setTimeout(() => box.classList.remove('is-loading'), 10000);
+        }
         f.src = src;
       };
       [[frame, view], [$('#proto-modal iframe'), $('#proto-modal .modal__view')]].forEach(([f, box]) => {
