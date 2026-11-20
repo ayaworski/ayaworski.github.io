@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="checkout.css?v=20261031e" />
+    <link rel="stylesheet" href="checkout.css?v=20261120cibc" />
     <style>
       /* Customer's invoice: a document view of one invoice from a supplier */
       .cv-user__text { display: flex; flex-direction: column; line-height: 20px; }
@@ -367,7 +367,7 @@
           h += '<div class="id-titlerow"><h1 class="id-title">' + esc(r.inv) + '</h1><span class="cf-badge cf-badge--' + BADGE[r.status] + '">' + esc(r.status) + '</span></div>';
           h += '<p class="id-sub">Billed to Element Pilates Studio · USD ' + esc(money(total)) + '</p>';
           h += '</div><div class="id-actions">';
-          h += '<button type="button" class="id-act" data-act="pdf">Download PDF</button>';
+          h += '<span class="id-act id-act--static">Download PDF</span>';
           h += '<button type="button" class="id-act" data-act="send">Send invoice</button>';
           if (outstanding) h += '<button type="button" class="co-btn co-btn--primary id-primary" data-act="collect">Pay invoice</button>';
           h += '</div></div>';
@@ -430,7 +430,7 @@
         main.addEventListener('click', function (e) {
           var act = e.target.closest('[data-act]');
           if (!act) return;
-          ({ collect: openCollect, send: openSend, pdf: function () { toast(r.inv + '.pdf downloaded'); } })[act.getAttribute('data-act')]();
+          ({ collect: openCollect, send: openSend })[act.getAttribute('data-act')]();
         });
 
         /* ================= Actions: shown as dialogs over this page ================= */

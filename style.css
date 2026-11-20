@@ -502,6 +502,7 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   font-size: clamp(48px, 7.2vw, 96px); line-height: 1; letter-spacing: -0.045em; text-wrap: balance;
 }
 .case-intro .lead { margin: 0; max-width: 900px; font-size: clamp(20px, 2.4vw, 30px); line-height: 1.45; color: var(--fg-secondary); text-wrap: pretty; }
+.case-intro .lead strong { color: var(--fg-primary); font-weight: 600; }   /* the key result: bold, no highlight */
 .case-intro__art { flex: 1 1 480px; display: flex; align-items: center; justify-content: center; min-width: 0; }
 .case-intro__art img { width: 100%; height: auto; }
 
