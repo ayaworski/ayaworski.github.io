@@ -565,6 +565,22 @@
     });
 
     /* ---------- Annotated screens (hotspots) ---------- */
+    /* hotspots ripple once when the pointer enters their screenshot (see .is-pinging in style.css);
+       after that they only ripple on hover. Touch screens have no pointer entry, so they get one ripple
+       the first time the screenshot scrolls into view. */
+    const ping = shot => {
+      shot.classList.remove('is-pinging');
+      void shot.offsetWidth;                                       /* restart the animation */
+      shot.classList.add('is-pinging');
+      clearTimeout(shot._pingT);
+      shot._pingT = setTimeout(() => shot.classList.remove('is-pinging'), 1400);
+    };
+    const pingShots = $$('.hs__shot').filter(s => $('.hs__dot', s));
+    pingShots.forEach(s => s.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') ping(s); }));
+    if (!window.matchMedia('(hover: hover)').matches && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { ping(e.target); io.unobserve(e.target); } }), { threshold: 0.5 });
+      pingShots.forEach(s => io.observe(s));
+    }
     $$('[data-hs]').forEach(hs => {
       const shot = $('.hs__shot', hs), dots = $$('.hs__dot', hs), notes = $$('.hs__note', hs);
       const close = () => { notes.forEach(n => n.hidden = true); dots.forEach(d => d.setAttribute('aria-expanded', 'false')); };

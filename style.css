@@ -789,6 +789,10 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .hs__note .mono { color: var(--fg-muted); }
 .hs__hint { text-align: center; }
 @keyframes hs-pulse { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.9); opacity: 0; } }
+/* entry ping: when the pointer enters a screenshot, every hotspot plays the hover ripple once (script.js adds .is-pinging) */
+.hs__dot::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid #3b6fd8; opacity: 0; pointer-events: none; }
+.hs__shot.is-pinging .hs__dot::after { animation: hs-pulse 1.3s ease-out 1; }
+.hs__shot.is-pinging .hs__dot[aria-expanded="true"]::after { animation: none; }
 @media (max-width: 900px) { .hs { grid-template-columns: minmax(0, 1fr); } .hs__copy { order: -1; } }
 .hs__note--flow { position: static; width: auto; }
 
@@ -859,4 +863,4 @@ a.pager__btn:focus-visible { outline: 3px solid #3b6fd8; outline-offset: 3px; }
 .fig__foot .hs__pager { margin-left: auto; }
 @media (prefers-reduced-motion: reduce) { .hs__track, .hs__arrow, .hs__pdot::before { transition: none; } }
 @media (max-width: 640px) { .hs__dot { width: 18px; height: 18px; border-width: 2px; } }
-@media (prefers-reduced-motion: reduce) { .hs__dot::before { animation: none; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hs__dot::before, .hs__dot::after { animation: none !important; opacity: 0; } }
