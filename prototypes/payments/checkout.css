@@ -103,12 +103,12 @@
 .co-wallet__spend { display: flex; align-items: center; gap: 8px; font-weight: 700; }
 .co-money-input {
   display: flex; align-items: center; gap: 8px;
-  width: 88px; height: 32px; padding: 0 8px;
+  width: auto; height: 32px; padding: 0 8px;
   background: #fff; border: 1px solid var(--co-border); border-radius: var(--co-radius);
   color: var(--co-soft); font-weight: 400;
 }
 .co-money-input:focus-within { border-color: var(--co-go); box-shadow: 0 0 0 1px var(--co-go); }
-.co-money-input input { width: 100%; border: 0; outline: 0; text-align: right; background: transparent; color: var(--co-text); }
+.co-money-input input { width: 10.5ch; min-width: 0; font-variant-numeric: tabular-nums; border: 0; outline: 0; text-align: right; background: transparent; color: var(--co-text); }
 /* The field's own teal border is the focus indicator; suppress the global ring on the inner input. */
 .co-money-input input:focus, .co-money-input input:focus-visible { outline: 0; }
 .co-money-input[aria-disabled='true'] { background: var(--co-inert-bg); }
@@ -484,6 +484,10 @@
 .iv-pointer img { position: absolute; left: 6.7%; right: 6.7%; top: 0; bottom: 25%; width: 86.6%; height: 75%; transform: rotate(-90deg); transform-origin: center; }
 .co-check:indeterminate { background: var(--co-go); border-color: var(--co-go); }
 .co-check:indeterminate::after { content: ''; width: 8px; height: 2px; background: #fff; border: 0; transform: none; }
+/* Hover: darken the border a step (grey → soft grey; teal → deep teal). Menu rows pass hover through since their checkbox ignores the pointer. */
+.co-check { transition: border-color 120ms ease, background-color 120ms ease; }
+.co-check:not(:disabled):hover, .iv-menu__item--check:hover .co-check { border-color: var(--co-soft); }
+.co-check:not(:disabled):is(:checked, :indeterminate):hover, .iv-menu__item--check:hover .co-check:is(:checked, :indeterminate) { border-color: var(--co-go-text); }
 
 /* Selection state: highlighted rows and the bulk-action bar that replaces the toolbar */
 .iv-toolbar[hidden], .iv-actions[hidden] { display: none; }
@@ -501,6 +505,9 @@
 /* Record payment dialog */
 .iv-act:disabled { background: var(--co-inert-bg); color: var(--co-inert); border-color: var(--co-inert-bg); cursor: not-allowed; }
 .iv-modal { margin: auto; border: 0; padding: 0; border-radius: 8px; width: 960px; max-width: calc(100vw - 32px); max-height: calc(100vh - 48px); overflow: auto; color: var(--co-text); font: 14px/20px 'Lato', sans-serif; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16); }
+/* Lock the page behind an open modal so only the dialog scrolls; overscroll-behavior stops scroll chaining out of the dialog. */
+html:has(dialog.iv-modal[open]) { overflow: hidden; }
+.iv-modal { overscroll-behavior: contain; }
 .iv-modal::backdrop { background: rgba(45, 45, 45, 0.5); }
 .iv-modal__form { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
 .iv-modal__head { display: flex; align-items: flex-start; justify-content: space-between; }
@@ -792,6 +799,8 @@
 .iv-act:not(:disabled):hover, .iv-filter:hover, .iv-iconbtn:hover, .id-act:hover, .id-copy:hover, .iv-clearall:hover { background: var(--co-grey-hover); }
 .co-btn--ghost:not(:disabled):active, .co-btn--default.is-ready:active,
 .iv-act:not(:disabled):active, .iv-filter:active, .iv-iconbtn:active, .id-act:active, .id-copy:active, .iv-clearall:active { background: var(--co-grey-press); }
+/* Download PDF is shown for context only: no hover, press or pointer. */
+.id-act.id-act--static, .id-act.id-act--static:hover, .id-act.id-act--static:active { background: none; cursor: default; pointer-events: none; }
 .co-btn--primary:not(:disabled):not([disabled]):active { background: var(--co-go-press); }
 
 /* Summary strip: amount due and due date lead; invoice date sits quietly on the right */
@@ -858,6 +867,33 @@
 .pl .co-field--wide input { height: 40px; }
 .pl .co-brands { margin-left: auto; }
 .pl .co-field__wrap input { padding-right: 44px; }
+
+/* ACH for an anonymous payer: email + name, then pick a bank or enter routing/account numbers */
+.pl-ach__find, .pl-ach__manual { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.pl-ach__find[hidden], .pl-ach__manual[hidden] { display: none; }
+.pl-search { position: relative; }
+.pl-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; fill: none; stroke: var(--co-soft); stroke-width: 2; stroke-linecap: round; pointer-events: none; }
+.pl .pl-search input { padding-left: 40px; height: 44px; -webkit-appearance: none; appearance: none; }
+.pl-banks { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.pl-bank {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0;
+  padding: 12px 8px; background: #fff; border: 1px solid var(--co-border); border-radius: var(--co-radius);
+  font: inherit; font-size: 12px; line-height: 16px; color: var(--co-text); cursor: pointer;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+.pl-bank[hidden] { display: none; }
+.pl-bank:hover { border-color: var(--co-soft); }
+.pl-bank[aria-pressed='true'] { border-color: var(--co-go); box-shadow: 0 0 0 1px var(--co-go); }
+/* Logos range from square marks (TD, RBC) to long wordmarks (Scotiabank, Tangerine): fit each inside one box. */
+.pl-bank__logo { width: 100%; height: 40px; display: flex; align-items: center; justify-content: center; }
+.pl-bank__logo img { max-width: min(100%, 96px); max-height: 100%; object-fit: contain; }
+.pl-bank__name { width: 100%; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pl-banks__empty { grid-column: 1 / -1; color: var(--co-soft); }
+.pl-banks__empty[hidden] { display: none; }
+.pl-ach__err { grid-column: 1 / -1; }
+.pl-ach__switch { grid-column: 1 / -1; color: var(--co-soft); }
+.pl-textbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--co-go-text); cursor: pointer; border-radius: 2px; }
+.pl-textbtn:hover { text-decoration: underline; }
 
 @media (max-width: 960px) {
   .pl-header { padding: 10px 16px; }

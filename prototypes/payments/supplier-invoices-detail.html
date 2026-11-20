@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="checkout.css?v=20261031g" />
+    <link rel="stylesheet" href="checkout.css?v=20261120cibc" />
   </head>
 
   <body class="co cf">
@@ -401,7 +401,7 @@
         h += '<p class="id-sub">Billed to ' + esc(r.customer) + ' · USD ' + esc(r.total) + '</p>';
         h += '</div>';
         h += '<div class="id-actions">';
-        h += '<a class="id-act" href="#" id="id-pdf">Download PDF</a>';
+        h += '<span class="id-act id-act--static">Download PDF</span>';
         h += '<button type="button" class="id-act" data-act="send">Send invoice</button>';
         if (outstanding) h += '<button type="button" class="id-act" data-act="record">Record payment</button>';
         if (outstanding) h += '<button type="button" class="co-btn co-btn--primary id-primary" data-act="collect">Collect payment</button>';
@@ -487,7 +487,6 @@
           }
           var act = e.target.closest('[data-act]');
           if (act) { ({ collect: openCollect, record: openRecord, send: openSend })[act.getAttribute('data-act')](); return; }
-          if (e.target.closest('#id-pdf')) { e.preventDefault(); window.print(); }
           if (e.target.closest('#id-pp')) e.preventDefault();
         });
 

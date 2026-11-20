@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="checkout.css?v=20261031l" />
+    <link rel="stylesheet" href="checkout.css?v=20261120cibc" />
   </head>
 
   <body class="co pl">
@@ -74,11 +74,56 @@
                   <input type="radio" class="co-radio" name="method" value="ach" />
                   <span class="co-method__name">ACH payment</span>
                 </label>
+                <!-- Anonymous payer: no saved bank, so the panel collects their details. -->
                 <div class="co-method__panel" hidden>
-                  <div class="co-bank">
-                    <span class="co-bank__icon">ACH</span>
-                    <span>Business chequing ending ···· 1204</span>
-                  </div>
+                  <form class="co-newcard pl-card pl-ach" id="ach-form" novalidate>
+                    <div class="co-field co-field--wide">
+                      <label for="ach-email">Email</label>
+                      <input id="ach-email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+                      <span class="co-field__err" data-err="ach-email"></span>
+                    </div>
+                    <div class="co-field co-field--wide">
+                      <label for="ach-name">Full name</label>
+                      <input id="ach-name" autocomplete="name" placeholder="First and last name" />
+                      <span class="co-field__err" data-err="ach-name"></span>
+                    </div>
+
+                    <!-- Find your bank -->
+                    <div class="pl-ach__find" id="ach-find">
+                      <div class="co-field co-field--wide pl-search">
+                        <label for="ach-search" class="sr-only">Search for your bank</label>
+                        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" /><path d="m12.5 12.5 4 4" /></svg>
+                        <input id="ach-search" type="search" autocomplete="off" placeholder="Search for your bank" />
+                      </div>
+                      <div class="pl-banks" id="ach-bank" role="group" aria-label="Banks"></div>
+                      <p class="pl-banks__empty" id="ach-empty" hidden>No banks match your search.</p>
+                      <span class="co-field__err pl-ach__err" data-err="ach-bank"></span>
+                    </div>
+
+                    <!-- Enter routing and account numbers instead -->
+                    <div class="pl-ach__manual" id="ach-manual" hidden>
+                      <div class="co-field co-field--wide">
+                        <label for="ach-routing">Routing number</label>
+                        <input id="ach-routing" inputmode="numeric" autocomplete="off" placeholder="9 digits" />
+                        <span class="co-field__err" data-err="ach-routing"></span>
+                      </div>
+                      <div class="co-field">
+                        <label for="ach-acct">Account number</label>
+                        <input id="ach-acct" inputmode="numeric" autocomplete="off" />
+                        <span class="co-field__err" data-err="ach-acct"></span>
+                      </div>
+                      <div class="co-field">
+                        <label for="ach-acct2">Confirm account number</label>
+                        <input id="ach-acct2" inputmode="numeric" autocomplete="off" />
+                        <span class="co-field__err" data-err="ach-acct2"></span>
+                      </div>
+                    </div>
+
+                    <p class="pl-ach__switch">
+                      <button type="button" class="pl-textbtn" id="ach-toggle">Enter bank details manually</button>
+                      <span id="ach-toggle-note">(may take 1–2 business days)</span>
+                    </p>
+                  </form>
                 </div>
               </div>
 
@@ -285,17 +330,99 @@
             return LOCALE.test.test(v) ? '' : 'Your ' + name + ' is invalid.';
           }
         };
+        /* ---------- ACH: bank search or manual routing / account numbers ---------- */
+        // Logos: Wikimedia Commons (Category:Logos of banks in Canada; RBC from its Capital Markets file, cropped to the shield).
+        var BANKS = [
+          { name: 'CIBC', logo: 'images/payment-link/banks/cibc.png?v=2' },
+          { name: 'BMO', logo: 'images/payment-link/banks/bmo.svg' },
+          { name: 'TD', logo: 'images/payment-link/banks/td.svg' },
+          { name: 'RBC', logo: 'images/payment-link/banks/rbc.svg' },
+          { name: 'Scotiabank', logo: 'images/payment-link/banks/scotiabank.svg' },
+          { name: 'Tangerine', logo: 'images/payment-link/banks/tangerine.svg' }
+        ];
+        var bankGrid = $('#ach-bank'), achSearch = $('#ach-search'), chosenBank = null, achManual = false;
+        BANKS.forEach(function (b) {
+          var t = el('button', 'pl-bank');
+          t.type = 'button';
+          t.dataset.name = b.name;
+          t.setAttribute('aria-pressed', 'false');
+          t.title = b.name;
+          var logo = el('span', 'pl-bank__logo');
+          var img = el('img');
+          img.src = b.logo; img.alt = '';
+          logo.appendChild(img);
+          var nm = el('span', 'pl-bank__name');
+          nm.textContent = b.name;
+          t.appendChild(logo); t.appendChild(nm);
+          bankGrid.appendChild(t);
+        });
+        bankGrid.addEventListener('click', function (e) {
+          var t = e.target.closest('.pl-bank');
+          if (!t) return;
+          chosenBank = t.dataset.name;
+          $$('.pl-bank', bankGrid).forEach(function (b) { b.setAttribute('aria-pressed', String(b === t)); });
+          if (touched['ach-bank']) checkField('ach-bank');
+        });
+        achSearch.addEventListener('input', function () {
+          var q = achSearch.value.trim().toLowerCase(), shown = 0;
+          $$('.pl-bank', bankGrid).forEach(function (b) {
+            var hit = b.dataset.name.toLowerCase().indexOf(q) !== -1;
+            b.hidden = !hit;
+            if (hit) shown++;
+          });
+          $('#ach-empty').hidden = shown > 0;
+        });
+        $('#ach-toggle').addEventListener('click', function () {
+          achManual = !achManual;
+          $('#ach-find').hidden = achManual;
+          $('#ach-manual').hidden = !achManual;
+          this.textContent = achManual ? 'Search for your bank instead' : 'Enter bank details manually';
+          $('#ach-toggle-note').hidden = achManual;
+          // Errors on the side being hidden no longer apply.
+          (achManual ? ['ach-bank'] : ['ach-routing', 'ach-acct', 'ach-acct2']).forEach(function (id) { touched[id] = false; setErr(id, ''); });
+          $(achManual ? '#ach-routing' : '#ach-search').focus();
+        });
+        function digitsOnly(id, max) {
+          $('#' + id).addEventListener('input', function (e) {
+            var d = e.target.value.replace(/\D/g, '').slice(0, max);
+            if (d !== e.target.value) e.target.value = d;
+          });
+        }
+        digitsOnly('ach-routing', 9); digitsOnly('ach-acct', 17); digitsOnly('ach-acct2', 17);
+
+        CHECKS['ach-email'] = function () {
+          var v = $('#ach-email').value.trim();
+          if (!v) return 'Your email address is incomplete.';
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Your email address is invalid.';
+        };
+        CHECKS['ach-name'] = function () { return $('#ach-name').value.trim() ? '' : 'Your full name is incomplete.'; };
+        CHECKS['ach-bank'] = function () { return chosenBank ? '' : 'Choose your bank, or enter your bank details manually.'; };
+        CHECKS['ach-routing'] = function () { return $('#ach-routing').value.length === 9 ? '' : 'Your routing number must be 9 digits.'; };
+        CHECKS['ach-acct'] = function () { return $('#ach-acct').value.length >= 4 ? '' : 'Your account number is incomplete.'; };
+        CHECKS['ach-acct2'] = function () {
+          var v = $('#ach-acct2').value;
+          if (!v) return 'Confirm your account number.';
+          return v === $('#ach-acct').value ? '' : 'Your account numbers don’t match.';
+        };
+        var CARD_IDS = ['nc-num', 'nc-exp', 'nc-cvc', 'nc-zip'];
+        function achIds() {
+          return ['ach-email', 'ach-name'].concat(achManual ? ['ach-routing', 'ach-acct', 'ach-acct2'] : ['ach-bank']);
+        }
+
         var touched = {};
         function checkField(id) { return setErr(id, CHECKS[id]()); }
         Object.keys(CHECKS).forEach(function (id) {
           var input = $('#' + id), errEl = $('[data-err=' + id + ']');
           errEl.id = 'err-' + id;
           input.setAttribute('aria-describedby', errEl.id);
+          if (id === 'ach-bank') return; // the bank grid is checked on choose and on Pay, not on blur
           input.addEventListener('blur', function () { touched[id] = true; checkField(id); });
           input.addEventListener('input', function () { if (touched[id]) checkField(id); });
         });
         ncNum.addEventListener('input', function () { if (touched['nc-cvc']) checkField('nc-cvc'); });
+        $('#ach-acct').addEventListener('input', function () { if (touched['ach-acct2']) checkField('ach-acct2'); });
         $('#new-card').addEventListener('submit', function (e) { e.preventDefault(); });
+        $('#ach-form').addEventListener('submit', function (e) { e.preventDefault(); });
 
         /* ---------- Submit ---------- */
         var doneEl = $('#done'), doneCard = $('#done-card'), doneIcon = $('#done-icon'), doneText = $('#done-title');
@@ -308,15 +435,25 @@
           doneText.textContent = 'Payment complete';
         }
         doneIcon.addEventListener('animationiteration', function () { if (ready) finish(); });
-        $('#submit').addEventListener('click', function () {
-          if ($('input[name=method]:checked').value === 'card') {
-            var firstBad = null;
-            Object.keys(CHECKS).forEach(function (id) {
-              touched[id] = true;
-              if (!checkField(id) && !firstBad) firstBad = id;
-            });
-            if (firstBad) { $('#' + firstBad).focus(); return; }
-          }
+        /* Pay stays disabled until every field for the chosen method passes. This checks quietly:
+           error messages still appear only on blur, so the form doesn't shout before the payer has typed. */
+        var payBtn = $('#submit');
+        function activeIds() { return $('input[name=method]:checked').value === 'card' ? CARD_IDS : achIds(); }
+        function updatePay() {
+          payBtn.disabled = !activeIds().every(function (id) { return !CHECKS[id](); });
+        }
+        // Delegated on the methods list: these run after the field's own handlers (formatting, bank choice, manual toggle).
+        ['input', 'change', 'click'].forEach(function (type) { $('#methods').addEventListener(type, updatePay); });
+        updatePay();
+
+        payBtn.addEventListener('click', function () {
+          var ids = activeIds();
+          var firstBad = null;
+          ids.forEach(function (id) {
+            touched[id] = true;
+            if (!checkField(id) && !firstBad) firstBad = id;
+          });
+          if (firstBad) { (firstBad === 'ach-bank' ? achSearch : $('#' + firstBad)).focus(); return; }
           ready = false; finished = false;
           doneCard.className = 'co-done__card is-processing';
           doneText.textContent = 'Processing payment';
