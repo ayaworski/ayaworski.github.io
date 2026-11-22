@@ -138,6 +138,7 @@
   }
   const local = e => { const r = hero.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
 
+  const rootStyle = getComputedStyle(document.documentElement);   /* live: grid colours come from the --bg-grid / --border-grid tokens */
   function draw(t) {
     if (!st.W) return;
     const { W, H, dpr, m, c } = st, ctx = cv.getContext('2d');
@@ -153,12 +154,12 @@
     st.rip = st.rip.filter(r => t - r.b < 1.6);
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.fillStyle = '#F7F9FC'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = rootStyle.getPropertyValue('--bg-grid').trim() || '#F7F9FC'; ctx.fillRect(0, 0, W, H);
 
     const path = new Path2D();
     for (let x = 0.5; x <= W; x += G) { path.moveTo(x, 0); path.lineTo(x, H); }
     for (let y = 0.5; y <= H; y += G) { path.moveTo(0, y); path.lineTo(W, y); }
-    ctx.strokeStyle = 'oklch(0.95 0.0135 245)'; ctx.lineWidth = 1; ctx.stroke(path);
+    ctx.strokeStyle = rootStyle.getPropertyValue('--border-grid').trim() || 'oklch(0.95 0.0135 245)'; ctx.lineWidth = 1; ctx.stroke(path);
 
     if (st.rip.length || m) {
       const cx0 = m ? Math.floor(m.x / G) * G : -1, cy0 = m ? Math.floor(m.y / G) * G : -1;
@@ -479,9 +480,6 @@
       trackGlow(panel, g);
     });
 
-    /* Header grid glow */
-    const head = $('.case-head');
-    if (head) trackGlow(head, $('.glow', head));
 
     /* Scroll reveal: fade in anything below the fold, and draw the highlighter marks */
     if (!reduceMotion && 'IntersectionObserver' in window) {
@@ -771,4 +769,11 @@
   if (document.getElementById('hero')) initHome();
   if (document.body.classList.contains('case-page')) initCase();
   initCopyEmail();
+
+  /* Dev-only style tweak panel (dev/tweaks.js): loads only on a local server, never on the live site. */
+  if (/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:') {
+    const s = document.createElement('script');
+    s.src = new URL('dev/tweaks.js', document.currentScript ? document.currentScript.src : location.href).href + '?t=' + Date.now();   // always fresh while editing
+    document.head.appendChild(s);
+  }
 })();
