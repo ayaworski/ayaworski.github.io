@@ -317,10 +317,62 @@
 
     /* Rainbow grid glow on each case image + scroll reveals */
     $$('.case-media').forEach(media => trackGlow(media, $('.case-glow', media)));
+    initLayerStacks();
     revealOnScroll($$('.reveal'));
   }
 
   /* ================= Case study pages ================= */
+  /* Homepage case cards: layered screen stacks (style.css "layered screen stacks").
+     Each .ls holds a fixed 760×540 artboard that is scaled to the box width. When a stack is 30% in view its
+     layers build in one after another (data-delay ms, ease-out cubic, rising 70px). After that they bob gently
+     and shift by data-depth with the cursor (parallax). One rAF loop drives every stack, and it only runs
+     while a stack is on screen and the tab is visible. Reduced motion shows the layers still. */
+  function initLayerStacks() {
+    const stacks = $$('[data-stack]').map(el => {
+      const S = { el, stage: $('.ls__stage', el), mx: 0, my: 0, tx: 0, ty: 0, t0: null, vis: false,
+        layers: $$('.ls__layer', el).map(n => ({ n, d: +n.dataset.depth || 0, dl: +n.dataset.delay || 0 })) };
+      const fit = () => { S.stage.style.transform = `scale(${el.clientWidth / 760})`; };
+      fit();
+      if ('ResizeObserver' in window) new ResizeObserver(fit).observe(el); else window.addEventListener('resize', fit);
+      return S;
+    });
+    if (!stacks.length || reduceMotion) return;
+
+    let raf = 0;
+    const tick = t => {
+      raf = 0;
+      let live = false;
+      for (const S of stacks) {
+        if (!S.vis) continue;
+        live = true;
+        S.mx += (S.tx - S.mx) * 0.07; S.my += (S.ty - S.my) * 0.07;            // eased cursor follow
+        for (const L of S.layers) {
+          const p = S.t0 == null ? 0 : Math.min(1, Math.max(0, (t - S.t0 - L.dl) / 950));
+          const e = 1 - Math.pow(1 - p, 3);                                      // ease-out cubic build-in
+          const float = Math.sin(t / 1700 + L.d * 4) * 5 * Math.min(L.d, 1.2);   // idle bob
+          L.n.style.opacity = e;
+          L.n.style.transform = `translate(${(-S.mx * 16 * L.d).toFixed(2)}px, ${(-S.my * 12 * L.d + (1 - e) * 70 + float * e).toFixed(2)}px)`;
+        }
+      }
+      if (live && !document.hidden) start();
+    };
+    const start = () => { if (!raf) raf = requestAnimationFrame(tick); };
+
+    stacks.forEach(S => {
+      new IntersectionObserver(([e]) => {
+        S.vis = e.isIntersecting;
+        if (S.vis && S.t0 == null && e.intersectionRatio >= 0.3) S.t0 = performance.now();
+        if (S.vis) start();
+      }, { threshold: [0, 0.3] }).observe(S.el);
+      S.el.addEventListener('pointermove', e => {
+        const r = S.el.getBoundingClientRect();
+        S.tx = (e.clientX - r.left) / r.width * 2 - 1; S.ty = (e.clientY - r.top) / r.height * 2 - 1;
+      });
+      S.el.addEventListener('pointerleave', () => { S.tx = 0; S.ty = 0; });
+    });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
+  }
+
   function initCase() {
     /* Skeleton loading: screenshots shimmer in their reserved space until the file arrives.
        Lazy images keep the shimmer until they scroll near the viewport and load. */
