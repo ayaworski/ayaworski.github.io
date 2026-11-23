@@ -187,13 +187,13 @@
   }
 
   /* Homepage hero: once the rest of the hero has loaded in, the hand-drawn loop, arrow and note draw themselves in
-     (first visit only). style.css hides them up front (only when motion is allowed and the visitor hasn't seen it:
-     no .sketch-seen); on repeat visits or with reduced motion they're simply shown. */
+     once per browsing session: on the first homepage view of a visit. style.css hides them up front (only when motion
+     is allowed and they haven't played this session: no .sketch-seen); otherwise, or with reduced motion, they're simply shown. */
   function initHeroSketch() {
     const circle = $('.hero-circle path'), arrow = $('.hero-arrow path'), note = $('.hero-note__text');
     const lines = note ? $$(':scope > span', note) : [];
     if (!circle || !arrow || lines.length < 2 || reduceMotion || document.documentElement.classList.contains('sketch-seen')) return;
-    try { localStorage.setItem('heroSketchSeen', '1'); } catch (e) { /* storage blocked: it just plays again next time */ }
+    try { sessionStorage.setItem('heroSketchSeen', '1'); } catch (e) { /* storage blocked: it just plays again next time */ }
     // [ms after the hero has finished loading in, duration ms, apply]
     const steps = [
       [150, 900, penStroke(circle)],
@@ -208,7 +208,8 @@
      the page's load-in animations have finished, the prototype has loaded (no skeleton shimmer) and the hint is on screen. */
   function initProtoHint() {
     const hint = $('.proto__hint');
-    if (!hint || reduceMotion) return;
+    // once per page per browsing session: .hint-seen (set in the page <head> from sessionStorage) shows it already drawn
+    if (!hint || reduceMotion || document.documentElement.classList.contains('hint-seen')) return;
     const paths = $$('path', hint), text = $(':scope > span', hint), view = $('.laptop__view');
     if (!text) return;
     const steps = [
@@ -226,7 +227,10 @@
       const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); resolve(); } }, { threshold: 0.6 });
       io.observe(hint);
     });
-    Promise.all([afterLoadIn(document.body, 5000), loaded, onScreen]).then(() => setTimeout(() => penPlay(steps), 200));
+    Promise.all([afterLoadIn(document.body, 5000), loaded, onScreen]).then(() => setTimeout(() => {
+      try { sessionStorage.setItem('hintSeen:' + location.pathname, '1'); } catch (e) { /* storage blocked: it plays each time */ }
+      penPlay(steps);
+    }, 200));
   }
 
   function initHome() {
@@ -241,7 +245,8 @@
     W: 0, H: 0, dpr: 1,
     m: null,                       // pointer position (local to hero)
     c: { x: 0, y: 0, a: 0 },       // eased cursor + spotlight alpha
-    rip: [], last: null, vis: true, sound: false, off: null
+    rip: [], last: null, vis: true, off: null,
+    sound: false                   // the nav toggle: grid sound + the coloured-square trail and click ripples (off by default)
   };
 
   function resize() {
@@ -267,10 +272,10 @@
   function draw(t) {
     if (!st.W) return;
     const { W, H, dpr, m, c } = st, ctx = cv.getContext('2d');
-    if (m) { c.x += (m.x - c.x) * 0.2; c.y += (m.y - c.y) * 0.2; c.a += (1 - c.a) * 0.08; }
-    else c.a += (0 - c.a) * 0.05;
+    if (m) { c.x += (m.x - c.x) * 0.2; c.y += (m.y - c.y) * 0.2; }
+    c.a += ((m ? 1 : 0) - c.a) * (m ? 0.08 : 0.05);   // rainbow glow on the grid lines: always on, like the other grids
 
-    if (m && (!st.last || Math.hypot(m.x - st.last.x, m.y - st.last.y) > 45)) {
+    if (m && st.sound && (!st.last || Math.hypot(m.x - st.last.x, m.y - st.last.y) > 45)) {
       st.rip.push({ x: m.x, y: m.y, b: t, a: 1, h: hueAt(m.x) });
       st.last = { x: m.x, y: m.y };
     }
@@ -294,7 +299,7 @@
           const age = t - r.b, rad = age * 320, d = Math.hypot(cx - r.x, cy - r.y), dd = Math.abs(d - rad);
           if (dd < 32) { const vv = (1 - dd / 32) * (1 - age / 1.6) * r.a; if (vv > v) { v = vv; hue = (r.h + d * 0.85) % 360; } }
         }
-        if (gx === cx0 && gy === cy0) { v = Math.max(v, 0.9); hue = hueAt(gx + 1); }
+        if (st.sound && gx === cx0 && gy === cy0) { v = Math.max(v, 0.9); hue = hueAt(gx + 1); }
         if (v > 0.03) { ctx.fillStyle = `hsla(${hue.toFixed(0)}, 78%, 72%, ${(v * 0.55).toFixed(3)})`; ctx.fillRect(gx + 1.5, gy + 1.5, G - 2, G - 2); }
       }
     }
@@ -314,7 +319,7 @@
     }
   }
 
-  /* ---------- Sound (off by default; toggled from the nav) ---------- */
+  /* ---------- Sound (off by default; the nav toggle also turns on the coloured-square trail and ripples) ---------- */
   const audio = { ac: null, humOn: false };
 
   function initAudio() {
@@ -389,8 +394,9 @@
   hero.addEventListener('pointerdown', e => {
     if (e.target.closest('a, button, .nav-links, .menu-backdrop')) return;
     const p = local(e);
+    if (!st.sound) return;   // ripples + sound are off until the nav toggle turns them on
     st.rip.push({ ...p, b: performance.now() / 1000, a: 1.4, h: hueAt(p.x) });
-    if (st.sound) { initAudio(); audio.lastSwish = 0; swish(p.x); }
+    initAudio(); audio.lastSwish = 0; swish(p.x);
   });
 
   const soundBtn = document.getElementById('sound-toggle');
@@ -400,7 +406,7 @@
     st.sound = !st.sound;
     if (st.sound) initAudio();
     else { hum(false); if (audio.ac) setTimeout(() => audio.ac && !st.sound && audio.ac.suspend(), 600); }
-    const label = st.sound ? 'Turn grid sound off' : 'Turn grid sound on';
+    const label = st.sound ? 'Turn grid sound and colour off' : 'Turn grid sound and colour on';
     soundBtn.classList.toggle('is-on', st.sound);
     soundBtn.setAttribute('aria-label', label); soundBtn.title = label;
     soundLabel.textContent = st.sound ? 'Sound on' : 'Sound off';

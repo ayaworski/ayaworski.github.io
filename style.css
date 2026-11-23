@@ -486,7 +486,7 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   .js .hero canvas { animation: fade 1.2s ease .1s both; }
   .js .menu-btn { animation: rise .7s cubic-bezier(.2, .7, .2, 1) .3s both; }
   .js .hero-headline { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .35s both; }
-  .js.sketch-seen .hero-note { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .35s both; }   /* repeat visits: the already-drawn note loads in with the headline */
+  .js.sketch-seen .hero-note { animation: rise .9s cubic-bezier(.2, .7, .2, 1) .35s both; }   /* later views this session: the already-drawn note loads in with the headline */
   .js .hero .chip { animation: rise .6s cubic-bezier(.2, .7, .2, 1) both; }
   .js .hero .chip:nth-child(1) { animation-delay: .6s; }
   .js .hero .chip:nth-child(2) { animation-delay: .66s; }
@@ -495,7 +495,7 @@ footer .pill:hover { background: var(--bg-inverse-hover); color: var(--fg-invers
   .js .hero .chip:nth-child(5) { animation-delay: .84s; }
   .js .hero .chip:nth-child(6) { animation-delay: .9s; }
   /* hand-drawn loop, arrow and note start undrawn; script.js draws them in (initHeroSketch) */
-  /* first visit only: .sketch-seen (set in index.html from localStorage) shows them already drawn */
+  /* once per session: .sketch-seen (set in index.html from sessionStorage) shows them already drawn */
   .js:not(.sketch-seen) .hero-circle path, .js:not(.sketch-seen) .hero-arrow path { stroke-dasharray: 1; stroke-dashoffset: 1; }
   .js:not(.sketch-seen) .hero-note__text > span { clip-path: inset(-10% 100% -20% 0); }
   .js .hero-cta .btn { animation: rise .8s cubic-bezier(.2, .7, .2, 1) 1.05s both; }
@@ -953,8 +953,8 @@ a.pager__btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 3p
   .js .case-page .proto__bar { animation: rise .8s cubic-bezier(.2, .7, .2, 1) 1s backwards; }
   .js .case-page .laptop { animation: rise .9s cubic-bezier(.2, .7, .2, 1) 1.1s backwards; }
   /* "Click me" hint starts undrawn; script.js (initProtoHint) draws it once the view has loaded */
-  .js .proto__hint path { stroke-dasharray: 1; stroke-dashoffset: 1; }
-  .js .proto__hint > span { clip-path: inset(-10% 100% -20% 0); }
+  .js:not(.hint-seen) .proto__hint path { stroke-dasharray: 1; stroke-dashoffset: 1; }   /* .hint-seen: already drawn this session */
+  .js:not(.hint-seen) .proto__hint > span { clip-path: inset(-10% 100% -20% 0); }
 }
 
 /* ================= Homepage case cards: layered screen stacks =================
