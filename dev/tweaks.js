@@ -19,9 +19,8 @@
   // The type hierarchy. sel = the style.css selectors that use this style; defaults match style.css.
   // after: a variant whose rule has the same specificity as its parent and must be re-emitted after it.
   const TYPE = [
-    { cat: 'Headings', id: 'display', tok: ['--size-display', '--text-display', '--track-display'], name: 'Display', role: 'Statement: homepage hero name', sel: ['.hero h1'], fam: 'display', w: 800, size: c(56, 7.75, 106), lh: 1, ls: -0.045, sample: 'Designing for clarity' },
+    { cat: 'Headings', id: 'display', tok: ['--size-display', '--text-display', '--track-display'], name: 'Display', role: 'Statement: homepage hero headline', sel: ['.hero h1'], fam: 'display', w: 800, size: c(40, 6, 64), lh: 1.14, ls: -0.045, sample: 'I design complex commerce products where merchants, money, and operations meet.' },
     { cat: 'Headings', id: 'display-s', tok: ['--size-display-s', '--text-display-s', '--track-display'], name: 'Display S', role: 'Statement: footer CTA', sel: ['.footer-cta h2'], fam: 'display', w: 800, size: c(44, 6, 88), lh: 1, ls: -0.045, sample: "Let's talk about what you're building." },
-    { cat: 'Headings', id: 'lede', tok: ['--size-lede', '--text-lede', '--track-lede'], name: 'Lede', role: 'Statement under the homepage hero name', sel: ['.hero-lede'], fam: 'body', w: 600, size: c(26, 3, 40), lh: 1.3, ls: -0.015, color: '--fg-primary', sample: 'I design complex commerce products where merchants, money, and operations meet.' },
     { cat: 'Headings', id: 'h1', tok: ['--size-h1', '--text-h1', '--track-display'], name: 'H1', role: 'Case study page title', sel: ['.case-intro h1'], fam: 'display', w: 800, size: c(48, 7.2, 96), lh: 1, ls: -0.045, sample: 'Wholesale marketplace' },
     { cat: 'Headings', id: 'h2', tok: ['--size-h2', '--text-h2', '--track-h2'], name: 'H2', role: 'Homepage section titles', sel: ['h2.section-title'], fam: 'display', w: 800, size: c(32, 4.22, 54), lh: 1, ls: -0.04, sample: 'Selected work' },
     { cat: 'Headings', id: 'h3', tok: ['--size-h3', '--text-h3', '--track-h3'], name: 'H3', role: 'Chapter headings, overview statement, case card titles, about intro', sel: ['.h-display', '.case-title', '.about-copy .lead', '.overview__copy .big'], fam: 'display', w: 800, size: c(28, 2.73, 39), lh: 1.08, ls: -0.03, sample: 'Making checkout feel instant' },
@@ -36,10 +35,11 @@
     { cat: 'Body', id: 'body-m-bold', tok: ['--size-body-m', '--leading-body-m', '--text-body-m-bold', '--weight-bold'], name: 'Body M Bold', role: 'Fact labels, quote author, nav links, footer pills (and <strong>)', sel: ['.facts dt', '.quote figcaption span:first-child', '.nav-link', '.pill'], fam: 'body', w: 600, size: px(16), lh: 1.6, ls: null, sample: 'Role' },
     { cat: 'Body', id: 'body-s', tok: ['--size-body-s', '--leading-body-s', '--text-body-s'], name: 'Body S', role: 'Footnotes under facts and captions', sel: ['.facts dd .fact-note', '.hs__cap-note'], fam: 'body', w: 400, size: px(14), lh: 1.55, ls: null, color: '--fg-muted', sample: 'Measured over the first 90 days after launch.' },
     { cat: 'Body', id: 'body-s-bold', tok: ['--size-body-s', '--leading-body-s', '--text-body-s-bold'], name: 'Body S Bold', role: 'Not used yet: small labels', sel: [], fam: 'body', w: 600, size: px(14), lh: 1.55, ls: null, sample: 'Small label' },
-    { cat: 'UI', id: 'logo', tok: ['--text-logo', '--track-logo'], name: 'Logo', role: 'Brand wordmark (andrew.design)', sel: ['.logo'], fam: 'display', w: 800, size: c(22, 2.07, 29), lh: 1.15, ls: -0.02, sample: 'andrew.design' },
+    { cat: 'UI', id: 'logo', tok: ['--text-logo', '--track-logo'], name: 'Logo', role: 'Brand wordmark (Andrew Yaworski)', sel: ['.logo'], fam: 'display', w: 800, size: c(22, 2.07, 29), lh: 1.15, ls: -0.02, sample: 'Andrew Yaworski' },
     { cat: 'UI', id: 'button', tok: ['--text-button'], name: 'Button', role: 'Primary buttons', sel: ['.btn'], fam: 'body', w: 600, size: px(18), lh: 1.25, ls: null, sample: 'View case study' },
     { cat: 'UI', id: 'mono', tok: ['--text-mono', '--track-mono'], name: 'Mono label', role: 'Eyebrows, chips, tags, prototype tabs, zoom % (uppercase)', sel: ['.mono', '.proto__tab', '.proto__full', '.lb-zoom .lb-pct'], fam: 'mono', w: 500, size: px(14), lh: null, ls: 0.05, upper: true, sample: 'Case study 01' },
-    { cat: 'UI', id: 'hand', name: 'Handwritten', role: 'Prototype hint annotation', sel: ['.proto__hint span'], fam: "'Gochi Hand', cursive", w: 400, size: c(20, 2, 26), lh: 1, ls: null, sample: 'try clicking around!' },
+    { cat: 'UI', id: 'hand-note', name: 'Handwritten note', role: 'Homepage hero note (--font-hand)', sel: ['.hero-note__text'], fam: "'Gochi Hand', cursive", w: 400, size: px(30), lh: 1.15, ls: null, color: '--pen', sample: 'While balancing long-term foundations' },
+    { cat: 'UI', id: 'hand', name: 'Handwritten hint', role: '"Click me" prototype hint (--font-hand)', sel: ['.proto__hint span'], fam: "'Gochi Hand', cursive", w: 400, size: c(20, 2, 26), lh: 1, ls: null, sample: 'Click me, I\'m interactive.' },
   ];
 
   const COLOR_GROUPS = [
@@ -48,8 +48,8 @@
     ['Background', ['--bg-page', '--bg-grid', '--bg-surface', '--bg-inverse', '--bg-inverse-hover', '--bg-accent', '--bg-accent-hover', '--bg-accent-subtle']],
     ['Border', ['--border-primary', '--border-line', '--border-grid', '--border-inverse', '--border-inverse-subtle']],
   ];
-  COLOR_GROUPS.push(['Interaction', ['--focus', '--hotspot']]);
-  const FG_TOKENS = COLOR_GROUPS[1][1];
+  COLOR_GROUPS.push(['Interaction', ['--focus', '--hotspot', '--pen']]);
+  const FG_TOKENS = [...COLOR_GROUPS[1][1], '--pen'];
   const FONT_TOKENS = [['--font-display', 'Display font'], ['--font-body', 'Body font'], ['--font-mono', 'Mono font']];
   const FONT_CHOICES = ["'Archivo', sans-serif", "'IBM Plex Sans', sans-serif", "'IBM Plex Mono', monospace", "'Lato', sans-serif", "'Gochi Hand', cursive", 'system-ui, sans-serif', 'Georgia, serif'];
   const FAM_LABEL = { display: 'Display (--font-display)', body: 'Body (--font-body)', mono: 'Mono (--font-mono)' };
@@ -206,7 +206,7 @@
 
   function buildPrompt() {
     if (!changeCount()) return 'No tweaks yet. Change something in the panel first.';
-    const L = ['Update style.css with these design tweaks from my dev tweak panel. Edit the existing tokens and rules in place (don\'t append override rules), keep the clamp() pattern where a value uses one, and keep any related rules (hover states, mobile media queries, contextual variants) consistent.', 'Type styles are driven by the type-scale tokens in :root (Display + Display S + Lede, H1–H5, Number L/M, 1 callout, 6 body styles: --size-*, --text-*, --leading-*, --track-*): change the listed token rather than the rule. Some tokens are shared by several styles; if only this style should change, give it its own token or value instead.', ''];
+    const L = ['Update style.css with these design tweaks from my dev tweak panel. Edit the existing tokens and rules in place (don\'t append override rules), keep the clamp() pattern where a value uses one, and keep any related rules (hover states, mobile media queries, contextual variants) consistent.', 'Type styles are driven by the type-scale tokens in :root (Display + Display S, H1–H5, Number L/M, 1 callout, 6 body styles: --size-*, --text-*, --leading-*, --track-*): change the listed token rather than the rule. Some tokens are shared by several styles; if only this style should change, give it its own token or value instead.', ''];
     const toks = Object.keys(state.tok).filter(tokChanged);
     const lay = CONTROLS.filter(x => x.token && ctlChanged(x));
     if (toks.length || lay.length) {

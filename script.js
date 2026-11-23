@@ -105,7 +105,132 @@
   }
 
   /* ================= Home page ================= */
+  /* ================= Pen drawing =================
+     Shared by the homepage hero (loop, arrow, note) and the case study "Click me" hint.
+     style.css hides the strokes / text up front (stroke-dashoffset 1, clip-path); these helpers draw them back in. */
+  const easeInOut = t => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);   // easeInOutQuad
+  const easeOut = t => 1 - (1 - t) * (1 - t);
+
+  // An SVG path with pathLength="1" drawn from its start to its end.
+  const penStroke = path => p => { path.style.strokeDashoffset = String(1 - easeInOut(p)); };
+
+  // Handwriting: split an element's text into words and letters, then ink the letters in one after another at an uneven,
+  // hand-like pace with a short lift of the pen between words. srCopy: give screen readers the sentence from a hidden copy
+  // (skip it when the element is already aria-hidden).
+  function penWrite(line, total, { srCopy = true } = {}) {
+    const letters = [];
+    const splitText = node => {
+      [...node.childNodes].forEach(child => {
+        if (child.nodeType === 1) { splitText(child); return; }          // e.g. <i>long-term</i>
+        const frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(part); letters.push({ gap: true }); return; }
+          const w = document.createElement('span'); w.className = 'pen-w';
+          [...part].forEach(c => {
+            const ch = document.createElement('span'); ch.className = 'pen-ch'; ch.textContent = c;
+            w.append(ch); letters.push({ el: ch });
+          });
+          frag.append(w);
+        });
+        child.replaceWith(frag);
+      });
+    };
+    const text = line.textContent;
+    splitText(line);
+    if (srCopy) {
+      line.setAttribute('aria-hidden', 'true');
+      const sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = text; line.after(sr);
+    }
+    // weights: a letter is 1 slot (±35% jitter), a word gap is 2.6 slots
+    let rnd = 7;
+    const jitter = () => { rnd = (rnd * 9301 + 49297) % 233280; return 0.65 + 0.7 * (rnd / 233280); };   // repeatable "random"
+    const weights = letters.map(l => (l.gap ? 2.6 : jitter()));
+    const slot = total / weights.reduce((x, y) => x + y, 0);
+    let at = 0;
+    const timeline = [];
+    letters.forEach((l, i) => {
+      if (l.el) timeline.push({ el: l.el, start: at, dur: slot * 2.4, last: -1 });   // strokes overlap a little, like joined-up writing
+      at += weights[i] * slot;
+    });
+    // fit the schedule so the last stroke ends exactly at the end of the line's time
+    const fit = total / Math.max(...timeline.map(l => l.start + l.dur));
+    timeline.forEach(l => { l.start *= fit; l.dur *= fit; l.el.style.clipPath = 'inset(-30% 100% -40% -20%)'; });
+    line.style.clipPath = 'none';   // the letters take over from the element-level hide in style.css
+    return p => {
+      const t = p * total;
+      timeline.forEach(l => {
+        const q = Math.min(1, Math.max(0, (t - l.start) / l.dur));
+        if (q === l.last) return;
+        l.last = q;
+        l.el.style.clipPath = 'inset(-30% ' + (100 - easeOut(q) * 120).toFixed(1) + '% -40% -20%)';
+      });
+    };
+  }
+
+  // Play [start ms, duration ms, apply(progress 0..1)] steps on one clock.
+  function penPlay(steps) {
+    const end = Math.max(...steps.map(([start, dur]) => start + dur));
+    const t0 = performance.now();
+    const frame = now => {
+      const t = now - t0;
+      steps.forEach(([start, dur, apply]) => apply(Math.min(1, Math.max(0, (t - start) / dur))));
+      if (t < end) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  // Resolves once every finite load-in animation currently running under root has finished (capped as a safety net).
+  function afterLoadIn(root, cap = 4000) {
+    const anims = root.getAnimations ? root.getAnimations({ subtree: true }).filter(a => a.effect && a.effect.getTiming().iterations !== Infinity) : [];
+    return Promise.race([Promise.all(anims.map(a => a.finished.catch(() => {}))), new Promise(r => setTimeout(r, cap))]);
+  }
+
+  /* Homepage hero: once the rest of the hero has loaded in, the hand-drawn loop, arrow and note draw themselves in
+     (first visit only). style.css hides them up front (only when motion is allowed and the visitor hasn't seen it:
+     no .sketch-seen); on repeat visits or with reduced motion they're simply shown. */
+  function initHeroSketch() {
+    const circle = $('.hero-circle path'), arrow = $('.hero-arrow path'), note = $('.hero-note__text');
+    const lines = note ? $$(':scope > span', note) : [];
+    if (!circle || !arrow || lines.length < 2 || reduceMotion || document.documentElement.classList.contains('sketch-seen')) return;
+    try { localStorage.setItem('heroSketchSeen', '1'); } catch (e) { /* storage blocked: it just plays again next time */ }
+    // [ms after the hero has finished loading in, duration ms, apply]
+    const steps = [
+      [150, 900, penStroke(circle)],
+      [1100, 450, penStroke(arrow)],
+      [1550, 1100, penWrite(lines[0], 1100)],
+      [2700, 1000, penWrite(lines[1], 1000)],
+    ];
+    afterLoadIn(document.getElementById('hero')).then(() => penPlay(steps));
+  }
+
+  /* Case study "Click me, I'm interactive." hint: drawn in with the same pen once everything in that view is ready:
+     the page's load-in animations have finished, the prototype has loaded (no skeleton shimmer) and the hint is on screen. */
+  function initProtoHint() {
+    const hint = $('.proto__hint');
+    if (!hint || reduceMotion) return;
+    const paths = $$('path', hint), text = $(':scope > span', hint), view = $('.laptop__view');
+    if (!text) return;
+    const steps = [
+      [0, 380, penStroke(paths[0])],
+      ...(paths[1] ? [[330, 200, penStroke(paths[1])]] : []),
+      [480, 1000, penWrite(text, 1000, { srCopy: false })],   // the hint is aria-hidden already
+    ];
+    const loaded = new Promise(resolve => {
+      const check = () => (!view || !view.classList.contains('is-loading') ? resolve() : setTimeout(check, 120));
+      setTimeout(check, 50);                     // let the prototype's first load mark the frame as loading
+    });
+    const onScreen = new Promise(resolve => {
+      const r = hint.getBoundingClientRect();
+      if (!('IntersectionObserver' in window) || (r.top < innerHeight && r.bottom > 0)) { resolve(); return; }   // already in view
+      const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { io.disconnect(); resolve(); } }, { threshold: 0.6 });
+      io.observe(hint);
+    });
+    Promise.all([afterLoadIn(document.body, 5000), loaded, onScreen]).then(() => setTimeout(() => penPlay(steps), 200));
+  }
+
   function initHome() {
+    initHeroSketch();
   const G = 32; // grid cell size
   const hero = document.getElementById('hero');
   const cv = document.getElementById('hero-canvas');
@@ -375,6 +500,7 @@
   }
 
   function initCase() {
+    initProtoHint();
     /* Skeleton loading: screenshots shimmer in their reserved space until the file arrives.
        Lazy images keep the shimmer until they scroll near the viewport and load. */
     $$('.zoomable img, .next-card__art img').forEach(img => {
