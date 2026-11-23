@@ -23,17 +23,17 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Lato:wght@400;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800&family=Gochi+Hand&family=Lato:wght@400;700&family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 
-  <script>document.documentElement.classList.add('js')</script>
-  <link rel="stylesheet" href="style.css?v=20261122noteradius">
+  <script>document.documentElement.classList.add('js');try{if(localStorage.getItem('heroSketchSeen'))document.documentElement.classList.add('sketch-seen')}catch(e){}</script>
+  <link rel="stylesheet" href="style.css?v=20261122hint2">
 </head>
 <body>
 
 <header class="hero" id="hero">
   <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <nav class="wrap" aria-label="Main Navigation">
-    <a href="index.html" class="logo">andrew.design</a>
+    <a href="index.html" class="logo">Andrew Yaworski</a>
     <button class="nav-link menu-btn" id="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" aria-hidden="true"><path d="M3 6 H21 M3 12 H21 M3 18 H21"></path></svg>
       Menu
@@ -57,8 +57,7 @@
     </div>
   </nav>
   <div class="hero-body wrap">
-    <div class="hero-title-block">
-      <h1>Andrew Yaworski</h1>
+    <div class="hero-top">
       <div class="chips mono">
         <span class="chip">B2B / B2C</span>
         <span class="chip">Commerce</span>
@@ -66,9 +65,16 @@
         <span class="chip">Design Systems</span>
         <span class="chip">AI Native</span>
       </div>
+      <div class="hero-headline">
+        <h1>I design complex commerce products where merchants, money, and operations meet.</h1>
+        <svg class="hero-circle" viewBox="0 0 1000 300" preserveAspectRatio="none" fill="none" aria-hidden="true"><path pathLength="1" d="M540 10 C810 2 1006 66 996 158 C986 246 790 304 488 298 C196 292 -2 232 8 146 C18 66 214 14 452 4 C650 -4 812 20 906 58 C940 72 958 88 966 104"></path></svg>
+      </div>
+      <div class="hero-note">
+        <svg class="hero-arrow" width="80" height="56" viewBox="0 0 80 56" fill="none" aria-hidden="true"><path pathLength="1" d="M76 50 C44 50 18 34 10 6 M0 18 L10 4 L22 16"></path></svg>
+        <p class="hero-note__text"><span>While balancing <i>long-term</i> foundations</span> <span>with immediate business results.</span></p>
+      </div>
     </div>
     <div class="hero-bottom">
-      <p class="hero-lede">I design complex commerce products where merchants, money, and operations meet, balancing long-term foundations with immediate business results.</p>
       <div class="hero-cta">
         <a class="btn btn--lime" href="#case-studies">View case studies</a>
         <a class="btn" href="#contact">Get in touch</a>
@@ -148,7 +154,7 @@
       </div>
     </div>
     <div class="footer-bar reveal">
-      <span class="mono">© 2026 andrew.design · Vancouver, BC</span>
+      <span class="mono">© 2026 Andrew Yaworski · Vancouver, BC</span>
       <div class="social">
         <a class="pill" href="https://www.linkedin.com/in/andrewyaworski/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a class="pill" href="https://www.behance.net/ayaworski" target="_blank" rel="noopener noreferrer">Behance</a>
@@ -157,6 +163,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=20261122grid"></script>
+<script src="script.js?v=20261122hint3"></script>
 </body>
 </html>
